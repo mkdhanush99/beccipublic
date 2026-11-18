@@ -1,0 +1,178 @@
+{
+  "build_manifest": {
+    "direction": {
+      "app_type": "marketing_site",
+      "ambition": "A3 EXPRESSIVE",
+      "mode": "light",
+      "rail": "membership",
+      "spine": [
+        "Hero",
+        "BECCI Acronym Story",
+        "Why Bahujan (Heritage Quotation)",
+        "Economic Empowerment Chain",
+        "Vision & Mission",
+        "What BECCI Does (5 Pillars)",
+        "Who BECCI Serves (Audiences & Sectors)",
+        "BECCI Ecosystem",
+        "Membership",
+        "Footer"
+      ],
+      "name": "BECCI",
+      "tone": "dignified, credible, confident, inclusive, professional, human",
+      "axes": "institutional, editorial, Apple-meets-NMSDC"
+    },
+    "tone_tokens": {
+      "colors": {
+        "core_blues": {
+          "Deep navy": "#030E1E",
+          "Primary navy": "#061B3A",
+          "Secondary navy": "#0B2D5C",
+          "Corporate blue": "#124B8C",
+          "Bright blue": "#1769C2",
+          "Electric blue": "#3D8FE8",
+          "Light blue": "#7CB4F2",
+          "Pale blue": "#B8D7FA",
+          "Ice blue": "#F0F6FD",
+          "White": "#FFFFFF",
+          "Continuum Navy (Logo)": "#0A2352"
+        },
+        "heritage_accents": {
+          "Imperial gold": "#D4AF5A",
+          "Champagne": "#F0DDA8",
+          "Antique gold": "#A77B32",
+          "Midnight navy": "#071426",
+          "Warm ivory": "#F7F0E2",
+          "Deep burgundy": "#702E3D"
+        }
+      },
+      "typography": {
+        "display": "Bebas Neue",
+        "headings": "Plus Jakarta Sans",
+        "body": "Inter",
+        "philosophical_quotation": "Playfair Display Italic"
+      }
+    },
+    "conversion_wiring": "Membership / Contact forms and actions.",
+    "content_slots": [
+      {
+        "slot": "hero_title",
+        "text": "Building Businesses. Building Bharat.",
+        "source": "brief"
+      },
+      {
+        "slot": "acronym_story",
+        "text": "B-Bahujan, E-Entrepreneurs, C-Chamber, C-Commerce, I-Industry",
+        "source": "brief"
+      },
+      {
+        "slot": "heritage_quote",
+        "text": "Bahujana Hitāya, Bahujana Sukhāya",
+        "source": "brief"
+      }
+    ],
+    "fabrication_guardrails": [
+      "No charity/pity imagery",
+      "No political slogans",
+      "No fabricated stats",
+      "No gradient blobs",
+      "No floating particles",
+      "No excessive glassmorphism",
+      "No neon",
+      "No fake dashboards",
+      "No repeated identical 3-card grids",
+      "No decorative graphics without meaning"
+    ],
+    "locale": "en-IN"
+  },
+  "typography": {
+    "h1_hero": "font-['Bebas_Neue',_'Oswald',_sans-serif] tracking-normal uppercase",
+    "h2_section": "font-['Plus_Jakarta_Sans',_sans-serif] font-bold tracking-tight",
+    "h3_subsection": "font-['Plus_Jakarta_Sans',_sans-serif] font-semibold tracking-tight",
+    "body": "font-['Inter',_sans-serif] leading-relaxed",
+    "quotation": "font-['Playfair_Display',_serif] italic text-[#D4AF5A]"
+  },
+  "colors": {
+    "background_primary": "#FFFFFF",
+    "background_secondary": "#F0F6FD",
+    "background_dark_section": "#030E1E",
+    "background_heritage_section": "#071426",
+    "text_primary_light": "#030E1E",
+    "text_secondary_light": "#124B8C",
+    "text_primary_dark": "#FFFFFF",
+    "text_secondary_dark": "#F0F6FD",
+    "accent_primary": "#1769C2",
+    "accent_heritage": "#D4AF5A",
+    "border_light": "#E2E8F0",
+    "border_dark": "#0B2D5C"
+  },
+  "visual_enhancers": {
+    "shadows": "Minimal ambient shadows (shadow-sm) on light backgrounds. No drop-shadows on dark sections.",
+    "borders": "Thin, crisp 1px borders using secondary navy or slate for structure.",
+    "corners": "Minimal rounding (rounded-sm or rounded-none) for a serious, institutional feel. Do not use fully rounded pill-cards for content.",
+    "hero_overlay": "Use a subtle gradient overlay (bg-black/40 or bg-[#030E1E]/50) over cinematic photography to ensure high text contrast."
+  },
+  "grids_layouts": {
+    "general": "Editorial pacing, alternating between full-bleed cinematic dark sections and airy, spacious light sections.",
+    "spacing": "Generous vertical rhythm (py-24 to py-32 for main sections). Ample negative space to convey premium credibility.",
+    "bento_boxes": "Use for the 5-pillar ecosystem infographic (Knowledge, Finance, Markets, Networks, Govt Schemes) rather than repetitive generic 3-card grids.",
+    "infographics": "MUST be implemented via HTML/Tailwind structure, NOT static images. Use nested grids and typography to construct flow-charts or hierarchies."
+  },
+  "motion": {
+    "scrolling": "Implement smooth scroll mechanics (Lenis) for premium momentum.",
+    "interactions": "Subtle, dignified micro-interactions. Slow fade-ins or slight transforms (translate-y-4) on scroll reveal. No bouncy, chaotic or spring animations."
+  },
+  "accessibility": {
+    "contrast": "Strict adherence to WCAG AA for text over images/dark backgrounds.",
+    "testing": "All interactive elements must include data-testid attributes."
+  },
+  "media": {
+    "logo_navy": "/app/frontend/src/assets/becci-logo-navy.svg",
+    "logo_white": "/app/frontend/src/assets/becci-logo-white.svg",
+    "symbol_navy": "/app/frontend/src/assets/becci-symbol.svg",
+    "symbol_white": "/app/frontend/src/assets/becci-symbol-white.png"
+  },
+  "image_urls": [
+    {
+      "url": "https://images.pexels.com/photos/40719519/pexels-photo-40719519.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      "description": "Group of professionals posing during a corporate meeting in a modern boardroom.",
+      "category": "Hero Section / Professional Ecosystem"
+    },
+    {
+      "url": "https://images.pexels.com/photos/37894130/pexels-photo-37894130.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      "description": "Confident businessman in a suit posing in an indoor office environment.",
+      "category": "Business Leader / Corporate Audience"
+    },
+    {
+      "url": "https://images.pexels.com/photos/31336012/pexels-photo-31336012.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      "description": "A textile factory worker operates machinery with precision, demonstrating industrial efficiency.",
+      "category": "Manufacturing / MSME Sector"
+    },
+    {
+      "url": "https://images.pexels.com/photos/15815339/pexels-photo-15815339.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      "description": "A woman hand-paints traditional crafts at an outdoor market, showcasing vibrant ethnic designs.",
+      "category": "Women Entrepreneurs / Artisans Sector"
+    },
+    {
+      "url": "https://images.pexels.com/photos/29039798/pexels-photo-29039798.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      "description": "A dedicated Indian farmer laboring in a lush green paddy field under the bright day sun in India.",
+      "category": "Agriculture / Rural Enterprise Sector"
+    },
+    {
+      "url": "https://images.pexels.com/photos/40286202/pexels-photo-40286202.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      "description": "Four students engage in a STEM experiment at CognoSpace, Hyderabad, India.",
+      "category": "Students / Youth Wing"
+    }
+  ],
+  "component_path": {
+    "ui": "/app/frontend/src/components/ui"
+  },
+  "instructions_to_main_agent": "Build a PREMIUM, EDITORIAL, INSTITUTIONAL long-form website. STRICTLY adhere to the exact typography mappings and color hexes provided. Construct infographics (like the 5-pillar ecosystem and empowerment chain) using pure HTML/Tailwind CSS—do NOT use placeholder images for them. Ensure deep navy (#030E1E) is used for the hero and institutional anchor sections to ground the design. Do not use condensed display fonts (Bebas Neue) for body text; reserve it only for massive impact headings. Ensure all image overlays maintain text contrast without destroying the photo's cinematic feel.",
+  "UNIVERSAL GUIDELINES FOR MAIN AGENT": [
+    "You tend to converge toward generic, 'on distribution' outputs. Avoid this: make creative, distinctive frontends that surprise and delight.",
+    "Create depth through layered design elements with z-index hierarchy, but avoid excessive glassmorphism as per BECCI's anti-patterns.",
+    "Do NOT apply universal transitions (e.g., transition: all). Add transitions for specific interactive elements.",
+    "Do NOT center align the app container. Respect optical alignment and reading flow.",
+    "Use 2-3x more spacing than feels comfortable. Cramped designs look cheap.",
+    "Main agent relies on the provided image URLs. Missing categories = main agent will use placeholder text which is FORBIDDEN."
+  ]
+}

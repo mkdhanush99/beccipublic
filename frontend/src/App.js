@@ -1,56 +1,41 @@
-import { useEffect } from "react";
 import "@/App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import axios from "axios";
-import { HOME } from "@/constants/testIds";
+import { Toaster } from "@/components/ui/sonner";
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const API = `${BACKEND_URL}/api`;
-
-const Home = () => {
-  const helloWorldApi = async () => {
-    try {
-      const response = await axios.get(`${API}/`);
-      console.log(response.data.message);
-    } catch (e) {
-      console.error(e, `errored out requesting / api`);
-    }
-  };
-
-  useEffect(() => {
-    helloWorldApi();
-  }, []);
-
-  return (
-    // The marker attribute below lets the platform probe detect the stock splash — remove it with this page
-    <div data-emergent-splash>
-      <header className="App-header">
-        <a
-          data-testid={HOME.emergentLink}
-          className="App-link"
-          href="https://emergent.sh"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <img src="https://avatars.githubusercontent.com/in/1201222?s=120&u=2686cf91179bbafbc7a71bfbc43004cf9ae1acea&v=4" />
-        </a>
-        <p className="mt-5">Building something incredible ~!</p>
-      </header>
-    </div>
-  );
-};
+import Layout from "@/components/Layout";
+import Home from "@/pages/Home";
+import About from "@/pages/About";
+import WhatWeDo from "@/pages/WhatWeDo";
+import WhoWeServe from "@/pages/WhoWeServe";
+import Membership from "@/pages/Membership";
+import Schemes from "@/pages/Schemes";
+import WingsChapters from "@/pages/WingsChapters";
+import Knowledge from "@/pages/Knowledge";
+import Contact from "@/pages/Contact";
+import LegalPage from "@/pages/LegalPage";
+import NotFound from "@/pages/NotFound";
 
 function App() {
   return (
-    <div className="App">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />}>
-            <Route index element={<Home />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route element={<Layout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/what-we-do" element={<WhatWeDo />} />
+          <Route path="/who-we-serve" element={<WhoWeServe />} />
+          <Route path="/membership" element={<Membership />} />
+          <Route path="/schemes" element={<Schemes />} />
+          <Route path="/wings-chapters" element={<WingsChapters />} />
+          <Route path="/knowledge" element={<Knowledge />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/privacy" element={<LegalPage kind="privacy" />} />
+          <Route path="/terms" element={<LegalPage kind="terms" />} />
+          <Route path="*" element={<NotFound />} />
+        </Route>
+      </Routes>
+      <Toaster position="bottom-right" />
+    </BrowserRouter>
   );
 }
 
