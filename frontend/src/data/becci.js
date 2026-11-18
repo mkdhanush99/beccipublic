@@ -60,12 +60,10 @@ export const JOURNEY = [
 
 export const VISION_MISSION = {
   vision: {
-    text: "A business world where the skills of the many become enduring enterprises, and relationships are built to last.",
-    status: TBC,
+    text: "To build a strong, connected and empowered entrepreneurial ecosystem that enables BC/OBC communities to transform their skills, ideas and enterprises into sustainable economic opportunities and contribute meaningfully to the development of Bharat.",
   },
   mission: {
-    text: "To connect entrepreneurs with knowledge, finance, markets, networks and institutional opportunity — and to keep those relationships beyond any single transaction.",
-    status: TBC,
+    text: "To promote entrepreneurship, strengthen enterprises, facilitate access to knowledge and opportunities, encourage collaboration, and support the economic empowerment of BC/OBC communities through a professional, transparent and institution-driven chamber.",
   },
 };
 
@@ -147,18 +145,47 @@ export const ROADMAP = [
   { title: "Multilingual access", status: "Planned" },
 ];
 
-export const SCHEME_CATEGORIES = [
-  { name: "Enterprise Finance & Credit", desc: "Public programmes related to credit and enterprise finance.", source: TBC },
-  { name: "Skilling & Capacity Building", desc: "Programmes focused on skills and training.", source: TBC },
-  { name: "MSME Support", desc: "Support programmes relevant to micro, small and medium enterprises.", source: TBC },
-  { name: "Women & Youth Enterprise", desc: "Programmes with a focus on women and young founders.", source: TBC },
+export const SCHEMES = [
+  { name: "NBCFDC Entrepreneurial Loan Schemes", ministry: "Ministry of Social Justice & Empowerment", desc: "Concessional loans for self-employment and enterprise by members of backward classes, via State agencies and partner banks.", source: "https://nbcfdc.gov.in/" },
+  { name: "PM-DAKSH", ministry: "Ministry of Social Justice & Empowerment", desc: "Free skill development and up-skilling for eligible groups, including backward classes.", source: "https://nbcfdc.gov.in/nbcfdc/web/node/80" },
+  { name: "PMEGP", ministry: "Ministry of MSME / KVIC", desc: "Credit-linked subsidy for new micro enterprises in manufacturing and services.", source: "https://www.kviconline.gov.in/pmegpeportal/" },
+  { name: "CGTMSE", ministry: "Ministry of MSME / SIDBI", desc: "Guarantee cover enabling collateral-free credit for micro and small enterprises.", source: "https://www.cgtmse.in/" },
+  { name: "PM Vishwakarma", ministry: "Ministry of MSME", desc: "Recognition, skill training, toolkit support, credit and market linkage for artisans in traditional trades.", source: "https://pmvishwakarma.gov.in/" },
+  { name: "PMMY (MUDRA Yojana)", ministry: "Government of India", desc: "Loans for non-farm micro and small enterprises through banks and lenders.", source: "https://www.mudra.org.in/" },
+  { name: "Stand-Up India", ministry: "Government of India", desc: "Bank loans for greenfield enterprises by women and SC/ST entrepreneurs.", source: "https://www.standupmitra.in/" },
+  { name: "Startup India Seed Fund (SISFS)", ministry: "DPIIT", desc: "Seed funding through selected incubators for proof of concept, prototypes and market entry.", source: "https://seedfund.startupindia.gov.in/" },
 ];
 
-export const KNOWLEDGE_SAMPLES = [
-  { kind: "Guide", title: "Understanding enterprise formalisation", sample: true },
-  { kind: "Explainer", title: "What financial literacy means for a small business", sample: true },
-  { kind: "Perspective", title: "From skill to enterprise: how the journey begins", sample: true },
-  { kind: "Primer", title: "Reading a government scheme before you apply", sample: true },
+export const SCHEME_NOTE =
+  "BECCI is not a government agency, does not process applications and never asks for government-portal passwords or OTPs. Benefits and rules change — always confirm on the official source.";
+
+export const NEWS = [
+  {
+    kind: "Organisation news",
+    year: "2026",
+    title: "BECCI is incorporated as a Section 8 company",
+    body: "The Bahujan Entrepreneurs Chamber for Commerce & Industry is registered with the Ministry of Corporate Affairs (CIN U94110TS2026NPL222589), with its registered office in Begumpet, Hyderabad.",
+  },
+  {
+    kind: "Announcement",
+    year: "2026",
+    title: "Phase 01: district outreach and state membership desks",
+    body: "BECCI begins its national rollout in phases. The first phase focuses on district-level outreach and state membership desks to reach artisans, small business owners and aspiring founders. Chapter locations and dates will be published as they are confirmed.",
+  },
+];
+
+export const KNOWLEDGE_PORTALS = [
+  { name: "Udyam Registration", url: "https://udyamregistration.gov.in/" },
+  { name: "GST", url: "https://www.gst.gov.in/" },
+  { name: "MCA", url: "https://www.mca.gov.in/" },
+  { name: "Ministry of MSME", url: "https://msme.gov.in/" },
+  { name: "SIDBI", url: "https://www.sidbi.in/" },
+  { name: "MSME Samadhaan", url: "https://samadhaan.msme.gov.in/" },
+  { name: "GeM", url: "https://gem.gov.in/" },
+  { name: "NSIC", url: "https://www.nsic.co.in/" },
+  { name: "Startup India", url: "https://www.startupindia.gov.in/" },
+  { name: "Skill India Digital", url: "https://www.skillindiadigital.gov.in/" },
+  { name: "NCBC (Central OBC lists)", url: "https://ncbc.nic.in/" },
 ];
 
 export const FAQS = [
@@ -171,8 +198,10 @@ export const FAQS = [
 
 export const CONTACT = {
   org: ORG.full,
-  phone: TBC,
-  email: TBC,
-  address: TBC,
-  note: "Verified contact details will be published here once confirmed. No contact form is active in this phase.",
+  phone: "+91 94943 03234",
+  address: "H. No. 1-10-176, AltF Green Tower, Main Road, Begumpet, Hyderabad 500016, Telangana, India",
+  hours: "Monday to Saturday, 9:30 am – 6:30 pm IST",
+  website: "www.becci.in",
+  cin: "U94110TS2026NPL222589",
+  incorporation: "Section 8, not-for-profit company, incorporated 2026",
 };

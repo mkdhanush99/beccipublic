@@ -62,6 +62,14 @@ const Hero = () => (
             <CTA to="/membership" variant="outlineWhite" testid="hero-membership-cta">Membership information</CTA>
           </div>
         </Reveal>
+        <Reveal delay={0.4}>
+          <div className="mt-10 border-t border-white/10 pt-5">
+            <p className="eyebrow text-navy-400">Built for</p>
+            <p className="mt-2 max-w-xl font-body text-sm leading-relaxed text-navy-300">
+              Aspiring founders · MSMEs &amp; manufacturers · professionals · students · women entrepreneurs
+            </p>
+          </div>
+        </Reveal>
       </div>
 
       <Reveal delay={0.2} className="relative">
@@ -189,14 +197,8 @@ const VisionMission = () => (
         ].map((b) => (
           <Reveal key={b.label}>
             <div className="flex h-full flex-col rounded-sm border border-navy-800/10 p-8 md:p-10">
-              <div className="flex items-center justify-between">
-                <span className="font-display text-xl uppercase tracking-wide text-navy-700">{b.label}</span>
-                <StatusChip label={b.status} />
-              </div>
+              <span className="font-display text-xl uppercase tracking-wide text-navy-700">{b.label}</span>
               <p className="mt-6 font-heading text-xl font-medium leading-snug text-navy-950 md:text-2xl">{b.text}</p>
-              <p className="mt-6 font-body text-xs text-navy-800/50">
-                Wording is being finalised from BECCI source materials and is shown for review.
-              </p>
             </div>
           </Reveal>
         ))}

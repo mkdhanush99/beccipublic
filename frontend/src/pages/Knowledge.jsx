@@ -1,71 +1,76 @@
 import React from "react";
+import { ArrowUpRight } from "lucide-react";
 import { PageHero, SectionHeading } from "@/components/primitives";
 import Reveal from "@/components/Reveal";
 import StatusChip from "@/components/StatusChip";
-import { KNOWLEDGE_SAMPLES } from "@/data/becci";
-import { toast } from "sonner";
+import { NEWS, KNOWLEDGE_PORTALS } from "@/data/becci";
 
 export default function Knowledge() {
-  const notify = () =>
-    toast("Sample article", {
-      description: "This is a labelled placeholder. Real articles will be published here once supplied.",
-    });
-
   return (
     <>
       <PageHero
         eyebrow="News & Knowledge"
-        title="Ideas and information for people building enterprises."
-        intro="An editorial space for guides, explainers and perspectives. The items below are clearly labelled samples."
+        title="What’s happening, and where to go next."
+        intro="Official updates from BECCI, and direct links to the government portals entrepreneurs use most."
       />
 
       <section className="bg-white py-20 md:py-28">
         <div className="becci-container">
-          <div className="mb-10 flex flex-wrap items-center gap-3">
-            <StatusChip label="Coming soon" />
-            <p className="font-body text-sm text-navy-800/60">
-              No events, press coverage or achievements have been invented. Real content replaces these samples when supplied.
-            </p>
+          <SectionHeading eyebrow="Latest" title="From BECCI." className="mb-12" />
+          <div className="grid gap-6 lg:grid-cols-2">
+            {NEWS.map((n, i) => (
+              <Reveal key={i} delay={i * 0.08}>
+                <article
+                  className={`flex h-full flex-col rounded-sm p-8 md:p-10 ${
+                    i === 0 ? "bg-navy-950 text-white" : "border border-navy-800/10"
+                  }`}
+                >
+                  <span className={`eyebrow ${i === 0 ? "text-gold" : "text-navy-700"}`}>
+                    {n.kind} · {n.year}
+                  </span>
+                  <h2 className={`mt-5 font-heading text-xl font-bold leading-snug md:text-2xl ${i === 0 ? "text-white" : "text-navy-950"}`}>
+                    {n.title}
+                  </h2>
+                  <p className={`mt-4 font-body text-base leading-relaxed ${i === 0 ? "text-navy-300" : "text-navy-800/75"}`}>
+                    {n.body}
+                  </p>
+                </article>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-navy-50/50 py-20 md:py-28">
+        <div className="becci-container">
+          <SectionHeading
+            eyebrow="Knowledge Centre"
+            title="Official portals, in one place."
+            intro="Registration, taxes, credit and skilling — go straight to the source."
+            className="mb-12"
+          />
+          <div className="grid grid-cols-1 gap-px overflow-hidden rounded-sm bg-navy-800/10 sm:grid-cols-2 lg:grid-cols-3">
+            {KNOWLEDGE_PORTALS.map((p) => (
+              <a
+                key={p.name}
+                href={p.url}
+                target="_blank"
+                rel="noreferrer"
+                data-testid={`portal-${p.name.toLowerCase().replace(/[^a-z]+/g, "-").replace(/^-|-$/g, "")}`}
+                className="group flex items-center justify-between gap-3 bg-white p-5 transition-colors hover:bg-navy-50"
+              >
+                <div>
+                  <p className="font-heading text-sm font-semibold text-navy-950">{p.name}</p>
+                  <p className="mt-0.5 font-body text-xs text-navy-800/50">{p.url.replace("https://", "")}</p>
+                </div>
+                <ArrowUpRight className="h-4 w-4 shrink-0 text-navy-400 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-navy-700" />
+              </a>
+            ))}
           </div>
 
-          <div className="grid gap-6 lg:grid-cols-3">
-            {/* Feature */}
-            <Reveal className="lg:col-span-2">
-              <article className="group flex h-full flex-col justify-between rounded-sm border border-navy-800/10 bg-navy-950 p-8 text-white md:p-10">
-                <div>
-                  <span className="eyebrow text-gold">Sample · Perspective</span>
-                  <h2 className="mt-5 font-heading text-2xl font-bold leading-tight md:text-3xl">
-                    From skill to enterprise: how the journey begins
-                  </h2>
-                  <p className="mt-4 max-w-xl font-body text-base leading-relaxed text-navy-300">
-                    A placeholder feature article. This is where a flagship piece on enterprise and opportunity would sit.
-                  </p>
-                </div>
-                <button
-                  onClick={notify}
-                  data-testid="knowledge-feature-btn"
-                  className="mt-8 inline-flex w-fit items-center gap-2 rounded-sm border border-white/25 px-5 py-2.5 font-heading text-sm font-semibold text-white transition-colors hover:border-gold hover:text-gold"
-                >
-                  Sample article
-                </button>
-              </article>
-            </Reveal>
-
-            {/* list */}
-            <div className="flex flex-col gap-4">
-              {KNOWLEDGE_SAMPLES.map((k, i) => (
-                <Reveal key={i} delay={i * 0.06}>
-                  <button
-                    onClick={notify}
-                    data-testid={`knowledge-item-${i}`}
-                    className="group block w-full rounded-sm border border-navy-800/10 p-6 text-left transition-colors hover:border-navy-700/40 hover:bg-navy-50/40"
-                  >
-                    <span className="eyebrow text-navy-700">Sample · {k.kind}</span>
-                    <p className="mt-3 font-heading text-base font-semibold leading-snug text-navy-950">{k.title}</p>
-                  </button>
-                </Reveal>
-              ))}
-            </div>
+          <div className="mt-10 flex items-center gap-3">
+            <StatusChip label="Coming soon" />
+            <p className="font-body text-sm text-navy-800/65">BECCI’s own guides and reports are being prepared.</p>
           </div>
         </div>
       </section>

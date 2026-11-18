@@ -44,9 +44,10 @@ export const Footer = () => {
 
         <div className="mt-14 grid gap-6 border-t border-white/10 pt-8 md:grid-cols-2">
           <div className="space-y-1 font-body text-sm text-navy-300">
-            <p><span className="text-navy-400">Email:</span> {CONTACT.email}</p>
-            <p><span className="text-navy-400">Phone:</span> {CONTACT.phone}</p>
+            <p><span className="text-navy-400">Phone:</span> <a href={`tel:${CONTACT.phone.replace(/\s/g, "")}`} className="hover:text-white">{CONTACT.phone}</a></p>
             <p><span className="text-navy-400">Address:</span> {CONTACT.address}</p>
+            <p><span className="text-navy-400">Hours:</span> {CONTACT.hours}</p>
+            <p><span className="text-navy-400">Web:</span> <a href={`https://${CONTACT.website}`} target="_blank" rel="noreferrer" className="hover:text-white">{CONTACT.website}</a></p>
           </div>
           <div className="md:text-right">
             <Link
@@ -61,7 +62,7 @@ export const Footer = () => {
         </div>
 
         <div className="mt-10 flex flex-col items-start justify-between gap-4 border-t border-white/10 pt-6 font-body text-xs text-navy-400 md:flex-row md:items-center">
-          <p>© {new Date().getFullYear()} {ORG.name}. {ORG.type}</p>
+          <p>© {new Date().getFullYear()} {ORG.name}. {CONTACT.incorporation} · CIN {CONTACT.cin}</p>
           <div className="flex items-center gap-2">
             <Symbol variant="white" className="h-4 opacity-70" />
             <span>Public information website · mockup</span>

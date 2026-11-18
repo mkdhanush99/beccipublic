@@ -28,6 +28,10 @@ INDEXES: dict[str, list[IndexModel]] = {
         IndexModel([("id", ASCENDING)], name="id", unique=True),
         IndexModel([("timestamp", DESCENDING)], name="timestamp_desc"),
     ],
+    "enquiries": [
+        IndexModel([("id", ASCENDING)], name="id", unique=True),
+        IndexModel([("created_at", DESCENDING)], name="created_at_desc"),
+    ],
 }
 
 
@@ -57,6 +61,21 @@ class StatusCheck(BaseModel):
 class StatusCheckCreate(BaseModel):
     client_name: str
 
+class Enquiry(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    name: str
+    phone: str
+    organisation: str | None = None
+    message: str
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+class EnquiryCreate(BaseModel):
+    name: str = Field(min_length=1, max_length=120)
+    phone: str = Field(min_length=3, max_length=40)
+    organisation: str | None = Field(default=None, max_length=160)
+    message: str = Field(min_length=1, max_length=2000)
+
 # Add your routes to the router instead of directly to app
 @api_router.get("/")
 async def root():
@@ -85,6 +104,14 @@ async def get_status_checks(limit: int = Query(20, ge=1, le=100)):
             check['timestamp'] = datetime.fromisoformat(check['timestamp'])
     
     return status_checks
+
+@api_router.post("/enquiries", response_model=Enquiry, status_code=201)
+async def create_enquiry(input: EnquiryCreate):
+    enquiry = Enquiry(**input.model_dump())
+    doc = enquiry.model_dump()
+    doc["created_at"] = doc["created_at"].isoformat()
+    await db.enquiries.insert_one(doc)
+    return enquiry
 
 # Include the router in the main app
 app.include_router(api_router)

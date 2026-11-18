@@ -1,7 +1,6 @@
 import React from "react";
 import { PageHero, SectionHeading, Eyebrow, CTA } from "@/components/primitives";
 import Reveal from "@/components/Reveal";
-import StatusChip from "@/components/StatusChip";
 import { ORG, WHY_BAHUJAN, VISION_MISSION, STAKEHOLDERS } from "@/data/becci";
 
 const APPROACH = [
@@ -75,10 +74,7 @@ export default function About() {
             {[{ label: "Vision", ...VISION_MISSION.vision }, { label: "Mission", ...VISION_MISSION.mission }].map((b) => (
               <Reveal key={b.label}>
                 <div className="flex h-full flex-col rounded-sm border border-navy-800/10 p-8 md:p-10">
-                  <div className="flex items-center justify-between">
-                    <span className="font-display text-xl uppercase tracking-wide text-navy-700">{b.label}</span>
-                    <StatusChip label={b.status} />
-                  </div>
+                  <span className="font-display text-xl uppercase tracking-wide text-navy-700">{b.label}</span>
                   <p className="mt-6 font-heading text-xl font-medium leading-snug text-navy-950 md:text-2xl">{b.text}</p>
                 </div>
               </Reveal>
