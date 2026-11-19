@@ -88,12 +88,12 @@ vec3 calcNormal(vec3 p) {
                    e.yxy * scene(p + e.yxy).x + e.xxx * scene(p + e.xxx).x);
 }
 
-// Studio environment: deep navy floor (#030E1E), subtle corporate blue (#1769AA), controlled turquoise rim (#00BFAF)
+// Studio environment: rich sapphire navy floor (#041022), royal blue (#13448A), soft azure key (#78B6F5), subtle turquoise accent rim (#00BFAF)
 vec3 env(vec3 r) {
-  vec3 col = mix(vec3(0.012, 0.055, 0.118), vec3(0.024, 0.102, 0.208), smoothstep(-0.6, 0.8, r.y));
-  col += vec3(0.0, 0.75, 0.69) * smoothstep(0.70, 0.99, dot(r, normalize(vec3(0.8, 0.45, 0.4)))) * 0.45; // subtle turquoise accent rim
-  col += vec3(0.66, 0.74, 0.82) * smoothstep(0.80, 0.99, dot(r, normalize(vec3(-0.25, 1.0, 0.35)))) * 1.1; // crisp white/ice key
-  col += vec3(0.09, 0.41, 0.67) * smoothstep(0.55, 0.95, dot(r, normalize(vec3(-0.9, -0.1, 0.4)))) * 0.75; // blue accent
+  vec3 col = mix(vec3(0.015, 0.062, 0.133), vec3(0.047, 0.165, 0.337), smoothstep(-0.6, 0.8, r.y));
+  col += vec3(0.0, 0.75, 0.69) * smoothstep(0.72, 0.99, dot(r, normalize(vec3(0.8, 0.45, 0.4)))) * 0.40; // delicate turquoise rim
+  col += vec3(0.72, 0.82, 0.92) * smoothstep(0.80, 0.99, dot(r, normalize(vec3(-0.25, 1.0, 0.35)))) * 1.3; // luminous ice white key
+  col += vec3(0.09, 0.41, 0.73) * smoothstep(0.50, 0.95, dot(r, normalize(vec3(-0.9, -0.1, 0.4)))) * 0.90; // sapphire accent
   return col;
 }
 
@@ -111,9 +111,9 @@ void main() {
     if (t > 7.0) break;
   }
 
-  // faint blue & turquoise silhouette contour — strictly non-neon
-  vec3 col = mix(vec3(0.09, 0.41, 0.67), vec3(0.0, 0.75, 0.69), 0.3) * exp(-minD * 24.0) * 0.12;
-  float alpha = exp(-minD * 24.0) * 0.16;
+  // soft sapphire & azure contour — no loud neon glow
+  vec3 col = mix(vec3(0.09, 0.41, 0.73), vec3(0.0, 0.75, 0.69), 0.25) * exp(-minD * 22.0) * 0.14;
+  float alpha = exp(-minD * 22.0) * 0.20;
 
   if (hit) {
     vec3 p = ro + rd * t;

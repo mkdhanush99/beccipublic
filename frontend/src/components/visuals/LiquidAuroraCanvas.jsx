@@ -54,33 +54,35 @@ void main() {
   float caustic = pow(max(0.0, 1.0 - abs(w1 - w2) * 1.5), 3.4);
   float prismMask = smoothstep(-0.2, 0.85, sin(p.x * 1.4 - p.y * 1.1 + t * 0.18));
 
-  // BECCI Calibrated Palette (Navy dominant ~80%, Turquoise accent <10%)
-  vec3 deepNavy    = vec3(0.012, 0.055, 0.118); // #030E1E deep background
-  vec3 primaryNavy = vec3(0.024, 0.102, 0.208); // #061A35 primary brand navy
-  vec3 secondaryNavy = vec3(0.043, 0.145, 0.278); // #0B2547 secondary navy
-  vec3 blueAccent  = vec3(0.090, 0.412, 0.667); // #1769AA blue accent
-  vec3 turqAccent  = vec3(0.000, 0.749, 0.686); // #00BFAF turquoise accent
-  vec3 mutedText   = vec3(0.663, 0.737, 0.824); // #A9BCD2 muted text
-  vec3 champGold   = vec3(0.831, 0.686, 0.353); // #D4AF5A
+  // BECCI Vibrant Institutional Palette (Deep Navy + Sapphire & Royal Blue + subtle Turquoise accent)
+  vec3 deepNavy      = vec3(0.015, 0.062, 0.133); // #041022
+  vec3 primaryNavy   = vec3(0.027, 0.110, 0.227); // #071C3A
+  vec3 sapphireDepth = vec3(0.047, 0.165, 0.337); // #0C2A56
+  vec3 royalBlue     = vec3(0.075, 0.267, 0.541); // #13448A
+  vec3 sapphireVivid = vec3(0.094, 0.412, 0.729); // #1869BA
+  vec3 iceBlue       = vec3(0.725, 0.816, 0.918); // #B9D0EA
+  vec3 turqAccent    = vec3(0.000, 0.749, 0.686); // #00BFAF
+  vec3 champGold     = vec3(0.831, 0.686, 0.353); // #D4AF5A
 
-  // Deep rich navy gradient as the rock-solid ground
-  vec3 col = mix(deepNavy, primaryNavy, smoothstep(0.0, 1.0, uv.y * 0.90 + ribbon * 0.18));
-  col = mix(col, secondaryNavy, ribbon * 0.35);
+  // Layered, luminous navy-to-sapphire horizon (vibrant yet disciplined)
+  vec3 col = mix(deepNavy, primaryNavy, smoothstep(0.0, 1.0, uv.y * 0.85 + ribbon * 0.20));
+  col = mix(col, sapphireDepth, ribbon * 0.40);
+  col += royalBlue * ribbon * 0.26;
 
   if (u_mode < 0.5) {
-    // HERO: Rich navy atmosphere with subtle blue accent & very restrained turquoise filament
-    col += blueAccent * ribbon * 0.22;
-    col += turqAccent * caustic * 0.08; // subtle specular, strictly non-glowing
-    col += mutedText * exp(-distM * 3.5) * 0.04;
+    // HERO: Luminous sapphire atmosphere + soft azure light + very restrained turquoise highlight
+    col += sapphireVivid * (caustic * 0.24 + exp(-distM * 2.8) * 0.14);
+    col += iceBlue * caustic * 0.10;
+    col += turqAccent * caustic * 0.06; // delicate, small interaction highlight only
   } else if (u_mode < 1.5) {
-    // INNER PAGE HERO: Calm Navy + Subtle Blue Horizon
-    col += blueAccent * ribbon * 0.14;
-    col += turqAccent * caustic * 0.05;
+    // INNER PAGE HERO: Calm Sapphire-Navy
+    col += sapphireVivid * ribbon * 0.18;
+    col += iceBlue * caustic * 0.08;
   } else {
-    // CLOSING: Deep Navy + Subtle Gold & Blue
-    col += blueAccent * ribbon * 0.15;
-    float goldFilament = pow(max(0.0, w1 * w2), 3.0) * 0.25;
-    col += champGold * goldFilament * 0.22;
+    // CLOSING: Deep Navy & Sapphire with Gold
+    col += sapphireVivid * ribbon * 0.20;
+    float goldFilament = pow(max(0.0, w1 * w2), 2.8) * 0.30;
+    col += champGold * goldFilament * 0.25;
   }
 
   // Natural architectural vignette so typography stays effortlessly legible
@@ -92,9 +94,9 @@ void main() {
 `;
 
 const FALLBACKS = {
-  hero: "radial-gradient(ellipse 68% 60% at 76% 32%, rgba(23,105,170,0.20), transparent 62%), radial-gradient(ellipse 52% 48% at 20% 78%, rgba(0,191,175,0.08), transparent 60%), radial-gradient(ellipse 80% 75% at 50% 45%, #061A35 0%, #030E1E 85%)",
-  page: "radial-gradient(ellipse 75% 65% at 74% 30%, rgba(23,105,170,0.15), transparent 60%), radial-gradient(ellipse 60% 55% at 28% 72%, rgba(0,191,175,0.06), transparent 62%), linear-gradient(160deg, #061A35 0%, #030E1E 85%)",
-  closing: "radial-gradient(ellipse 65% 58% at 72% 35%, rgba(23,105,170,0.16), transparent 62%), radial-gradient(ellipse 52% 48% at 24% 68%, rgba(0,191,175,0.08), transparent 60%), radial-gradient(ellipse 40% 35% at 52% 45%, rgba(212,175,90,0.08), transparent 65%), #030E1E",
+  hero: "radial-gradient(ellipse 68% 60% at 76% 32%, rgba(24,105,186,0.28), transparent 64%), radial-gradient(ellipse 52% 48% at 20% 78%, rgba(19,68,138,0.30), transparent 60%), radial-gradient(ellipse 80% 75% at 50% 45%, #071C3A 0%, #041022 85%)",
+  page: "radial-gradient(ellipse 75% 65% at 74% 30%, rgba(24,105,186,0.22), transparent 62%), radial-gradient(ellipse 60% 55% at 28% 72%, rgba(19,68,138,0.25), transparent 62%), linear-gradient(160deg, #071C3A 0%, #041022 85%)",
+  closing: "radial-gradient(ellipse 65% 58% at 72% 35%, rgba(24,105,186,0.24), transparent 64%), radial-gradient(ellipse 52% 48% at 24% 68%, rgba(19,68,138,0.25), transparent 60%), radial-gradient(ellipse 40% 35% at 52% 45%, rgba(212,175,90,0.08), transparent 65%), #041022",
 };
 
 const MODE_NUM = { hero: 0.0, page: 1.0, closing: 2.0 };

@@ -321,11 +321,13 @@ export default function Pulse() {
           <div className="grid items-end gap-8 lg:grid-cols-[1.08fr_0.92fr] lg:gap-12">
             {/* Left: Monumental BECCI PULSE Exhibition Title & Context */}
             <div>
-              <p className="font-heading text-xs sm:text-sm font-semibold uppercase tracking-[0.2em] text-teal-bright mb-2">
-                BECCI PULSE · Interactive Digital Exhibition
-              </p>
+              <div className="inline-block rounded-full border border-blue-400/20 bg-blue-900/30 px-3.5 py-1 mb-3 backdrop-blur-md">
+                <p className="font-heading text-xs sm:text-sm font-semibold uppercase tracking-[0.18em] text-teal-bright">
+                  BECCI PULSE · Interactive Digital Exhibition
+                </p>
+              </div>
 
-              <h1 className="display-head text-[3.2rem] leading-[0.92] text-white sm:text-[4.8rem] lg:text-[5.8rem] font-bold tracking-tight">
+              <h1 className="font-heading text-3xl leading-[1.1] text-white sm:text-5xl lg:text-[4.2rem] font-bold tracking-tight">
                 The Enterprise <span className="text-ice">Universe.</span>
               </h1>
 

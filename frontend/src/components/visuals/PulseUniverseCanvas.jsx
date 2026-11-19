@@ -113,11 +113,11 @@ vec3 calcNormal(vec3 p) {
   );
 }
 
-// Calibrated BECCI territory refraction palette (Navy grounded, controlled accents)
+// Calibrated BECCI territory refraction palette (Sapphire & Navy grounded, disciplined highlights)
 vec3 territoryAccent(float idx) {
-  vec3 c0 = vec3(0.09, 0.41, 0.67); // 0: Knowledge (Blue Accent #1769AA)
+  vec3 c0 = vec3(0.09, 0.41, 0.73); // 0: Knowledge (Sapphire Blue #1869BA)
   vec3 c1 = vec3(0.00, 0.75, 0.69); // 1: Finance (Turquoise Accent #00BFAF)
-  vec3 c2 = vec3(0.09, 0.45, 0.70); // 2: Markets (Corporate Blue)
+  vec3 c2 = vec3(0.08, 0.27, 0.54); // 2: Markets (Royal Blue #13448A)
   vec3 c3 = vec3(0.00, 0.75, 0.69); // 3: Reach & Wings (Turquoise Accent)
   vec3 c4 = vec3(0.83, 0.69, 0.35); // 4: Schemes (Champagne Gold)
 
@@ -138,21 +138,21 @@ void main() {
   vec3 ro = vec3(0.0, 0.18, 4.85);
   vec3 rd = normalize(vec3(puv, -1.78));
 
-  // BECCI 75-80% Navy ground palette
-  vec3 deepNavy     = vec3(0.012, 0.055, 0.118); // #030E1E deep background
-  vec3 primaryNavy  = vec3(0.024, 0.102, 0.208); // #061A35 primary navy
-  vec3 secondaryNavy= vec3(0.043, 0.145, 0.278); // #0B2547 secondary navy
-  vec3 blueAccent   = vec3(0.090, 0.412, 0.667); // #1769AA blue accent
-  vec3 turqAccent   = vec3(0.000, 0.749, 0.686); // #00BFAF turquoise accent
-  vec3 mutedText    = vec3(0.663, 0.737, 0.824); // #A9BCD2
-  vec3 accent       = territoryAccent(u_territory);
+  // BECCI Sapphire Navy Ground Palette
+  vec3 deepNavy      = vec3(0.015, 0.062, 0.133); // #041022
+  vec3 primaryNavy   = vec3(0.027, 0.110, 0.227); // #071C3A
+  vec3 sapphireDepth = vec3(0.047, 0.165, 0.337); // #0C2A56
+  vec3 sapphireVivid = vec3(0.094, 0.412, 0.729); // #1869BA
+  vec3 iceBlue       = vec3(0.725, 0.816, 0.918); // #B9D0EA
+  vec3 turqAccent    = vec3(0.000, 0.749, 0.686); // #00BFAF
+  vec3 accent        = territoryAccent(u_territory);
 
-  // Atmospheric studio background with dominant navy depth and subtle blue accent
+  // Atmospheric studio background with rich sapphire & royal blue depth
   float gradY = smoothstep(-0.6, 0.7, uv.y);
-  vec3 bg = mix(deepNavy, primaryNavy, gradY * 0.82);
-  float horizonGlow = exp(-length(puv) * 2.3);
-  bg += blueAccent * horizonGlow * 0.18;
-  bg += turqAccent * horizonGlow * 0.05; // very restrained accent
+  vec3 bg = mix(deepNavy, primaryNavy, gradY * 0.85);
+  float horizonGlow = exp(-length(puv) * 2.2);
+  bg += sapphireVivid * horizonGlow * 0.28;
+  bg += turqAccent * horizonGlow * 0.04; // tiny touch of turquoise light
 
   // Raymarch the 3D crystal pavilion
   float t = 0.0;
@@ -172,9 +172,9 @@ void main() {
   }
 
   vec3 col = bg;
-  // Soft volumetric navy & blue aura
-  float aura = exp(-minD * 5.6);
-  col += mix(blueAccent, accent, 0.35) * aura * 0.14;
+  // Luminous sapphire volumetric light envelope
+  float aura = exp(-minD * 5.4);
+  col += mix(sapphireVivid, accent, 0.30) * aura * 0.22;
 
   if (hit) {
     vec3 pos = ro + rd * t;
@@ -184,7 +184,7 @@ void main() {
     vec3 L1 = normalize(vec3(0.7, 0.9, 0.85));
     vec3 L2 = normalize(vec3(-0.8, -0.3, 0.6));
 
-    float fresnel = pow(1.0 - max(dot(N, V), 0.0), 3.0);
+    float fresnel = pow(1.0 - max(dot(N, V), 0.0), 2.8);
     float diff1 = max(dot(N, L1), 0.0);
     float diff2 = max(dot(N, L2), 0.0);
 
@@ -193,13 +193,13 @@ void main() {
     float spec1 = pow(max(dot(N, H1), 0.0), 46.0);
     float spec2 = pow(max(dot(N, H2), 0.0), 24.0);
 
-    // Deep architectural navy glass shading with crisp blue edges
-    vec3 glassBase = mix(primaryNavy * 1.05, secondaryNavy, 0.40 + 0.50 * diff1);
-    vec3 rimCol = mix(blueAccent, mutedText, smoothstep(-0.3, 0.7, N.y));
-    rimCol = mix(rimCol, accent, 0.28);
+    // Deep architectural sapphire navy glass shading
+    vec3 glassBase = mix(primaryNavy * 1.15, sapphireDepth, 0.35 + 0.45 * diff1);
+    vec3 rimCol = mix(sapphireVivid, iceBlue, smoothstep(-0.3, 0.7, N.y));
+    rimCol = mix(rimCol, accent, 0.24);
 
     vec3 surface = glassBase;
-    surface += rimCol * fresnel * 0.85;
+    surface += rimCol * fresnel * 0.95;
     surface += iceBlue * spec1 * 0.88;
     surface += accent * diff2 * 0.26 + accent * spec2 * 0.40;
     surface += ultraviolet * pow(max(0.0, -N.x), 2.0) * fresnel * 0.28;

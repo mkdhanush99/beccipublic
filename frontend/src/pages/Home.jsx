@@ -117,8 +117,10 @@ const Hero = () => {
             </motion.div>
           );
         })}
-        <div className="absolute inset-0 bg-gradient-to-b from-navy-950/85 via-navy-950/50 to-navy-950" />
-        <div className="absolute inset-0 bg-gradient-to-r from-navy-950/96 via-navy-950/70 to-navy-950/35" />
+        <div className="absolute inset-0 bg-gradient-to-b from-navy-950/70 via-navy-900/40 to-navy-950/90" />
+        <div className="absolute inset-0 bg-gradient-to-r from-navy-950/90 via-navy-900/60 to-navy-950/30" />
+        {/* Luminous Sapphire Radial Depth */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_35%,rgba(24,105,186,0.18),transparent_55%)] pointer-events-none" />
       </div>
 
       {/* Main Editorial Opening Stage: Asymmetric Typographic Left + Raymarched 3D Optical Glass Sculpture Right */}
@@ -179,20 +181,22 @@ const Hero = () => {
 
             {isTelugu ? (
               <div className="mt-5 sm:mt-6">
-                <h1 className="font-telugu text-[2.3rem] font-bold leading-[1.32] text-white sm:text-[3.25rem] lg:text-[3.85rem]">
+                <h1 className="font-telugu text-[2.2rem] font-bold leading-[1.32] text-white sm:text-[3rem] lg:text-[3.5rem]">
                   <span className="block">{HOME_TE.headlineLine1}</span>
                   <span className="text-teal-bright block">{HOME_TE.headlineLine2}</span>
                 </h1>
-                <p className="mt-2 font-display text-lg uppercase tracking-wider text-ice/75 sm:text-2xl">
+                <p className="mt-2 font-heading text-sm uppercase tracking-wider text-ice/85 sm:text-base font-semibold">
                   Building Businesses. Building Bharat.
                 </p>
               </div>
             ) : (
-              <div className="mt-5 max-w-[680px] sm:mt-6">
-                <p className="font-heading text-xs sm:text-sm font-semibold uppercase tracking-[0.2em] text-teal-bright mb-2 sm:mb-3">
-                  Building Businesses. Building Bharat.
-                </p>
-                <h1 className="display-head text-4xl leading-[0.94] text-white sm:text-6xl lg:text-7xl font-bold tracking-tight">
+              <div className="mt-5 max-w-[660px] sm:mt-6">
+                <div className="inline-block rounded-full border border-blue-400/20 bg-blue-900/30 px-3.5 py-1 mb-3 backdrop-blur-md">
+                  <p className="font-heading text-xs sm:text-sm font-semibold uppercase tracking-[0.18em] text-teal-bright">
+                    Building Businesses. Building Bharat.
+                  </p>
+                </div>
+                <h1 className="font-heading text-3xl leading-[1.12] text-white sm:text-5xl lg:text-[3.65rem] font-bold tracking-tight">
                   Connecting Bahujan founders with{" "}
                   <span className="text-ice">
                     tenders, capital &amp; verified schemes.
@@ -253,14 +257,16 @@ const Hero = () => {
             </motion.div>
           </div>
 
-          {/* Signature 3D Visual: Raymarched Translucent Glass Continuum Sculpture */}
+          {/* Signature 3D Visual: Raymarched Optical Glass Continuum Sculpture */}
           <div
             data-cursor="explore"
             data-cursor-hero="true"
-            className="relative mx-auto flex h-[200px] w-full max-w-[360px] items-center justify-center sm:h-[310px] sm:max-w-[440px] lg:h-[460px] lg:max-w-none"
+            className="relative mx-auto flex h-[220px] w-full max-w-[340px] items-center justify-center sm:h-[300px] sm:max-w-[420px] lg:h-[440px] lg:max-w-none"
           >
+            {/* Subtle Sapphire Glass Depth Aura behind Emblem */}
+            <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_50%_50%,rgba(24,105,186,0.14),transparent_68%)] pointer-events-none" />
             <BecciPrismSculpture3D mode="hero" />
-            <div className="glass-pill pointer-events-none absolute bottom-1 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full px-3.5 py-1 font-heading text-xs font-semibold uppercase tracking-[0.16em] text-ice/90 sm:bottom-2">
+            <div className="pointer-events-none absolute bottom-1 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-white/10 bg-navy-900/80 px-3.5 py-1 font-heading text-xs font-semibold uppercase tracking-[0.16em] text-ice/90 backdrop-blur-md sm:bottom-2 shadow-lg">
               Chamber <span className="text-teal-bright">∞</span> Commerce · Open Continuum
             </div>
           </div>
