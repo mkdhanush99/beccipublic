@@ -49,6 +49,13 @@ const SCENES = [
   },
 ];
 
+const STAGE_ATMOS = [
+  "radial-gradient(ellipse 68% 60% at 75% 32%, rgba(184,215,250,0.16), transparent 64%)",
+  "radial-gradient(ellipse 68% 60% at 74% 38%, rgba(0,184,169,0.20), transparent 64%)",
+  "radial-gradient(ellipse 68% 60% at 70% 42%, rgba(121,91,255,0.16), rgba(0,184,169,0.08) 42%, transparent 66%)",
+  "radial-gradient(ellipse 68% 60% at 74% 34%, rgba(0,184,169,0.18), rgba(212,175,90,0.10) 46%, transparent 68%)",
+];
+
 export const TransformationScroll = () => {
   const containerRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -89,30 +96,37 @@ export const TransformationScroll = () => {
     <section
       ref={containerRef}
       data-testid="chapter-journey"
-      className="on-dark relative bg-[#030E1E] text-white"
+      className="on-dark relative overflow-x-clip bg-navy-950 text-white"
     >
-      <div className="becci-container py-24 lg:py-32">
+      {/* Scroll-responsive colour-shifting atmosphere (Ice Blue -> Electric Teal -> Controlled UV -> Teal/Gold Horizon) */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 transition-[background] duration-700"
+        style={{ background: STAGE_ATMOS[activeIndex] }}
+      />
+
+      <div className="becci-container relative z-10 py-24 lg:py-32">
         <div className="max-w-3xl">
-          <Eyebrow tone="gold">The Transformation</Eyebrow>
+          <Eyebrow tone="tealDark">The Transformation</Eyebrow>
           <h2 className="mt-4 font-heading text-h1 font-bold text-white">
             Skill becomes enterprise.
             <br />
-            <span className="text-navy-300">Enterprise becomes nation building.</span>
+            <span className="text-ice">Enterprise becomes nation building.</span>
           </h2>
         </div>
 
         {/* Desktop Sticky Cinema Stage */}
         <div className="mt-16 hidden lg:grid lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:gap-16">
-          {/* Left: Continuous scroll-linked vertical track + editorial narrative */}
+          {/* Left: Continuous scroll-linked spectrum track + editorial narrative */}
           <div className="relative pl-8">
             <div
-              className="absolute bottom-8 left-0 top-4 w-[2px] rounded-full bg-white/10"
+              className="absolute bottom-8 left-0 top-4 w-[2px] rounded-full bg-ice/15"
               aria-hidden="true"
             >
               {!reduce && (
                 <motion.div
                   style={{ scaleY: smoothProgress }}
-                  className="h-full w-full origin-top rounded-full bg-gradient-to-b from-navy-400 via-gold to-gold"
+                  className="h-full w-full origin-top rounded-full bg-gradient-to-b from-teal via-ice to-uv"
                 />
               )}
             </div>
@@ -131,17 +145,17 @@ export const TransformationScroll = () => {
                     }`}
                   >
                     <div className="flex items-center gap-3">
-                      <span className="tabular font-display text-2xl leading-none text-gold">
+                      <span className="tabular font-display text-2xl leading-none text-teal-bright">
                         0{i + 1}
                       </span>
-                      <span className="font-heading text-xs font-semibold uppercase tracking-[0.2em] text-navy-300">
+                      <span className="font-heading text-xs font-semibold uppercase tracking-[0.2em] text-ice">
                         {scene.step}
                       </span>
                     </div>
                     <h3 className="mt-3 font-heading text-2xl font-bold leading-snug text-white xl:text-3xl">
                       {scene.headline}
                     </h3>
-                    <p className="mt-3 max-w-lg font-body text-base leading-relaxed text-navy-100/75">
+                    <p className="mt-3 max-w-lg font-body text-base leading-relaxed text-frost/80">
                       {scene.detail}
                     </p>
                   </button>
@@ -150,13 +164,13 @@ export const TransformationScroll = () => {
             </div>
           </div>
 
-          {/* Right: Sticky 3D-Tilt Cinema Frame with Floating Frosted Glass Overlay */}
+          {/* Right: Sticky 3D-Tilt Cinema Frame with Iridescent Glass Overlay */}
           <div className="sticky top-28" style={{ perspective: 1200 }}>
             <motion.div
               onPointerMove={onStageMove}
               onPointerLeave={onStageLeave}
               style={reduce ? undefined : { rotateX, rotateY }}
-              className="relative overflow-hidden rounded-3xl bg-navy-900 shadow-lift"
+              className="relative overflow-hidden rounded-3xl bg-navy-900 shadow-lift ring-1 ring-ice/15"
             >
               <div className="relative h-[580px] w-full overflow-hidden">
                 {SCENES.map((scene, i) => {
@@ -179,7 +193,7 @@ export const TransformationScroll = () => {
                         alt={scene.alt}
                         className="h-full w-full object-cover"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-navy-950/90 via-navy-950/20 to-navy-950/20" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-navy-950/92 via-navy-950/20 to-navy-950/20" />
                     </motion.div>
                   );
                 })}
@@ -196,15 +210,15 @@ export const TransformationScroll = () => {
                     >
                       <span
                         className={`block h-full transition-colors duration-300 ${
-                          i <= activeIndex ? "bg-gold" : "bg-transparent"
+                          i <= activeIndex ? "bg-teal" : "bg-transparent"
                         }`}
                       />
                     </button>
                   ))}
                 </div>
 
-                {/* Floating Glass Caption Capsule with smooth choreographed swap */}
-                <GlassSpotlight tone="dark" className="glass-dark absolute bottom-5 left-5 right-5 z-10 rounded-2xl p-6">
+                {/* Floating Iridescent Glass Caption Capsule with smooth choreographed swap */}
+                <GlassSpotlight tone="dark" className="glass-iridescent absolute bottom-5 left-5 right-5 z-10 rounded-2xl p-6">
                   <AnimatePresence mode="wait">
                     <motion.div
                       key={activeIndex}
@@ -215,17 +229,17 @@ export const TransformationScroll = () => {
                       className="relative z-10 flex items-end justify-between gap-4"
                     >
                       <div>
-                        <p className="font-heading text-xs font-semibold uppercase tracking-[0.18em] text-gold">
+                        <p className="font-heading text-xs font-semibold uppercase tracking-[0.18em] text-teal-bright">
                           {SCENES[activeIndex].kicker}
                         </p>
                         <p className="mt-1.5 font-display text-3xl uppercase leading-none tracking-wide text-white">
                           {SCENES[activeIndex].step}
                         </p>
-                        <p className="mt-2 font-body text-sm text-navy-100/85">
+                        <p className="mt-2 font-body text-sm text-ice/90">
                           {SCENES[activeIndex].caption}
                         </p>
                       </div>
-                      <span className="tabular font-display text-4xl leading-none text-white/30">
+                      <span className="tabular font-display text-4xl leading-none text-ice/35">
                         0{activeIndex + 1}/04
                       </span>
                     </motion.div>
@@ -241,7 +255,7 @@ export const TransformationScroll = () => {
           {SCENES.map((scene, i) => (
             <article
               key={scene.step}
-              className="overflow-hidden rounded-2xl bg-navy-900 shadow-lift"
+              className="overflow-hidden rounded-2xl bg-navy-900 shadow-lift ring-1 ring-ice/15"
             >
               <div className="relative h-56 overflow-hidden">
                 <Img
@@ -251,13 +265,13 @@ export const TransformationScroll = () => {
                   className="h-full w-full object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/30 to-transparent" />
-                <span className="glass-pill tabular absolute left-4 top-4 rounded-full px-3 py-1 font-display text-base text-gold">
+                <span className="glass-pill tabular absolute left-4 top-4 rounded-full px-3 py-1 font-display text-base text-teal-bright">
                   0{i + 1} · {scene.step}
                 </span>
               </div>
               <div className="p-6">
                 <h3 className="font-heading text-lg font-bold text-white">{scene.headline}</h3>
-                <p className="mt-2 font-body text-sm leading-relaxed text-navy-100/80">{scene.detail}</p>
+                <p className="mt-2 font-body text-sm leading-relaxed text-frost/80">{scene.detail}</p>
               </div>
             </article>
           ))}

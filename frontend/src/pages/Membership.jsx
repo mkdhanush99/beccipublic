@@ -70,11 +70,11 @@ export default function Membership() {
                 Membership fees and categories are not published yet. They will appear here once approved by the chamber’s governing body.
               </p>
             </div>
-            <div className="mt-8 rounded-2xl border border-gold/35 bg-white/80 p-5">
-              <p className="font-heading text-xs font-semibold uppercase tracking-[0.16em] text-gold-antique">
+            <div className="mt-8 rounded-2xl border border-teal/30 bg-teal-mist/55 p-5">
+              <p className="font-heading text-xs font-semibold uppercase tracking-[0.16em] text-teal-ink">
                 Important notice
               </p>
-              <p className="mt-1.5 font-body text-xs leading-relaxed text-navy-800/75">
+              <p className="mt-1.5 font-body text-xs leading-relaxed text-navy-800/80">
                 BECCI is not collecting online payments or membership fees on this website during the current phase.
               </p>
             </div>

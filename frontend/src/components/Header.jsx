@@ -23,6 +23,7 @@ export const Header = () => {
   const [open, setOpen] = useState(false);
   const [megaOpen, setMegaOpen] = useState(false);
   const megaRef = useRef(null);
+  const exploreBtnRef = useRef(null);
   const { pathname } = useLocation();
   const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll();
@@ -43,7 +44,10 @@ export const Header = () => {
   useEffect(() => {
     if (!megaOpen) return undefined;
     const onKey = (e) => {
-      if (e.key === "Escape") setMegaOpen(false);
+      if (e.key === "Escape") {
+        setMegaOpen(false);
+        exploreBtnRef.current?.focus();
+      }
     };
     const onClickOutside = (e) => {
       if (megaRef.current && !megaRef.current.contains(e.target)) setMegaOpen(false);
@@ -56,7 +60,7 @@ export const Header = () => {
     };
   }, [megaOpen]);
 
-  const solid = scrolled || megaOpen;
+  const solid = scrolled || megaOpen || pathname === "/contact";
 
   return (
     <header
@@ -67,7 +71,7 @@ export const Header = () => {
       {/* Floating Translucent Glass Capsule */}
       <div
         className={`mx-auto max-w-[1280px] overflow-hidden rounded-2xl transition-[background-color,box-shadow,border-color] duration-300 ease-out ${
-          solid ? "glass-light" : "on-dark glass-dark"
+          solid ? "glass-header-light" : "on-dark glass-dark"
         }`}
       >
         <div className="flex h-16 items-center justify-between gap-5 px-4 sm:px-6">
@@ -75,6 +79,7 @@ export const Header = () => {
 
           <nav aria-label="Primary" className="hidden items-center gap-5 xl:flex">
             <button
+              ref={exploreBtnRef}
               type="button"
               aria-expanded={megaOpen}
               onClick={() => setMegaOpen((v) => !v)}
@@ -82,9 +87,11 @@ export const Header = () => {
               className={`inline-flex items-center gap-1 whitespace-nowrap font-body text-[0.875rem] font-medium transition-colors duration-150 ${
                 solid
                   ? megaOpen
-                    ? "text-navy-700"
-                    : "text-navy-900/80 hover:text-navy-950"
-                  : "text-white/85 hover:text-white"
+                    ? "text-teal-deep"
+                    : "text-navy-900/80 hover:text-teal-deep"
+                  : megaOpen
+                    ? "text-teal-bright"
+                    : "text-frost/85 hover:text-white"
               }`}
             >
               <span>Explore</span>
@@ -105,11 +112,11 @@ export const Header = () => {
                   className={`link-underline whitespace-nowrap font-body text-[0.875rem] font-medium transition-colors duration-150 ${
                     solid
                       ? active
-                        ? "text-navy-700"
-                        : "text-navy-900/75 hover:text-navy-950"
+                        ? "text-teal-deep"
+                        : "text-navy-900/75 hover:text-teal-deep"
                       : active
-                        ? "text-white"
-                        : "text-white/75 hover:text-white"
+                        ? "text-teal-bright"
+                        : "text-frost/80 hover:text-white"
                   }`}
                 >
                   {item.short || item.label}
@@ -122,10 +129,10 @@ export const Header = () => {
             <Link
               to="/membership"
               data-testid="join-becci-cta"
-              className={`group hidden items-center gap-2 whitespace-nowrap rounded-full px-5 py-2 font-heading text-xs font-semibold uppercase tracking-wider transition-[transform,background-color,color] duration-150 ease-out active:scale-[0.97] sm:inline-flex ${
+              className={`group hidden items-center gap-2 whitespace-nowrap rounded-full px-5 py-2 font-heading text-xs font-semibold uppercase tracking-wider transition-[transform,background-color,color,box-shadow] duration-150 ease-out active:scale-[0.97] sm:inline-flex ${
                 solid
-                  ? "bg-navy-950 text-white hover:bg-navy-700"
-                  : "bg-gold text-navy-950 hover:bg-gold-champagne"
+                  ? "bg-navy-950 text-white hover:bg-teal-deep"
+                  : "bg-teal text-navy-950 shadow-teal-glow hover:bg-teal-bright"
               }`}
             >
               <span>Join BECCI</span>
@@ -173,11 +180,11 @@ export const Header = () => {
                         aria-current={active ? "page" : undefined}
                         data-testid={`mobile-nav-${slug(item.label)}`}
                         className={`flex items-center justify-between rounded-xl px-3.5 py-3 font-heading text-base font-semibold tracking-tight transition-colors ${
-                          active ? "bg-navy-50 text-navy-700" : "text-navy-950 hover:bg-navy-50/60"
+                          active ? "bg-teal-mist/70 text-teal-ink" : "text-navy-950 hover:bg-frost"
                         }`}
                       >
                         <span>{item.label}</span>
-                        {active && <span className="h-1.5 w-1.5 rounded-full bg-gold" aria-hidden="true" />}
+                        {active && <span className="h-1.5 w-1.5 rounded-full bg-teal" aria-hidden="true" />}
                       </Link>
                     );
                   })}
@@ -186,12 +193,12 @@ export const Header = () => {
                   <Link
                     to="/membership"
                     data-testid="mobile-join-cta"
-                    className="flex items-center justify-center gap-2 rounded-full bg-navy-950 px-5 py-3.5 font-heading text-sm font-semibold text-white active:scale-[0.98]"
+                    className="flex items-center justify-center gap-2 rounded-full bg-navy-950 px-5 py-3.5 font-heading text-sm font-semibold text-white transition-colors hover:bg-teal-deep active:scale-[0.98]"
                   >
                     <span>Join BECCI</span>
-                    <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+                    <ArrowUpRight className="h-4 w-4 text-teal-bright" aria-hidden="true" />
                   </Link>
-                  <p className="mt-4 text-center font-display text-base uppercase tracking-wide text-gold-antique">
+                  <p className="mt-4 text-center font-display text-base uppercase tracking-wide text-teal-deep">
                     {ORG.tagline}
                   </p>
                 </div>
@@ -200,12 +207,12 @@ export const Header = () => {
           </div>
         </div>
 
-        {/* Continuous scroll progress hairline inside the glass capsule */}
+        {/* Continuous spectrum scroll progress hairline (Electric Teal → Ice Blue → Ultraviolet) */}
         {!reduce && (
           <motion.div
             aria-hidden="true"
             style={{ scaleX }}
-            className="h-[2px] w-full origin-left bg-gradient-to-r from-navy-500 via-navy-400 to-gold"
+            className="bg-spectrum h-[2px] w-full origin-left"
           />
         )}
       </div>
@@ -226,11 +233,11 @@ export const Header = () => {
                   <Link
                     key={item.to}
                     to={item.to}
-                    className="group rounded-xl p-4 transition-colors hover:bg-navy-950/[0.04]"
+                    className="group rounded-xl p-4 transition-colors hover:bg-teal-mist/55"
                   >
-                    <p className="flex items-center justify-between font-heading text-sm font-bold text-navy-950 group-hover:text-navy-700">
+                    <p className="flex items-center justify-between font-heading text-sm font-bold text-navy-950 group-hover:text-teal-ink">
                       <span>{item.label}</span>
-                      <ArrowUpRight className="h-3.5 w-3.5 text-navy-400 transition-transform duration-150 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-gold-antique" aria-hidden="true" />
+                      <ArrowUpRight className="h-3.5 w-3.5 text-navy-400 transition-transform duration-150 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-teal-deep" aria-hidden="true" />
                     </p>
                     <p className="mt-1.5 font-body text-xs leading-relaxed text-navy-800/75">
                       {item.desc}
@@ -243,16 +250,16 @@ export const Header = () => {
                   <InstitutionalSeal className="h-14 w-14 shrink-0" />
                   <div>
                     <p className="font-display text-xl uppercase tracking-wide text-gold">{ORG.tagline}</p>
-                    <p className="mt-1 font-body text-xs leading-relaxed text-navy-300">
+                    <p className="mt-1 font-body text-xs leading-relaxed text-ice/80">
                       {CONTACT.incorporation} · CIN {CONTACT.cin}
                     </p>
                   </div>
                 </div>
                 <div className="mt-5 flex items-center justify-between border-t border-white/10 pt-4">
-                  <span className="font-body text-xs text-navy-300">Begumpet, Hyderabad</span>
+                  <span className="font-body text-xs text-ice/75">Begumpet, Hyderabad</span>
                   <Link
                     to="/contact"
-                    className="link-underline inline-flex items-center gap-1 font-heading text-xs font-semibold uppercase tracking-wider text-gold"
+                    className="link-underline inline-flex items-center gap-1 font-heading text-xs font-semibold uppercase tracking-wider text-teal-bright"
                   >
                     <span>Contact office</span>
                     <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />

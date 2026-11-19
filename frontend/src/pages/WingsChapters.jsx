@@ -31,7 +31,7 @@ export default function WingsChapters() {
                     <WingBadgeIcon name={w.name} className="h-9 w-9" />
                   </span>
                   <div>
-                    <span className="eyebrow text-gold-muted">Dedicated Wing</span>
+                    <span className="eyebrow text-teal-deep">Dedicated Wing</span>
                     <h3 className="mt-1.5 font-heading text-xl font-bold text-navy-950">{w.name}</h3>
                     <p className="mt-2.5 font-body text-base leading-relaxed text-navy-800/80">{w.desc}</p>
                   </div>

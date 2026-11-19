@@ -95,12 +95,15 @@ void main() {
   float core = smoothstep(0.5, 0.0, d);
   float glow = pow(core, 2.2);
 
-  vec3 elecBlue  = vec3(0.32, 0.66, 0.98);
-  vec3 iceWhite  = vec3(0.88, 0.94, 1.00);
-  vec3 metalGold = vec3(0.88, 0.74, 0.40);
+  // BECCI Optical Particle Palette: Electric Teal + Ice Blue + controlled Ultraviolet prism + sparse Gold glints
+  vec3 elecTeal    = vec3(0.000, 0.780, 0.720); // #00C7B8
+  vec3 iceBlue     = vec3(0.722, 0.843, 0.980); // #B8D7FA
+  vec3 ultraviolet = vec3(0.560, 0.440, 1.000); // #8F70FF
+  vec3 champGold   = vec3(0.860, 0.720, 0.400); // #DBB866
 
-  vec3 col = mix(elecBlue, iceWhite, smoothstep(0.35, 0.75, v_hue));
-  col = mix(col, metalGold, smoothstep(0.72, 0.95, v_hue));
+  vec3 col = mix(elecTeal, iceBlue, smoothstep(0.32, 0.76, v_hue));
+  col = mix(col, ultraviolet, smoothstep(0.76, 0.90, v_hue));
+  col = mix(col, champGold, smoothstep(0.92, 0.99, v_hue));
 
   gl_FragColor = vec4(col, glow * v_alpha);
 }

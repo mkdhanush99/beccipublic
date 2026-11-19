@@ -1,9 +1,23 @@
 import React from "react";
+import { ArrowDown } from "lucide-react";
 import { PageHero, SectionHeading, NextPageBand } from "@/components/primitives";
+import Reveal from "@/components/Reveal";
 import PillarEcosystem from "@/components/infographics/PillarEcosystem";
+import { GlassSpotlight } from "@/components/visuals/MotionPrimitives";
 import { WORK_AREAS, STAKEHOLDERS } from "@/data/becci";
 
+const CHAPTER_JUMPS = [
+  { id: "pillars", num: "01", label: "Five Pillars" },
+  { id: "areas", num: "02", label: "Six Areas of Work" },
+  { id: "stakeholders", num: "03", label: "Ecosystem Stakeholders" },
+];
+
 export default function WhatWeDo() {
+  const jump = (id) => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
   return (
     <>
       <PageHero
@@ -11,12 +25,25 @@ export default function WhatWeDo() {
         meta="Five Pillars · Six Areas of Work"
         title="Connecting entrepreneurs with knowledge, finance, markets, networks and institutional opportunities."
         intro="BECCI puts the entrepreneur at the centre and builds the connections around them."
-      />
+      >
+        {CHAPTER_JUMPS.map((c) => (
+          <button
+            key={c.id}
+            type="button"
+            onClick={() => jump(c.id)}
+            className="glass-pill group inline-flex items-center gap-2.5 rounded-full px-4 py-2 font-heading text-xs font-semibold text-frost transition-colors hover:border-teal/60 hover:text-teal-bright"
+          >
+            <span className="tabular text-teal-bright">{c.num}</span>
+            <span>{c.label}</span>
+            <ArrowDown className="h-3.5 w-3.5 text-ice/70 transition-transform group-hover:translate-y-0.5 group-hover:text-teal-bright" aria-hidden="true" />
+          </button>
+        ))}
+      </PageHero>
 
-      <section className="section bg-white">
+      <section id="pillars" className="section bg-white">
         <div className="becci-container">
           <SectionHeading
-            eyebrow="The five pillars"
+            eyebrow="Chapter 01 · The five pillars"
             title="A support ecosystem around the entrepreneur."
             intro="Select any pillar below to explore how BECCI supports founders from knowledge to public schemes."
             className="mb-12"
@@ -25,35 +52,52 @@ export default function WhatWeDo() {
         </div>
       </section>
 
-      <section className="section bg-navy-50/50">
-        <div className="becci-container grid gap-16 lg:grid-cols-[1fr_1fr]">
-          <div>
-            <SectionHeading eyebrow="Areas of work" title="Six ways BECCI engages." className="mb-8" />
-            <ul className="divide-y divide-navy-800/10 border-y border-navy-800/10">
-              {WORK_AREAS.map((w, i) => (
-                <li key={i} className="flex items-baseline gap-5 py-4">
-                  <span className="tabular font-display text-xl text-gold-antique">0{i + 1}</span>
-                  <span className="font-body text-base font-medium text-navy-950">{w}</span>
-                </li>
-              ))}
-            </ul>
+      <section id="areas" className="section bg-frost">
+        <div className="becci-container">
+          <SectionHeading
+            eyebrow="Chapter 02 · Areas of work"
+            title="Six ways BECCI engages."
+            intro="Practical areas where the chamber focuses its programmes, awareness and institutional outreach."
+            className="mb-12"
+          />
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {WORK_AREAS.map((w, i) => (
+              <Reveal key={i} delay={(i % 3) * 0.05}>
+                <GlassSpotlight
+                  tone="light"
+                  className="glass-light hover-lift flex h-full flex-col justify-between rounded-2xl p-7"
+                >
+                  <span className="tabular relative z-10 font-display text-4xl leading-none text-teal-deep">
+                    0{i + 1}
+                  </span>
+                  <p className="relative z-10 mt-6 font-heading text-lg font-bold leading-snug text-navy-950">
+                    {w}
+                  </p>
+                </GlassSpotlight>
+              </Reveal>
+            ))}
           </div>
+        </div>
+      </section>
 
-          <div>
-            <SectionHeading
-              eyebrow="Ecosystem stakeholders"
-              title="Who we seek to work alongside."
-              intro="Shown as stakeholder categories — not existing or confirmed partners."
-              className="mb-8"
-            />
-            <div className="grid gap-5 sm:grid-cols-2">
-              {STAKEHOLDERS.map((s) => (
-                <div key={s.name} className="glass-light rounded-2xl p-6">
-                  <p className="font-heading text-base font-bold text-navy-950">{s.name}</p>
-                  <p className="mt-1.5 font-body text-sm leading-relaxed text-navy-800/75">{s.desc}</p>
-                </div>
-              ))}
-            </div>
+      <section id="stakeholders" className="section bg-white">
+        <div className="becci-container">
+          <SectionHeading
+            eyebrow="Chapter 03 · Ecosystem stakeholders"
+            title="Who we seek to work alongside."
+            intro="Shown as stakeholder categories — not existing or confirmed partners."
+            className="mb-12"
+          />
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {STAKEHOLDERS.map((s, i) => (
+              <Reveal key={s.name} delay={i * 0.05}>
+                <GlassSpotlight tone="light" className="glass-light flex h-full flex-col rounded-2xl p-7">
+                  <span className="relative z-10 h-1.5 w-8 rounded-full bg-teal" aria-hidden="true" />
+                  <p className="relative z-10 mt-5 font-heading text-lg font-bold text-navy-950">{s.name}</p>
+                  <p className="relative z-10 mt-2 font-body text-sm leading-relaxed text-navy-800/75">{s.desc}</p>
+                </GlassSpotlight>
+              </Reveal>
+            ))}
           </div>
         </div>
       </section>

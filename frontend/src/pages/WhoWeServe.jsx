@@ -58,7 +58,7 @@ export default function WhoWeServe() {
         </div>
       </section>
 
-      <section className="section bg-paper">
+      <section className="section bg-frost">
         <div className="becci-container">
           <SectionHeading
             eyebrow="Eleven business sectors"

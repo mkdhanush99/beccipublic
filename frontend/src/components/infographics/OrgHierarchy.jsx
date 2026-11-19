@@ -8,7 +8,7 @@ export const OrgHierarchy = () => (
     {ORG_LEVELS.map((lvl, i) => (
       <Reveal key={i} delay={i * 0.06} as="li">
         <div className="flex items-baseline gap-6 py-5 sm:gap-8">
-          <span className="tabular font-display text-3xl leading-none text-gold-antique">
+          <span className="tabular font-display text-3xl leading-none text-teal-deep">
             0{i + 1}
           </span>
           <div className="min-w-0 flex-1">

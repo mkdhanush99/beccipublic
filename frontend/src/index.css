@@ -13,19 +13,19 @@
     --card-foreground: 213 82% 6%;
     --popover: 0 0% 100%;
     --popover-foreground: 213 82% 6%;
-    --primary: 211 74% 31%;
+    --primary: 175 100% 23%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 210 67% 96%;
+    --secondary: 210 67% 97%;
     --secondary-foreground: 213 82% 12%;
-    --muted: 210 40% 96%;
-    --muted-foreground: 214 20% 42%;
-    --accent: 210 67% 96%;
-    --accent-foreground: 213 82% 12%;
-    --destructive: 0 72% 42%;
+    --muted: 210 56% 96%;
+    --muted-foreground: 214 26% 38%;
+    --accent: 174 58% 93%;
+    --accent-foreground: 175 100% 20%;
+    --destructive: 347 56% 39%;
     --destructive-foreground: 0 0% 100%;
-    --border: 214 32% 90%;
-    --input: 214 32% 88%;
-    --ring: 211 74% 31%;
+    --border: 214 38% 88%;
+    --input: 214 36% 86%;
+    --ring: 175 100% 23%;
     --radius: 0.25rem;
   }
 }
@@ -40,7 +40,7 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
-    -webkit-tap-highlight-color: rgba(212, 175, 90, 0.18);
+    -webkit-tap-highlight-color: rgba(0, 184, 169, 0.2);
   }
   body {
     @apply bg-background font-body text-navy-950;
@@ -48,8 +48,8 @@
     font-feature-settings: "ss01", "cv11";
   }
   ::selection {
-    background: rgb(var(--c-gold));
-    color: rgb(var(--c-navy-900));
+    background: rgb(var(--c-teal));
+    color: rgb(var(--c-navy-950));
   }
   h1, h2, h3, h4, h5 {
     @apply font-heading;
@@ -62,15 +62,15 @@
     touch-action: manipulation;
   }
 
-  /* Visible, brand-consistent keyboard focus */
+  /* Visible, high-contrast Electric/Deep Teal keyboard focus */
   a:focus-visible, button:focus-visible, [tabindex]:focus-visible,
   input:focus-visible, textarea:focus-visible {
-    outline: 2px solid rgb(var(--c-navy-500));
+    outline: 2px solid rgb(var(--c-teal-deep));
     outline-offset: 3px;
-    border-radius: 2px;
+    border-radius: 4px;
   }
   .on-dark a:focus-visible, .on-dark button:focus-visible {
-    outline-color: rgb(var(--c-gold));
+    outline-color: rgb(var(--c-teal-bright));
   }
 }
 
@@ -94,6 +94,20 @@
   }
   .lead { @apply font-body text-lead; }
   .tabular { font-variant-numeric: tabular-nums; }
+
+  /* Luminous Electric Teal → Ice Blue editorial display highlight */
+  .text-gradient-teal {
+    background: var(--grad-teal-ice);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: rgb(var(--c-teal));
+  }
+
+  /* Spectrum divider & reading rail (Electric Teal → Ice Blue → Ultraviolet) */
+  .bg-spectrum {
+    background: var(--grad-spectrum);
+  }
 
   .link-underline { position: relative; }
   .link-underline::after {
@@ -119,17 +133,9 @@
     position: absolute;
     inset: 0;
     pointer-events: none;
-    opacity: 0.065;
+    opacity: 0.055;
     mix-blend-mode: overlay;
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
-  }
-
-  /* Hairline architectural grid behind dark heroes */
-  .blueprint {
-    background-image:
-      linear-gradient(rgb(var(--c-navy-400) / 0.09) 1px, transparent 1px),
-      linear-gradient(90deg, rgb(var(--c-navy-400) / 0.09) 1px, transparent 1px);
-    background-size: 72px 72px;
   }
 
   /* Hover elevation gated behind pointer devices so touch taps don't stick */
@@ -139,49 +145,95 @@
     }
   }
 
-  /* ---- Refined Glassmorphism Material System ---- */
+  /* ---- Advanced Translucent Coloured Glass & Iridescent Refraction System ---- */
+
+  /* 1. Architectural Dark Glass — Midnight Navy infused with subtle Electric Teal depth & Ice Blue rim */
   .glass-dark {
     background: linear-gradient(
-      145deg,
-      rgba(11, 45, 92, 0.52) 0%,
-      rgba(6, 27, 58, 0.72) 100%
+      140deg,
+      rgba(6, 27, 58, 0.72) 0%,
+      rgba(3, 14, 30, 0.80) 64%,
+      rgba(0, 184, 169, 0.08) 100%
     );
-    backdrop-filter: blur(24px) saturate(165%);
-    -webkit-backdrop-filter: blur(24px) saturate(165%);
-    border: 1px solid rgba(184, 215, 250, 0.16);
+    backdrop-filter: blur(26px) saturate(175%);
+    -webkit-backdrop-filter: blur(26px) saturate(175%);
+    border: 1px solid rgba(184, 215, 250, 0.18);
     box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.18),
-      0 24px 60px -24px rgba(3, 14, 30, 0.75);
+      inset 0 1px 0 rgba(184, 215, 250, 0.24),
+      inset 0 -1px 0 rgba(0, 184, 169, 0.08),
+      0 26px 64px -26px rgba(3, 14, 30, 0.85);
   }
 
+  /* 2. Iridescent Optical Glass — selective hero/stage glass with ultra-fine Teal→Ice→UV edge refraction */
+  .glass-iridescent {
+    position: relative;
+    background: linear-gradient(
+      138deg,
+      rgba(6, 27, 58, 0.74) 0%,
+      rgba(3, 14, 30, 0.82) 55%,
+      rgba(0, 184, 169, 0.10) 82%,
+      rgba(121, 91, 255, 0.09) 100%
+    );
+    backdrop-filter: blur(28px) saturate(185%);
+    -webkit-backdrop-filter: blur(28px) saturate(185%);
+    border: 1px solid rgba(184, 215, 250, 0.20);
+    box-shadow:
+      inset 0 1px 0 rgba(184, 215, 250, 0.30),
+      inset 1px 0 0 rgba(0, 184, 169, 0.16),
+      inset -1px 0 0 rgba(121, 91, 255, 0.14),
+      0 28px 70px -28px rgba(3, 14, 30, 0.88);
+  }
+
+  /* 3. Frost Editorial Glass — Crisp Frost White & Ice Blue depth for light surfaces */
   .glass-light {
     background: linear-gradient(
       145deg,
-      rgba(255, 255, 255, 0.82) 0%,
-      rgba(240, 246, 253, 0.72) 100%
+      rgba(255, 255, 255, 0.88) 0%,
+      rgba(242, 247, 252, 0.78) 65%,
+      rgba(184, 215, 250, 0.16) 100%
     );
     backdrop-filter: blur(24px) saturate(180%);
     -webkit-backdrop-filter: blur(24px) saturate(180%);
-    border: 1px solid rgba(11, 45, 92, 0.1);
+    border: 1px solid rgba(11, 45, 92, 0.11);
     box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.95),
-      0 16px 40px -20px rgba(6, 27, 58, 0.22);
+      inset 0 1px 0 rgba(255, 255, 255, 0.96),
+      0 16px 40px -22px rgba(6, 27, 58, 0.20);
   }
 
+  /* 3b. Evenly Frosted Floating Header Glass — stays luminous and crisp over both dark & light sections */
+  .glass-header-light {
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.94) 0%,
+      rgba(242, 247, 252, 0.90) 100%
+    );
+    backdrop-filter: blur(22px) saturate(180%);
+    -webkit-backdrop-filter: blur(22px) saturate(180%);
+    border: 1px solid rgba(11, 45, 92, 0.12);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.98),
+      0 14px 36px -18px rgba(3, 14, 30, 0.26);
+  }
+
+  /* 4. Frosted Teal-Ice Pill — Controls, badges & tags on dark stages */
   .glass-pill {
-    background: rgba(6, 27, 58, 0.55);
-    backdrop-filter: blur(16px) saturate(160%);
-    -webkit-backdrop-filter: blur(16px) saturate(160%);
-    border: 1px solid rgba(255, 255, 255, 0.16);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    background: linear-gradient(
+      135deg,
+      rgba(6, 27, 58, 0.62) 0%,
+      rgba(0, 184, 169, 0.11) 100%
+    );
+    backdrop-filter: blur(16px) saturate(165%);
+    -webkit-backdrop-filter: blur(16px) saturate(165%);
+    border: 1px solid rgba(184, 215, 250, 0.22);
+    box-shadow: inset 0 1px 0 rgba(184, 215, 250, 0.22);
   }
 
   .skip-link {
-    @apply sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-3 focus:z-[100] focus:rounded-sm focus:bg-gold focus:px-4 focus:py-2 focus:font-heading focus:text-sm focus:font-semibold focus:text-navy-950;
+    @apply sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-3 focus:z-[100] focus:rounded-full focus:bg-teal focus:px-4 focus:py-2 focus:font-heading focus:text-sm focus:font-semibold focus:text-navy-950;
   }
 }
 
-/* Reduced motion: preserve layout and color feedback, remove spatial movement */
+/* Reduced motion: preserve full colour clarity & legibility, remove spatial animation */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after {
@@ -191,11 +243,25 @@
   }
 }
 
-/* Reduced transparency: solidify frosted glass materials for legibility */
+/* Reduced transparency: solidify glass materials cleanly into Obsidian / Frost */
 @media (prefers-reduced-transparency: reduce) {
-  header[data-testid="site-header"] {
+  header[data-testid="site-header"],
+  .glass-dark,
+  .glass-iridescent,
+  .glass-light,
+  .glass-header-light,
+  .glass-pill {
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
+  }
+  .glass-dark,
+  .glass-iridescent,
+  .glass-pill {
+    background: rgb(var(--c-navy-900)) !important;
+  }
+  .glass-light,
+  .glass-header-light {
+    background: rgb(var(--c-frost)) !important;
   }
 }
 
@@ -205,6 +271,10 @@
   .border-navy-800\/12,
   .border-navy-800\/15 {
     border-color: rgb(var(--c-navy-900) / 0.45) !important;
+  }
+  .text-gradient-teal {
+    background: none !important;
+    -webkit-text-fill-color: rgb(var(--c-teal-bright)) !important;
   }
 }
 

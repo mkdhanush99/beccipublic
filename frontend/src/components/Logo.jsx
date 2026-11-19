@@ -39,7 +39,7 @@ export const Logo = ({
   );
   if (!withLink) return img;
   return (
-    <Link to="/" data-testid={testid} aria-label="BECCI home" className="inline-flex items-center">
+    <Link to="/" data-testid={testid} aria-label="BECCI home" className="inline-flex min-h-[40px] items-center">
       {img}
     </Link>
   );

@@ -5,7 +5,7 @@ import { motion, useMotionValue, useSpring, useScroll, useTransform, useReducedM
  * Magnetic — Subtle pointer-responsive magnetic pull for primary interactive controls.
  * Automatically disabled on touch devices and when `prefers-reduced-motion` is enabled.
  */
-export const Magnetic = ({ children, strength = 0.22, className = "" }) => {
+export const Magnetic = ({ children, strength = 0.14, className = "" }) => {
   const ref = useRef(null);
   const reduce = useReducedMotion();
   const x = useMotionValue(0);
@@ -70,8 +70,8 @@ export const GlassSpotlight = ({
 
   const glareBg =
     tone === "dark"
-      ? "radial-gradient(420px circle at var(--gx, 50%) var(--gy, 20%), rgba(212,175,90,0.14), rgba(61,143,232,0.08) 40%, transparent 72%)"
-      : "radial-gradient(380px circle at var(--gx, 50%) var(--gy, 20%), rgba(61,143,232,0.10), rgba(212,175,90,0.06) 45%, transparent 72%)";
+      ? "radial-gradient(440px circle at var(--gx, 50%) var(--gy, 20%), rgba(0,184,169,0.16), rgba(184,215,250,0.09) 38%, rgba(121,91,255,0.07) 60%, transparent 78%)"
+      : "radial-gradient(400px circle at var(--gx, 50%) var(--gy, 20%), rgba(0,184,169,0.10), rgba(184,215,250,0.14) 44%, transparent 74%)";
 
   return (
     <Tag

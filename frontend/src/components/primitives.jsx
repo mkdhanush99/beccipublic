@@ -8,21 +8,31 @@ import EnterpriseField3D from "@/components/visuals/EnterpriseField3D";
 import { Magnetic } from "@/components/visuals/MotionPrimitives";
 import { EASE_OUT } from "@/lib/motion";
 
-export const Eyebrow = ({ children, tone = "navy", className = "" }) => {
+export const Eyebrow = ({ children, tone = "teal", className = "" }) => {
   const textTone =
-    tone === "gold"
-      ? "text-gold"
-      : tone === "antique"
-        ? "text-gold-antique"
-        : tone === "white"
-          ? "text-navy-300"
-          : "text-navy-700";
+    tone === "tealDark"
+      ? "text-teal"
+      : tone === "teal"
+        ? "text-teal-deep"
+        : tone === "gold"
+          ? "text-gold"
+          : tone === "antique"
+            ? "text-teal-deep"
+            : tone === "ice" || tone === "white"
+              ? "text-ice"
+              : "text-navy-700";
+
   const lineTone =
-    tone === "gold" || tone === "antique"
-      ? "bg-gold"
-      : tone === "white"
-        ? "bg-navy-400"
-        : "bg-navy-600";
+    tone === "tealDark"
+      ? "bg-teal"
+      : tone === "teal" || tone === "antique"
+        ? "bg-teal-deep"
+        : tone === "gold"
+          ? "bg-gold"
+          : tone === "ice" || tone === "white"
+            ? "bg-ice"
+            : "bg-navy-600";
+
   return (
     <span className={`eyebrow inline-flex items-center gap-2.5 ${textTone} ${className}`}>
       <span className={`h-px w-6 ${lineTone}`} aria-hidden="true" />
@@ -45,7 +55,7 @@ export const SectionHeading = ({
       {eyebrow && (
         <Reveal>
           <Eyebrow
-            tone={dark ? "gold" : "navy"}
+            tone={dark ? "tealDark" : "teal"}
             className={align === "center" ? "justify-center" : ""}
           >
             {eyebrow}
@@ -65,7 +75,7 @@ export const SectionHeading = ({
       )}
       {intro && (
         <Reveal delay={0.1}>
-          <p className={`mt-5 max-w-[65ch] font-body text-lead ${align === "center" ? "mx-auto" : ""} ${dark ? "text-navy-300" : "text-navy-800/75"}`}>
+          <p className={`mt-5 max-w-[65ch] font-body text-lead ${align === "center" ? "mx-auto" : ""} ${dark ? "text-ice/85" : "text-navy-800/75"}`}>
             {intro}
           </p>
         </Reveal>
@@ -78,11 +88,12 @@ export const CTA = ({ to, children, variant = "primary", testid, className = "" 
   const base =
     "group inline-flex items-center justify-center gap-2.5 rounded-full px-7 py-3.5 font-heading text-sm font-semibold transition-[transform,background-color,border-color,color,box-shadow] duration-200 ease-out active:scale-[0.97]";
   const styles = {
-    primary: "bg-navy-950 text-white hover:bg-navy-700 shadow-soft",
-    gold: "bg-gold text-navy-950 hover:bg-gold-champagne shadow-[0_12px_32px_-10px_rgb(212_175_90/0.6)]",
-    outline: "border border-navy-800/20 text-navy-900 hover:border-navy-700 hover:bg-navy-50/70",
-    outlineWhite: "glass-pill text-white hover:border-gold/60 hover:text-gold",
-    ghost: "text-navy-700 hover:text-navy-950 px-0 py-1 rounded-none",
+    primary: "bg-navy-950 text-white hover:bg-teal-deep shadow-soft",
+    teal: "bg-teal text-navy-950 hover:bg-teal-bright shadow-teal-glow",
+    gold: "bg-gold text-navy-950 hover:bg-gold-champagne shadow-[0_12px_32px_-10px_rgb(212_175_90/0.5)]",
+    outline: "border border-navy-800/20 text-navy-950 hover:border-teal-deep hover:bg-teal-mist/50 hover:text-teal-ink",
+    outlineWhite: "glass-pill text-frost hover:border-teal/60 hover:text-teal-bright",
+    ghost: "text-teal-deep hover:text-navy-950 px-0 py-1 rounded-none",
   };
   return (
     <Link to={to} data-testid={testid} className={`${base} ${styles[variant]} ${className}`}>
@@ -96,15 +107,15 @@ export const CTA = ({ to, children, variant = "primary", testid, className = "" 
   );
 };
 
-// Inner-page hero band powered by the WebGL Liquid Light Shader + 3D Enterprise Field
+// Inner-page hero band powered by calm Ice-Blue & Electric-Teal WebGL mood (distinct from homepage hero)
 export const PageHero = ({ eyebrow, title, intro, meta, children }) => {
   const reduce = useReducedMotion();
   return (
     <section className="on-dark relative overflow-hidden bg-navy-950 pt-28 text-white sm:pt-32">
-      <LiquidAuroraCanvas />
-      <EnterpriseField3D density="closing" className="opacity-55" />
+      <LiquidAuroraCanvas variant="page" />
+      <EnterpriseField3D density="closing" className="opacity-50" />
       <div
-        className="pointer-events-none absolute inset-0 bg-gradient-to-b from-navy-950/30 via-transparent to-navy-950"
+        className="pointer-events-none absolute inset-0 bg-gradient-to-b from-navy-950/35 via-transparent to-navy-950"
         aria-hidden="true"
       />
 
@@ -115,9 +126,9 @@ export const PageHero = ({ eyebrow, title, intro, meta, children }) => {
           transition={{ duration: 0.45, ease: EASE_OUT }}
           className="flex flex-wrap items-center justify-between gap-4"
         >
-          {eyebrow && <Eyebrow tone="gold">{eyebrow}</Eyebrow>}
+          {eyebrow && <Eyebrow tone="tealDark">{eyebrow}</Eyebrow>}
           {meta && (
-            <span className="glass-pill rounded-full px-3.5 py-1 font-heading text-xs font-medium text-navy-100">
+            <span className="glass-pill rounded-full px-3.5 py-1 font-heading text-xs font-medium text-ice">
               {meta}
             </span>
           )}
@@ -135,7 +146,7 @@ export const PageHero = ({ eyebrow, title, intro, meta, children }) => {
             initial={reduce ? false : { opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 0.14, ease: EASE_OUT }}
-            className="mt-6 max-w-[62ch] font-body text-lead text-navy-100/85"
+            className="mt-6 max-w-[62ch] font-body text-lead text-ice/85"
           >
             {intro}
           </motion.p>
@@ -156,10 +167,10 @@ export const PageHero = ({ eyebrow, title, intro, meta, children }) => {
 };
 
 export const NextPageBand = ({ eyebrow = "Continue exploring", title, desc, to, ctaLabel, testid }) => (
-  <section className="bg-navy-50/50 py-16 md:py-24">
+  <section className="border-t border-ice/50 bg-frost py-16 md:py-24">
     <div className="becci-container flex flex-col justify-between gap-6 md:flex-row md:items-center">
       <div className="max-w-xl">
-        <Eyebrow tone="antique">{eyebrow}</Eyebrow>
+        <Eyebrow tone="teal">{eyebrow}</Eyebrow>
         <h2 className="mt-3 font-heading text-2xl font-bold text-navy-950 md:text-3xl">{title}</h2>
         {desc && <p className="mt-2 font-body text-sm leading-relaxed text-navy-800/75">{desc}</p>}
       </div>

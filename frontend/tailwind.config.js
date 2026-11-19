@@ -37,6 +37,23 @@ module.exports = {
           50: rgb("--c-navy-50"),
         },
         brand: rgb("--c-brand"),
+        teal: {
+          DEFAULT: rgb("--c-teal"),
+          bright: rgb("--c-teal-bright"),
+          deep: rgb("--c-teal-deep"),
+          ink: rgb("--c-teal-ink"),
+          mist: rgb("--c-teal-mist"),
+        },
+        ice: rgb("--c-ice"),
+        frost: {
+          DEFAULT: rgb("--c-frost"),
+          deep: rgb("--c-frost-deep"),
+        },
+        uv: {
+          DEFAULT: rgb("--c-uv"),
+          soft: rgb("--c-uv-soft"),
+          deep: rgb("--c-uv-deep"),
+        },
         gold: {
           DEFAULT: rgb("--c-gold"),
           champagne: rgb("--c-gold-champagne"),
@@ -73,6 +90,8 @@ module.exports = {
       boxShadow: {
         soft: "var(--shadow-soft)",
         lift: "var(--shadow-lift)",
+        "glass-dark": "var(--shadow-glass-dark)",
+        "teal-glow": "var(--shadow-teal-glow)",
       },
       maxWidth: { content: "var(--container)" },
       transitionTimingFunction: {

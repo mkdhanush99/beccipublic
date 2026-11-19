@@ -13,10 +13,10 @@ export const MembershipSteps = ({ tone = "light" }) => {
       {MEMBERSHIP_STEPS.map((s, i) => (
         <Reveal key={i} delay={i * 0.06} as="li">
           <div className="flex h-full flex-col">
-            <span className={`tabular font-display text-4xl leading-none ${dark ? "text-gold" : "text-navy-700"}`}>
+            <span className={`tabular font-display text-4xl leading-none ${dark ? "text-teal-bright" : "text-teal-deep"}`}>
               0{i + 1}
             </span>
-            <div className="mt-3 h-[2px] w-8 bg-gold" aria-hidden="true" />
+            <div className="mt-3 h-[2px] w-8 bg-teal" aria-hidden="true" />
             <h3 className={`mt-4 font-heading text-base font-bold ${dark ? "text-white" : "text-navy-950"}`}>
               {s.title}
             </h3>

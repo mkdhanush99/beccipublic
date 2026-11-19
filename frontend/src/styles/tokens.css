@@ -1,30 +1,67 @@
 /*
- * BECCI design tokens — single source of truth for colour, type, spacing and motion.
- * Colours are stored as RGB channels so Tailwind opacity modifiers work
- * (e.g. `text-navy-800/70`). Tailwind reads these in tailwind.config.js.
+ * BECCI Chromatic Architecture & Design Tokens — Single Source of Truth
+ *
+ * Hierarchy:
+ * - Obsidian Blue (#030E1E) & Midnight Navy (#061B3A): Brand continuity & structural ground
+ * - Continuum Navy (#0A2352): Official approved BECCI logo artwork (never recoloured)
+ * - Electric Teal (#00B8A9) & Deep Teal AA (#00766D): Signature interaction, highlights & active states
+ * - Ice Blue (#B8D7FA) & Frost White (#F2F7FC): Atmospheric depth, separation & crisp editorial breathing room
+ * - Ultraviolet (#795BFF): Strictly selective motion, WebGL refraction & optical light moments
+ * - Champagne Gold (#D4AF5A): Restrained institutional heritage details (Seal, motto, continuum emblem)
+ *
+ * All colours are stored as space-separated RGB channels so Tailwind opacity modifiers work seamlessly.
  */
 :root {
-  /* ---- Core blues ---- */
-  --c-navy-950: 3 14 30;     /* Deep navy      #030E1E */
-  --c-navy-900: 6 27 58;     /* Primary navy   #061B3A */
-  --c-navy-800: 11 45 92;    /* Secondary navy #0B2D5C */
-  --c-navy-700: 18 75 140;   /* Corporate blue #124B8C */
-  --c-navy-600: 23 105 194;  /* Bright blue    #1769C2 */
-  --c-navy-500: 61 143 232;  /* Electric blue  #3D8FE8 */
-  --c-navy-400: 124 180 242; /* Light blue     #7CB4F2 */
-  --c-navy-300: 184 215 250; /* Pale blue      #B8D7FA */
-  --c-navy-100: 226 238 251;
-  --c-navy-50: 240 246 253;  /* Ice blue       #F0F6FD */
-  --c-brand: 10 35 82;       /* Continuum navy (logo) #0A2352 */
+  /* ---- Core Navy Foundations ---- */
+  --c-navy-950: 3 14 30;       /* Obsidian Blue  #030E1E */
+  --c-navy-900: 6 27 58;       /* Midnight Navy  #061B3A */
+  --c-navy-800: 11 45 92;      /* Deep Slate Navy #0B2D5C */
+  --c-navy-700: 18 75 140;     /* Corporate Blue #124B8C */
+  --c-navy-600: 23 105 194;    /* Bright Blue    #1769C2 */
+  --c-navy-500: 61 143 232;    /* Electric Blue  #3D8FE8 */
+  --c-navy-400: 124 180 242;   /* Light Blue     #7CB4F2 */
+  --c-navy-300: 184 215 250;   /* Ice Blue       #B8D7FA */
+  --c-navy-100: 226 238 251;   /* Pale Ice       #E2EEFB */
+  --c-navy-50: 242 247 252;    /* Frost White    #F2F7FC */
+  --c-brand: 10 35 82;         /* Approved Logo Navy #0A2352 (untouched) */
+  --c-midnight: 6 27 58;       /* Midnight Navy  #061B3A */
 
-  /* ---- Heritage accents ---- */
-  --c-gold: 212 175 90;          /* Imperial gold #D4AF5A */
+  /* ---- Electric Teal Interaction System ---- */
+  --c-teal: 0 184 169;         /* Electric Teal  #00B8A9 (AAA on dark, AAA w/ Obsidian text) */
+  --c-teal-bright: 38 214 199; /* Luminous Teal  #26D6C7 (hover & specular highlight) */
+  --c-teal-deep: 0 118 109;    /* Deep Teal AA   #00766D (5.05:1+ on Frost / 5.45:1 on White) */
+  --c-teal-ink: 0 92 85;       /* Deep Teal AAA  #005C55 (7.5:1+ hovered link on Frost) */
+  --c-teal-mist: 227 247 245;  /* Teal Mist      #E3F7F5 (subtle active surface on light) */
+
+  /* ---- Ice Blue & Frost Editorial Surfaces ---- */
+  --c-ice: 184 215 250;        /* Ice Blue       #B8D7FA */
+  --c-frost: 242 247 252;      /* Frost White    #F2F7FC */
+  --c-frost-deep: 230 240 251; /* Cool Mist      #E6F0FB */
+  --c-paper: 242 247 252;      /* Editorial Frost alias (replaces warm beige) */
+
+  /* ---- Controlled Ultraviolet (Motion & Optical Lighting ONLY) ---- */
+  --c-uv: 121 91 255;          /* Ultraviolet    #795BFF */
+  --c-uv-soft: 168 148 255;    /* Soft Prism UV  #A894FF (accessible on Obsidian) */
+  --c-uv-deep: 82 54 209;      /* Deep UV AA     #5236D1 (accessible on Frost if needed) */
+
+  /* ---- Restrained Heritage Accents ---- */
+  --c-gold: 212 175 90;        /* Champagne Gold #D4AF5A (heritage details only) */
   --c-gold-champagne: 240 221 168;
   --c-gold-antique: 167 123 50;
-  --c-ivory: 247 240 226;
-  --c-paper: 251 249 244;        /* warm off-white for editorial sections */
-  --c-burgundy: 112 46 61;
-  --c-midnight: 7 20 38;
+  --c-ivory: 242 247 252;      /* Aligned to Frost White for seamless consistency */
+  --c-burgundy: 155 44 68;     /* Validation error ink (accessible on White/Frost) */
+
+  /* ---- Semantic Surface, Border & Gradient Tokens ---- */
+  --bg-canvas: rgb(255 255 255);
+  --bg-frost: rgb(var(--c-frost));
+  --bg-obsidian: rgb(var(--c-navy-950));
+  --bg-midnight: rgb(var(--c-navy-900));
+  --text-primary: rgb(var(--c-navy-950));
+  --text-muted: rgb(var(--c-navy-800) / 0.76);
+  --border-light: rgb(var(--c-navy-800) / 0.11);
+  --border-dark: rgb(var(--c-ice) / 0.18);
+  --grad-spectrum: linear-gradient(90deg, rgb(var(--c-teal)) 0%, rgb(var(--c-ice)) 56%, rgb(var(--c-uv)) 100%);
+  --grad-teal-ice: linear-gradient(102deg, rgb(77 240 226) 0%, rgb(var(--c-teal-bright)) 48%, rgb(var(--c-ice)) 100%);
 
   /* ---- Typography ---- */
   --font-display: "Bebas Neue", "Arial Narrow", sans-serif;
@@ -55,9 +92,11 @@
   --dur-base: 320ms;
   --dur-slow: 700ms;
 
-  /* ---- Elevation ---- */
-  --shadow-soft: 0 1px 2px rgb(var(--c-navy-950) / 0.04), 0 12px 32px -18px rgb(var(--c-navy-900) / 0.35);
-  --shadow-lift: 0 2px 4px rgb(var(--c-navy-950) / 0.05), 0 30px 60px -30px rgb(var(--c-navy-900) / 0.5);
+  /* ---- Elevation & Atmospheric Depth Shadows ---- */
+  --shadow-soft: 0 1px 2px rgb(var(--c-navy-950) / 0.04), 0 14px 34px -20px rgb(var(--c-navy-900) / 0.28);
+  --shadow-lift: 0 2px 6px rgb(var(--c-navy-950) / 0.06), 0 32px 64px -30px rgb(var(--c-navy-950) / 0.55);
+  --shadow-glass-dark: inset 0 1px 0 rgb(var(--c-ice) / 0.22), 0 26px 64px -26px rgb(var(--c-navy-950) / 0.85);
+  --shadow-teal-glow: 0 14px 34px -10px rgb(var(--c-teal) / 0.5);
 }
 
 @media (min-width: 1024px) {

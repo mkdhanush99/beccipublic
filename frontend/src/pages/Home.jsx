@@ -13,8 +13,9 @@ import StatusChip from "@/components/StatusChip";
 import Img from "@/components/Img";
 import { SectorSvgIcon, WingBadgeIcon } from "@/components/illustrations/BecciArtwork";
 import LiquidAuroraCanvas from "@/components/visuals/LiquidAuroraCanvas";
-import EnterpriseField3D from "@/components/visuals/EnterpriseField3D";
+import BecciPrismSculpture3D from "@/components/visuals/BecciPrismSculpture3D";
 import { Magnetic, GlassSpotlight, ParallaxFrame } from "@/components/visuals/MotionPrimitives";
+import { CinemaAperture, ScrollIlluminateStatement, ChapterCompass } from "@/components/visuals/CinemaStoryPrimitives";
 import SplitHeadline from "@/components/visuals/SplitText";
 import TransformationScroll from "@/components/visuals/TransformationScroll";
 import AcronymStory from "@/components/infographics/AcronymStory";
@@ -45,7 +46,18 @@ const HERO_REEL = [
   },
 ];
 
-/* ------------------------------ Chapter 1: Full-Bleed Immersive 3D Cinema Hero ------------------------------ */
+const HOME_CHAPTERS = [
+  { id: "home-hero", label: "Opening" },
+  { id: "chapter-acronym", label: "Philosophy" },
+  { id: "chapter-bahujan", label: "The People" },
+  { id: "chapter-journey", label: "Transformation" },
+  { id: "chapter-vision-mission", label: "Vision & Mission" },
+  { id: "chapter-what-we-do", label: "Ecosystem" },
+  { id: "chapter-who-we-serve", label: "Who We Serve" },
+  { id: "chapter-closing", label: "Invitation" },
+];
+
+/* ------------------------------ Experience A & C: Cinematic Opening + Raymarched 3D Continuum Sculpture ------------------------------ */
 const Hero = () => {
   const [reelIndex, setReelIndex] = useState(0);
   const heroRef = useRef(null);
@@ -55,30 +67,27 @@ const Hero = () => {
     target: heroRef,
     offset: ["start start", "end start"],
   });
-  const stageY = useTransform(scrollYProgress, [0, 1], [0, -72]);
-  const stageOpacity = useTransform(scrollYProgress, [0, 0.72], [1, 0.12]);
+  const stageY = useTransform(scrollYProgress, [0, 1], [0, -68]);
+  const stageOpacity = useTransform(scrollYProgress, [0, 0.78], [1, 0.14]);
 
   useEffect(() => {
     if (reduce) return undefined;
     const id = window.setInterval(() => {
       setReelIndex((prev) => (prev + 1) % HERO_REEL.length);
-    }, 5200);
+    }, 5600);
     return () => window.clearInterval(id);
   }, [reduce]);
 
   return (
     <section
       ref={heroRef}
-      className="on-dark relative flex min-h-[100svh] flex-col justify-between overflow-hidden bg-navy-950 pt-28 text-white sm:pt-32"
+      className="on-dark relative flex min-h-[100svh] flex-col justify-between overflow-hidden bg-navy-950 pt-24 text-white sm:pt-28"
       data-testid="home-hero"
     >
-      {/* Layer 1: Live GPU WebGL Fluid Light Shader */}
-      <LiquidAuroraCanvas />
+      {/* Layer 1: Live GPU WebGL Fluid Light Shader — Hero Chromatic Mode */}
+      <LiquidAuroraCanvas variant="hero" />
 
-      {/* Layer 2: True 3D WebGL Volumetric Infinity-Current Field (scroll + pointer reactive) */}
-      <EnterpriseField3D density="hero" className="opacity-85" />
-
-      {/* Layer 3: Full-bleed crossfading atmospheric enterprise photography */}
+      {/* Layer 2: Restrained atmospheric enterprise film backdrop (low opacity so typography & 3D sculpture lead cleanly) */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
         {HERO_REEL.map((item, i) => {
           const active = reelIndex === i;
@@ -87,8 +96,8 @@ const Hero = () => {
               key={item.tag}
               initial={false}
               animate={{
-                opacity: active ? 0.34 : 0,
-                scale: reduce ? 1 : active ? 1.02 : 1.09,
+                opacity: active ? 0.16 : 0,
+                scale: reduce ? 1 : active ? 1.02 : 1.08,
               }}
               transition={{ duration: 1.1, ease: EASE_OUT }}
               className="absolute inset-0"
@@ -103,96 +112,112 @@ const Hero = () => {
             </motion.div>
           );
         })}
-        {/* Deep cinematic lighting vignette for high typographic contrast */}
-        <div className="absolute inset-0 bg-gradient-to-b from-navy-950/75 via-navy-950/40 to-navy-950" />
-        <div className="absolute inset-0 bg-gradient-to-r from-navy-950/90 via-navy-950/35 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-b from-navy-950/75 via-navy-950/35 to-navy-950" />
+        <div className="absolute inset-0 bg-gradient-to-r from-navy-950/92 via-navy-950/55 to-navy-950/20" />
       </div>
 
-      {/* Main Editorial Opening Stage with scroll-linked lift */}
+      {/* Main Editorial Opening Stage: Asymmetric Typographic Left + Raymarched 3D Optical Glass Sculpture Right */}
       <motion.div
         style={reduce ? undefined : { y: stageY, opacity: stageOpacity }}
-        className="becci-container relative z-10 my-auto py-12 md:py-16"
+        className="becci-container relative z-10 my-auto py-6 sm:py-10 md:py-12"
       >
-        <div className="max-w-4xl">
-          <div className="inline-flex items-center gap-3 rounded-full glass-pill px-4 py-1.5">
-            <span className="h-2 w-2 rounded-full bg-gold" aria-hidden="true" />
-            <span className="font-heading text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-navy-100">
-              {ORG.full}
-            </span>
+        <div className="grid items-center gap-6 lg:grid-cols-[1.15fr_0.85fr] lg:gap-10">
+          <div>
+            <div className="inline-flex items-center gap-3 rounded-full glass-pill px-4 py-1.5">
+              <span className="h-2 w-2 rounded-full bg-teal" aria-hidden="true" />
+              <span className="font-heading text-[0.66rem] font-semibold uppercase tracking-[0.18em] text-ice sm:text-[0.7rem]">
+                {ORG.full}
+              </span>
+            </div>
+
+            <SplitHeadline
+              lines={["Building Businesses.", "Building Bharat."]}
+              highlightWord="Bharat"
+              highlightClass="text-gradient-teal"
+              className="mt-5 display-head text-[3.35rem] leading-[0.88] text-white sm:mt-6 sm:text-[5.4rem] lg:text-[6.8rem] xl:text-[7.4rem]"
+            />
+
+            <motion.p
+              initial={reduce ? false : { opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.24, ease: EASE_OUT }}
+              className="mt-4 max-w-xl font-body text-[0.95rem] leading-relaxed text-frost/90 sm:mt-6 sm:text-lg"
+            >
+              {ORG.hero}
+            </motion.p>
+
+            <motion.div
+              initial={reduce ? false : { opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.34, ease: EASE_OUT }}
+              className="mt-6 flex flex-col gap-3 sm:mt-8 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4"
+            >
+              <Magnetic className="w-full sm:w-auto">
+                <CTA to="/about" variant="teal" testid="hero-explore-cta" className="w-full sm:w-auto">
+                  Explore BECCI
+                </CTA>
+              </Magnetic>
+              <Magnetic strength={0.12} className="w-full sm:w-auto">
+                <CTA to="/membership" variant="outlineWhite" testid="hero-membership-cta" className="w-full sm:w-auto">
+                  Membership information
+                </CTA>
+              </Magnetic>
+            </motion.div>
           </div>
 
-          <SplitHeadline
-            lines={["Building Businesses.", "Building Bharat."]}
-            highlightWord="Bharat"
-            className="mt-7 display-head text-[4rem] leading-[0.88] text-white sm:text-[5.8rem] lg:text-[7.6rem]"
-          />
-
-          <motion.p
-            initial={reduce ? false : { opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.25, ease: EASE_OUT }}
-            className="mt-7 max-w-2xl font-body text-lg leading-relaxed text-navy-100/90 sm:text-xl"
-          >
-            {ORG.hero}
-          </motion.p>
-
-          <motion.div
-            initial={reduce ? false : { opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.35, ease: EASE_OUT }}
-            className="mt-9 flex flex-wrap items-center gap-4"
-          >
-            <Magnetic>
-              <CTA to="/about" variant="gold" testid="hero-explore-cta">
-                Explore BECCI
-              </CTA>
-            </Magnetic>
-            <Magnetic strength={0.16}>
-              <CTA to="/membership" variant="outlineWhite" testid="hero-membership-cta">
-                Membership information
-              </CTA>
-            </Magnetic>
-          </motion.div>
+          {/* Signature 3D Visual: Raymarched Translucent Glass Continuum Sculpture */}
+          <div className="relative mx-auto flex h-[200px] w-full max-w-[360px] items-center justify-center sm:h-[310px] sm:max-w-[440px] lg:h-[460px] lg:max-w-none">
+            <BecciPrismSculpture3D mode="hero" />
+            <div className="glass-pill pointer-events-none absolute bottom-1 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full px-3.5 py-1 font-heading text-[0.6rem] font-semibold uppercase tracking-[0.16em] text-ice/90 sm:bottom-2 sm:text-[0.62rem]">
+              <span className="text-teal-bright">∞</span> Open Continuum · Community &amp; Commerce
+            </div>
+          </div>
         </div>
       </motion.div>
 
-      {/* Floating Glass Control & Orientation Capsule with specular spotlight */}
-      <div className="becci-container relative z-10 pb-8 sm:pb-10">
+      {/* Floating Iridescent Glass Control & Visual Film Capsule */}
+      <div className="becci-container relative z-10 pb-6 sm:pb-9">
         <GlassSpotlight
           tone="dark"
-          className="glass-dark flex flex-col justify-between gap-6 rounded-2xl p-5 sm:p-6 lg:flex-row lg:items-center"
+          className="glass-iridescent flex flex-col justify-between gap-4 rounded-2xl p-4 sm:gap-5 sm:p-5 lg:flex-row lg:items-center"
         >
           <div className="relative z-10 flex items-center gap-4">
-            <InstitutionalSeal className="h-12 w-12 shrink-0 sm:h-14 sm:w-14" />
+            <div className="relative h-14 w-20 shrink-0 overflow-hidden rounded-xl ring-1 ring-ice/25">
+              <Img
+                name={HERO_REEL[reelIndex].img}
+                sizes="120px"
+                alt={HERO_REEL[reelIndex].alt}
+                className="h-full w-full object-cover"
+              />
+            </div>
             <div>
-              <p className="font-heading text-xs font-semibold uppercase tracking-[0.18em] text-gold">
+              <p className="font-heading text-xs font-semibold uppercase tracking-[0.18em] text-teal-bright">
                 {HERO_REEL[reelIndex].tag}
               </p>
-              <p className="mt-1 max-w-md font-body text-xs leading-relaxed text-navy-100/85 sm:text-sm">
+              <p className="mt-1 max-w-md font-body text-xs leading-relaxed text-ice/90 sm:text-sm">
                 {HERO_REEL[reelIndex].caption}
               </p>
             </div>
           </div>
 
-          <div className="relative z-10 flex flex-wrap items-center justify-between gap-4 border-t border-white/10 pt-4 lg:border-l lg:border-t-0 lg:pl-6 lg:pt-0">
-            {/* Interactive backdrop film switcher with spring highlight */}
-            <div className="flex items-center gap-1.5 rounded-full bg-white/[0.06] p-1">
+          <div className="relative z-10 flex flex-wrap items-center justify-between gap-4 border-t border-ice/15 pt-4 lg:border-l lg:border-t-0 lg:pl-6 lg:pt-0">
+            <div className="flex w-full items-center gap-1 rounded-full bg-white/[0.06] p-1 sm:w-auto sm:gap-1.5">
               {HERO_REEL.map((item, i) => (
                 <button
                   key={item.tag}
                   type="button"
                   onClick={() => setReelIndex(i)}
-                  className={`relative rounded-full px-3.5 py-1.5 font-heading text-[0.68rem] font-semibold uppercase tracking-wider transition-colors ${
+                  className={`relative min-h-[38px] flex-1 rounded-full px-3.5 py-2 font-heading text-[0.68rem] font-semibold uppercase tracking-wider transition-colors sm:flex-none ${
                     reelIndex === i
                       ? "text-navy-950"
-                      : "text-navy-100/75 hover:text-white"
+                      : "text-ice/80 hover:text-white"
                   }`}
                 >
                   {reelIndex === i && (
                     <motion.span
                       layoutId={reduce ? undefined : "hero-reel-pill"}
                       transition={{ type: "spring", stiffness: 380, damping: 32 }}
-                      className="absolute inset-0 rounded-full bg-gold"
+                      className="absolute inset-0 rounded-full bg-teal"
                       aria-hidden="true"
                     />
                   )}
@@ -201,9 +226,12 @@ const Hero = () => {
               ))}
             </div>
 
-            <div className="hidden text-right sm:block">
-              <p className="font-heading text-xs font-semibold text-white">Section 8 Not-for-Profit</p>
-              <p className="tabular font-body text-[0.7rem] text-navy-300">CIN {CONTACT.cin}</p>
+            <div className="hidden items-center gap-3 sm:flex">
+              <InstitutionalSeal className="h-10 w-10 shrink-0" />
+              <div className="text-right">
+                <p className="font-heading text-xs font-semibold text-white">Section 8 Not-for-Profit</p>
+                <p className="tabular font-body text-[0.7rem] text-ice/75">CIN {CONTACT.cin}</p>
+              </div>
             </div>
           </div>
         </GlassSpotlight>
@@ -224,33 +252,36 @@ const AcronymChapter = () => (
 /* ------------------------------ Chapter 3: The People & Capability ------------------------------ */
 const WhyBahujan = () => (
   <section
-    className="on-dark section relative overflow-hidden bg-[#041022] text-white"
+    className="on-dark section relative overflow-hidden bg-navy-900 text-white"
     data-testid="chapter-bahujan"
   >
-    {/* Subtle ambient radial lighting (no geometric dot grid) */}
+    {/* Calm Ice-Blue + subtle Teal directional light (distinct mood from Hero) */}
     <div
-      className="pointer-events-none absolute -right-40 top-0 h-[620px] w-[620px] rounded-full opacity-25 blur-3xl"
-      style={{ background: "radial-gradient(circle, #1769C2 0%, transparent 70%)" }}
+      className="pointer-events-none absolute inset-0"
+      style={{
+        background:
+          "radial-gradient(ellipse 65% 55% at 88% 8%, rgba(184,215,250,0.14), transparent 62%), radial-gradient(ellipse 55% 45% at 12% 92%, rgba(0,184,169,0.12), transparent 62%)",
+      }}
       aria-hidden="true"
     />
 
     <div className="becci-container relative z-10">
       <div className="grid gap-12 lg:grid-cols-[1.15fr_0.85fr] lg:items-end lg:gap-16">
         <div>
-          <Eyebrow tone="gold">The People &amp; Capability</Eyebrow>
+          <Eyebrow tone="tealDark">The People &amp; Capability</Eyebrow>
           <h2 className="mt-4 font-heading text-h1 font-bold leading-[1.03] text-white">
             The skills of the many have always built this economy.
           </h2>
         </div>
         <div>
-          <p className="font-body text-lead text-navy-100/85">{WHY_BAHUJAN.intro}</p>
-          <p className="mt-4 font-body text-sm italic leading-relaxed text-gold-champagne/90">
+          <p className="font-body text-lead text-frost/88">{WHY_BAHUJAN.intro}</p>
+          <p className="mt-4 font-body text-sm italic leading-relaxed text-ice/90">
             {WHY_BAHUJAN.thought}
           </p>
         </div>
       </div>
 
-      {/* Wide Cinematic Photography Gallery with Scroll-Linked Layered Parallax */}
+      {/* Wide Cinematic Photography Gallery with Scroll-Controlled Aperture Reveal & Layered Parallax */}
       <div className="mt-14 grid gap-5 md:grid-cols-12">
         {[
           { img: "craft", span: "md:col-span-5", offset: 18, label: "Weaving & Looms", sub: "Generational textile & craft mastery" },
@@ -258,50 +289,52 @@ const WhyBahujan = () => (
           { img: "farmer", span: "md:col-span-3", offset: 22, label: "Agrarian Enterprise", sub: "Food processing & rural value chains" },
         ].map((card) => (
           <ParallaxFrame key={card.label} offset={card.offset} className={card.span}>
-            <div className="group relative overflow-hidden rounded-2xl bg-navy-900 shadow-lift">
-              <Img
-                name={card.img}
-                sizes="(min-width: 768px) 440px, 100vw"
-                alt={card.label}
-                className="h-72 w-full object-cover transition-transform duration-700 group-hover:scale-105 md:h-80"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-navy-950/90 via-navy-950/15 to-transparent" />
-              <div className="glass-dark absolute bottom-4 left-4 right-4 rounded-xl px-4 py-3">
-                <p className="font-heading text-sm font-bold text-white">{card.label}</p>
-                <p className="mt-0.5 font-body text-xs text-navy-100/80">{card.sub}</p>
+            <CinemaAperture>
+              <div className="group relative overflow-hidden rounded-2xl bg-navy-950 shadow-lift ring-1 ring-ice/12">
+                <Img
+                  name={card.img}
+                  sizes="(min-width: 768px) 440px, 100vw"
+                  alt={card.label}
+                  className="h-72 w-full object-cover transition-transform duration-700 group-hover:scale-105 md:h-80"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-navy-950/92 via-navy-950/18 to-transparent" />
+                <div className="glass-dark absolute bottom-4 left-4 right-4 rounded-xl px-4 py-3">
+                  <p className="font-heading text-sm font-bold text-white">{card.label}</p>
+                  <p className="mt-0.5 font-body text-xs text-ice/85">{card.sub}</p>
+                </div>
               </div>
-            </div>
+            </CinemaAperture>
           </ParallaxFrame>
         ))}
       </div>
 
-      {/* Floating Glass Quotation Lens with Optical Specular Spotlight */}
+      {/* Floating Glass Heritage Quotation Lens (Champagne Gold reserved for the timeless motto) */}
       <GlassSpotlight
         tone="dark"
-        className="glass-dark mt-14 grid gap-8 rounded-3xl p-8 sm:p-12 lg:grid-cols-[1.15fr_0.85fr] lg:items-center"
+        className="glass-iridescent mt-14 grid gap-8 rounded-3xl p-8 sm:p-12 lg:grid-cols-[1.15fr_0.85fr] lg:items-center"
       >
         <figure className="relative z-10">
-          <Symbol variant="white" className="mb-5 h-6 w-auto opacity-75" />
+          <Symbol variant="white" className="mb-5 h-6 w-auto opacity-80" />
           <blockquote className="font-serif text-3xl italic leading-snug text-gold sm:text-4xl">
             “{WHY_BAHUJAN.quote.text}”
           </blockquote>
           <figcaption className="mt-4">
             <p className="font-body text-base text-white/90">{WHY_BAHUJAN.quote.translation}</p>
-            <p className="mt-2 font-heading text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-navy-300">
+            <p className="mt-2 font-heading text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-ice/75">
               {WHY_BAHUJAN.quote.attribution} · {WHY_BAHUJAN.quote.note}
             </p>
           </figcaption>
         </figure>
 
         <div className="relative z-10">
-          <p className="font-heading text-xs font-semibold uppercase tracking-[0.2em] text-navy-300">
+          <p className="font-heading text-xs font-semibold uppercase tracking-[0.2em] text-teal-bright">
             Productive traditions across Bharat
           </p>
           <div className="mt-4 flex flex-wrap gap-2">
             {WHY_BAHUJAN.occupations.map((o) => (
               <span
                 key={o}
-                className="glass-pill rounded-full px-4 py-2 font-body text-xs font-medium text-white"
+                className="glass-pill rounded-full px-4 py-2 font-body text-xs font-medium text-frost"
               >
                 {o}
               </span>
@@ -316,25 +349,25 @@ const WhyBahujan = () => (
 /* ------------------------------ Chapter 5: Full-Bleed Vision/Mission + Economic Multiplier ------------------------------ */
 const VisionAndBelief = () => (
   <section className="bg-white" data-testid="chapter-vision-mission">
-    {/* Seamless Full-Bleed Vision & Mission Split (zero card boxes) */}
+    {/* Seamless Full-Bleed Midnight Navy / Frost White Split */}
     <div className="grid md:grid-cols-2">
-      <div className="on-dark relative overflow-hidden bg-navy-950 px-8 py-20 text-white sm:px-14 lg:px-20 lg:py-28">
+      <div className="on-dark relative overflow-hidden bg-navy-900 px-8 py-20 text-white sm:px-14 lg:px-20 lg:py-28">
         <div
-          className="pointer-events-none absolute -left-24 -top-24 h-72 w-72 rounded-full opacity-25 blur-3xl"
-          style={{ background: "radial-gradient(circle, #3D8FE8 0%, transparent 70%)" }}
+          className="pointer-events-none absolute -left-24 -top-24 h-80 w-80 rounded-full opacity-20 blur-3xl"
+          style={{ background: "radial-gradient(circle, #00B8A9 0%, transparent 70%)" }}
           aria-hidden="true"
         />
         <div className="relative z-10 max-w-xl lg:ml-auto">
-          <Eyebrow tone="gold">Vision</Eyebrow>
+          <Eyebrow tone="tealDark">Vision</Eyebrow>
           <p className="mt-6 font-heading text-2xl font-semibold leading-snug text-white sm:text-3xl">
             {VISION_MISSION.vision.text}
           </p>
         </div>
       </div>
 
-      <div className="bg-paper px-8 py-20 text-navy-950 sm:px-14 lg:px-20 lg:py-28">
+      <div className="bg-frost px-8 py-20 text-navy-950 sm:px-14 lg:px-20 lg:py-28">
         <div className="max-w-xl">
-          <Eyebrow tone="antique">Mission</Eyebrow>
+          <Eyebrow tone="teal">Mission</Eyebrow>
           <p className="mt-6 font-heading text-2xl font-semibold leading-snug text-navy-950 sm:text-3xl">
             {VISION_MISSION.mission.text}
           </p>
@@ -360,7 +393,7 @@ const VisionAndBelief = () => (
 
 /* ------------------------------ Chapter 6: Immersive Glass Business Ecosystem ------------------------------ */
 const WhatWeDo = () => (
-  <section className="section bg-navy-50/50" data-testid="chapter-what-we-do">
+  <section className="section bg-frost" data-testid="chapter-what-we-do">
     <div className="becci-container">
       <SectionHeading
         eyebrow="The Business Ecosystem"
@@ -373,12 +406,12 @@ const WhatWeDo = () => (
       {/* Unboxed Editorial 6 Areas of Work & 4 Stakeholder Categories */}
       <div className="mt-20 grid gap-16 lg:grid-cols-[1fr_1fr]">
         <div>
-          <Eyebrow>Core focus</Eyebrow>
+          <Eyebrow tone="teal">Core focus</Eyebrow>
           <h3 className="mt-3 font-heading text-2xl font-bold text-navy-950">Six areas of work</h3>
           <ul className="mt-6 divide-y divide-navy-800/10 border-y border-navy-800/10">
             {WORK_AREAS.map((w, i) => (
               <li key={i} className="flex items-baseline gap-5 py-4">
-                <span className="tabular font-display text-xl text-gold-antique">0{i + 1}</span>
+                <span className="tabular font-display text-xl text-teal-deep">0{i + 1}</span>
                 <span className="font-body text-base font-medium text-navy-950">{w}</span>
               </li>
             ))}
@@ -387,7 +420,7 @@ const WhatWeDo = () => (
 
         <div className="flex flex-col justify-between">
           <div>
-            <Eyebrow tone="antique">Collaboration</Eyebrow>
+            <Eyebrow tone="teal">Collaboration</Eyebrow>
             <h3 className="mt-3 font-heading text-2xl font-bold text-navy-950">
               The ecosystem we seek to work alongside
             </h3>
@@ -396,7 +429,7 @@ const WhatWeDo = () => (
             </p>
             <div className="mt-6 grid gap-6 sm:grid-cols-2">
               {STAKEHOLDERS.map((s) => (
-                <div key={s.name} className="border-t border-navy-800/15 pt-4">
+                <div key={s.name} className="border-t border-ice pt-4">
                   <p className="font-heading text-base font-bold text-navy-950">{s.name}</p>
                   <p className="mt-1.5 font-body text-sm leading-relaxed text-navy-800/75">{s.desc}</p>
                 </div>
@@ -483,10 +516,10 @@ const WhoWeServe = () => (
           ))}
           <Link
             to="/who-we-serve"
-            className="inline-flex items-center gap-2 rounded-full bg-navy-950 px-5 py-3 font-heading text-sm font-semibold text-white transition-colors hover:bg-navy-700"
+            className="inline-flex items-center gap-2 rounded-full bg-navy-950 px-5 py-3 font-heading text-sm font-semibold text-white transition-colors hover:bg-teal-deep"
           >
             <span>Explore all sectors</span>
-            <ArrowUpRight className="h-4 w-4 text-gold" aria-hidden="true" />
+            <ArrowUpRight className="h-4 w-4 text-teal-bright" aria-hidden="true" />
           </Link>
         </div>
       </div>
@@ -496,7 +529,7 @@ const WhoWeServe = () => (
 
 /* ------------------------------ Chapter 8: National-to-City Reach & Dedicated Wings ------------------------------ */
 const Ecosystem = () => (
-  <section className="section bg-paper" data-testid="chapter-ecosystem">
+  <section className="section bg-frost" data-testid="chapter-ecosystem">
     <div className="becci-container grid gap-16 lg:grid-cols-[1fr_1fr]">
       <div>
         <SectionHeading
@@ -516,7 +549,7 @@ const Ecosystem = () => (
 
       <div className="flex flex-col justify-between lg:pt-12">
         <div>
-          <Eyebrow tone="antique">Representation</Eyebrow>
+          <Eyebrow tone="teal">Representation</Eyebrow>
           <h3 className="mt-3 font-heading text-2xl font-bold text-navy-950">Dedicated wings</h3>
           <p className="mt-2 font-body text-sm text-navy-800/75">
             Focused forums ensuring women founders and young entrepreneurs shape the chamber from the start.
@@ -538,15 +571,15 @@ const Ecosystem = () => (
           </div>
         </div>
 
-        <div className="on-dark mt-8 rounded-2xl bg-navy-950 p-7 text-white shadow-lift">
-          <p className="eyebrow text-gold">National rollout</p>
-          <p className="mt-2 font-body text-sm leading-relaxed text-navy-100/85">
+        <div className="on-dark mt-8 rounded-2xl bg-navy-950 p-7 text-white shadow-lift ring-1 ring-ice/15">
+          <p className="eyebrow text-teal-bright">National rollout</p>
+          <p className="mt-2 font-body text-sm leading-relaxed text-ice/90">
             Phase 01 focuses on district-level outreach and state membership desks to reach artisans, MSME owners and aspiring founders.
           </p>
           <div className="mt-4">
             <Link
               to="/wings-chapters"
-              className="link-underline inline-flex items-center gap-1.5 font-heading text-xs font-semibold uppercase tracking-wider text-gold"
+              className="link-underline inline-flex min-h-[40px] items-center gap-1.5 font-heading text-xs font-semibold uppercase tracking-wider text-teal-bright lg:min-h-0"
             >
               <span>Wings &amp; Chapters structure</span>
               <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
@@ -575,7 +608,7 @@ const MembershipRoad = () => (
 
       <MembershipSteps />
 
-      <div className="mt-8 flex items-start gap-3.5 rounded-2xl bg-navy-50/80 p-5">
+      <div className="mt-8 flex items-start gap-3.5 rounded-2xl border border-ice/60 bg-frost p-5">
         <Symbol variant="navy" className="mt-0.5 h-5 w-auto shrink-0" />
         <p className="font-body text-sm leading-relaxed text-navy-900/80">{MEMBERSHIP_NOTE}</p>
       </div>
@@ -583,7 +616,7 @@ const MembershipRoad = () => (
       <div className="mt-16 border-t border-navy-800/10 pt-14">
         <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
           <div>
-            <Eyebrow tone="antique">Transparency</Eyebrow>
+            <Eyebrow tone="teal">Transparency</Eyebrow>
             <h3 className="mt-2 font-heading text-2xl font-bold text-navy-950">The road ahead</h3>
             <p className="mt-1.5 max-w-2xl font-body text-sm text-navy-800/75">
               The public website and scheme information are the present phase. Future services are shown honestly — none are operational yet.
@@ -610,22 +643,57 @@ const MembershipRoad = () => (
   </section>
 );
 
-/* ------------------------------ Chapter 10: Living 3D WebGL Closing Invitation ------------------------------ */
+/* ------------------------------ Experience B Bridge: Scroll-Illuminated Institutional Manifesto ------------------------------ */
+const InstitutionalBridge = () => (
+  <section className="on-dark relative overflow-hidden bg-navy-950 py-24 text-white md:py-32">
+    <div
+      aria-hidden="true"
+      className="pointer-events-none absolute inset-0"
+      style={{
+        background:
+          "radial-gradient(ellipse 60% 50% at 50% 50%, rgba(0,184,169,0.12), transparent 68%)",
+      }}
+    />
+    <div className="becci-container relative z-10 max-w-5xl text-center">
+      <Eyebrow tone="tealDark" className="justify-center">
+        Institutional Standing
+      </Eyebrow>
+      <ScrollIlluminateStatement
+        text="BECCI is not a charity, a political organisation or a government department — it is an institutional bridge built for economic participation, enterprise growth and nation building."
+        highlightWords={["bridge", "economic", "enterprise", "nation", "building"]}
+        className="mt-8 font-heading text-statement font-semibold leading-[1.22] text-frost"
+      />
+    </div>
+  </section>
+);
+
+/* ------------------------------ Experience E: Signature 3D Glass Closing Invitation ------------------------------ */
 const Closing = () => (
   <section
     className="on-dark relative overflow-hidden bg-navy-950 py-28 text-white md:py-36"
     data-testid="chapter-closing"
   >
-    <LiquidAuroraCanvas />
-    <EnterpriseField3D density="closing" className="opacity-70" />
+    <LiquidAuroraCanvas variant="closing" defer />
+    {/* Ambient centered 3D Raymarched Optical Glass Sculpture — lazily initialized near viewport */}
     <div
-      className="pointer-events-none absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/35 to-navy-950/80"
+      aria-hidden="true"
+      className="pointer-events-none absolute left-1/2 top-1/2 h-[420px] w-[420px] -translate-x-1/2 -translate-y-1/2 opacity-50 sm:h-[540px] sm:w-[540px]"
+    >
+      <BecciPrismSculpture3D mode="closing" defer />
+    </div>
+    <div
+      className="pointer-events-none absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/45 to-navy-950/85"
       aria-hidden="true"
     />
     <div className="becci-container relative z-10 text-center">
       <Reveal>
-        <Symbol variant="white" className="mx-auto mb-7 h-8 w-auto opacity-90" />
-        <h2 className="mx-auto max-w-5xl display-head text-[2.8rem] leading-[0.96] text-white sm:text-6xl lg:text-[5.2rem]">
+        <div className="inline-flex items-center gap-3 rounded-full glass-pill px-4 py-1.5">
+          <Symbol variant="white" className="h-4 w-auto" />
+          <span className="font-heading text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-ice">
+            Section 8 Not-for-Profit · Begumpet, Hyderabad · Pan-India Mission
+          </span>
+        </div>
+        <h2 className="mx-auto mt-8 max-w-5xl display-head text-[2.8rem] leading-[0.96] text-white sm:text-6xl lg:text-[5.2rem]">
           From skill to enterprise.
           <br />
           From enterprise to prosperity.
@@ -636,7 +704,7 @@ const Closing = () => (
       <Reveal delay={0.12}>
         <div className="mt-12 flex flex-wrap justify-center gap-4">
           <Magnetic>
-            <CTA to="/membership" variant="gold" testid="closing-membership">
+            <CTA to="/membership" variant="teal" testid="closing-membership">
               Explore Membership
             </CTA>
           </Magnetic>
@@ -659,10 +727,12 @@ const Closing = () => (
 export default function Home() {
   return (
     <>
+      <ChapterCompass chapters={HOME_CHAPTERS} />
       <Hero />
       <AcronymChapter />
       <WhyBahujan />
       <TransformationScroll />
+      <InstitutionalBridge />
       <VisionAndBelief />
       <WhatWeDo />
       <WhoWeServe />

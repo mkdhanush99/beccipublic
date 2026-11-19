@@ -32,7 +32,7 @@ export const EmpowermentChain = () => {
             >
               <span
                 className={`tabular font-display text-3xl leading-none transition-colors sm:text-4xl ${
-                  last || on ? "text-gold-antique" : "text-navy-300 group-hover:text-navy-700"
+                  last || on ? "text-teal-deep" : "text-ice group-hover:text-teal-deep"
                 }`}
               >
                 0{i + 1}
@@ -40,7 +40,7 @@ export const EmpowermentChain = () => {
               <div className="min-w-0 flex-1">
                 <h3
                   className={`font-heading text-lg font-bold transition-colors sm:text-xl ${
-                    last ? "text-navy-950" : on ? "text-navy-700" : "text-navy-950"
+                    last ? "text-navy-950" : on ? "text-teal-ink" : "text-navy-950"
                   }`}
                 >
                   {stage.title}
