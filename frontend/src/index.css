@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;1,400;1,500;1,600&display=swap');
+/* Fonts are loaded via <link> in public/index.html (non-blocking, preconnected). */
+@import "./styles/tokens.css";
 
 @tailwind base;
 @tailwind components;
@@ -35,41 +36,66 @@
   }
   html {
     scroll-behavior: smooth;
+    scroll-padding-top: calc(var(--header-h) + 20px);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    -webkit-tap-highlight-color: rgba(212, 175, 90, 0.18);
   }
   body {
-    @apply bg-background text-foreground font-body;
-    overflow-x: hidden;
+    @apply bg-background font-body text-navy-950;
+    overflow-x: clip;
+    font-feature-settings: "ss01", "cv11";
   }
   ::selection {
-    background: #D4AF5A;
-    color: #061B3A;
+    background: rgb(var(--c-gold));
+    color: rgb(var(--c-navy-900));
   }
   h1, h2, h3, h4, h5 {
     @apply font-heading;
+    text-wrap: balance;
+    scroll-margin-top: calc(var(--header-h) + 20px);
   }
-  /* visible focus */
-  a:focus-visible, button:focus-visible, [tabindex]:focus-visible {
-    outline: 2px solid #1769C2;
+  p { text-wrap: pretty; }
+  img { max-width: 100%; }
+  button, a, input, textarea, select {
+    touch-action: manipulation;
+  }
+
+  /* Visible, brand-consistent keyboard focus */
+  a:focus-visible, button:focus-visible, [tabindex]:focus-visible,
+  input:focus-visible, textarea:focus-visible {
+    outline: 2px solid rgb(var(--c-navy-500));
     outline-offset: 3px;
     border-radius: 2px;
+  }
+  .on-dark a:focus-visible, .on-dark button:focus-visible {
+    outline-color: rgb(var(--c-gold));
   }
 }
 
 @layer components {
   .becci-container {
-    @apply mx-auto w-full max-w-content px-6 md:px-10;
+    width: 100%;
+    max-width: var(--container);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
   }
+  .section { padding-block: var(--space-section); }
+  .section-sm { padding-block: var(--space-section-sm); }
+
   .display-head {
-    @apply font-display uppercase leading-[0.92] tracking-[0.005em];
+    @apply font-display uppercase;
+    line-height: 0.9;
+    letter-spacing: 0.005em;
   }
   .eyebrow {
-    @apply font-heading text-[0.72rem] md:text-xs font-semibold uppercase tracking-[0.22em];
+    @apply font-heading text-[0.7rem] font-semibold uppercase tracking-[0.22em] md:text-xs;
   }
-  .link-underline {
-    position: relative;
-  }
+  .lead { @apply font-body text-lead; }
+  .tabular { font-variant-numeric: tabular-nums; }
+
+  .link-underline { position: relative; }
   .link-underline::after {
     content: "";
     position: absolute;
@@ -77,20 +103,108 @@
     width: 100%; height: 1.5px;
     background: currentColor;
     transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.35s cubic-bezier(0.22,1,0.36,1);
+    transform-origin: right;
+    transition: transform var(--dur-base) var(--ease-out);
   }
-  .link-underline:hover::after { transform: scaleX(1); }
+  .link-underline:hover::after,
+  .link-underline[aria-current="page"]::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
   .hair-rule { @apply border-t border-navy-800/15; }
+
+  /* Fine film grain for dark cinematic sections (pure CSS, no image request). */
+  .grain::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.065;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+
+  /* Hairline architectural grid behind dark heroes */
+  .blueprint {
+    background-image:
+      linear-gradient(rgb(var(--c-navy-400) / 0.09) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(var(--c-navy-400) / 0.09) 1px, transparent 1px);
+    background-size: 72px 72px;
+  }
+
+  /* Hover elevation gated behind pointer devices so touch taps don't stick */
+  @media (hover: hover) and (pointer: fine) {
+    .hover-lift:hover {
+      transform: translateY(-3px);
+    }
+  }
+
+  /* ---- Refined Glassmorphism Material System ---- */
+  .glass-dark {
+    background: linear-gradient(
+      145deg,
+      rgba(11, 45, 92, 0.52) 0%,
+      rgba(6, 27, 58, 0.72) 100%
+    );
+    backdrop-filter: blur(24px) saturate(165%);
+    -webkit-backdrop-filter: blur(24px) saturate(165%);
+    border: 1px solid rgba(184, 215, 250, 0.16);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.18),
+      0 24px 60px -24px rgba(3, 14, 30, 0.75);
+  }
+
+  .glass-light {
+    background: linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.82) 0%,
+      rgba(240, 246, 253, 0.72) 100%
+    );
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid rgba(11, 45, 92, 0.1);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.95),
+      0 16px 40px -20px rgba(6, 27, 58, 0.22);
+  }
+
+  .glass-pill {
+    background: rgba(6, 27, 58, 0.55);
+    backdrop-filter: blur(16px) saturate(160%);
+    -webkit-backdrop-filter: blur(16px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  }
+
+  .skip-link {
+    @apply sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-3 focus:z-[100] focus:rounded-sm focus:bg-gold focus:px-4 focus:py-2 focus:font-heading focus:text-sm focus:font-semibold focus:text-navy-950;
+  }
 }
 
-/* reduced motion */
+/* Reduced motion: preserve layout and color feedback, remove spatial movement */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
+  }
+}
+
+/* Reduced transparency: solidify frosted glass materials for legibility */
+@media (prefers-reduced-transparency: reduce) {
+  header[data-testid="site-header"] {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+}
+
+/* High contrast preference */
+@media (prefers-contrast: more) {
+  .border-navy-800\/10,
+  .border-navy-800\/12,
+  .border-navy-800\/15 {
+    border-color: rgb(var(--c-navy-900) / 0.45) !important;
   }
 }
 

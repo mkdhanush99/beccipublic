@@ -1,4 +1,7 @@
 /** @type {import('tailwindcss').Config} */
+// Colours, fonts and motion come from CSS variables in src/styles/tokens.css.
+const rgb = (v) => `rgb(var(${v}) / <alpha-value>)`;
+
 module.exports = {
   blocklist: ["overline"],
   darkMode: ["class"],
@@ -6,34 +9,43 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        display: ["'Bebas Neue'", "'Oswald'", "sans-serif"],
-        heading: ["'Plus Jakarta Sans'", "sans-serif"],
-        body: ["'Inter'", "sans-serif"],
-        serif: ["'Playfair Display'", "serif"],
+        display: ["var(--font-display)"],
+        heading: ["var(--font-heading)"],
+        body: ["var(--font-body)"],
+        serif: ["var(--font-serif)"],
+      },
+      fontSize: {
+        hero: ["var(--fs-hero)", { lineHeight: "0.88" }],
+        display: ["var(--fs-display)", { lineHeight: "0.92" }],
+        h1: ["var(--fs-h1)", { lineHeight: "1.04", letterSpacing: "-0.025em" }],
+        h2: ["var(--fs-h2)", { lineHeight: "1.06", letterSpacing: "-0.025em" }],
+        h3: ["var(--fs-h3)", { lineHeight: "1.2", letterSpacing: "-0.015em" }],
+        statement: ["var(--fs-statement)", { lineHeight: "1.18", letterSpacing: "-0.02em" }],
+        lead: ["var(--fs-lead)", { lineHeight: "1.6" }],
       },
       colors: {
-        // BECCI core blues
         navy: {
-          950: "#030E1E",
-          900: "#061B3A",
-          800: "#0B2D5C",
-          700: "#124B8C",
-          600: "#1769C2",
-          500: "#3D8FE8",
-          400: "#7CB4F2",
-          300: "#B8D7FA",
-          50: "#F0F6FD",
+          950: rgb("--c-navy-950"),
+          900: rgb("--c-navy-900"),
+          800: rgb("--c-navy-800"),
+          700: rgb("--c-navy-700"),
+          600: rgb("--c-navy-600"),
+          500: rgb("--c-navy-500"),
+          400: rgb("--c-navy-400"),
+          300: rgb("--c-navy-300"),
+          100: rgb("--c-navy-100"),
+          50: rgb("--c-navy-50"),
         },
-        brand: "#0A2352", // Continuum Navy (logo)
-        // Heritage accent palette
+        brand: rgb("--c-brand"),
         gold: {
-          DEFAULT: "#D4AF5A",
-          champagne: "#F0DDA8",
-          antique: "#A77B32",
+          DEFAULT: rgb("--c-gold"),
+          champagne: rgb("--c-gold-champagne"),
+          antique: rgb("--c-gold-antique"),
         },
-        ivory: "#F7F0E2",
-        burgundy: "#702E3D",
-        midnight: "#071426",
+        ivory: rgb("--c-ivory"),
+        paper: rgb("--c-paper"),
+        burgundy: rgb("--c-burgundy"),
+        midnight: rgb("--c-midnight"),
         // shadcn tokens
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
@@ -48,20 +60,39 @@ module.exports = {
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
       },
+      spacing: {
+        header: "var(--header-h)",
+        section: "var(--space-section)",
+        "section-sm": "var(--space-section-sm)",
+      },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
-      maxWidth: { content: "1240px" },
+      boxShadow: {
+        soft: "var(--shadow-soft)",
+        lift: "var(--shadow-lift)",
+      },
+      maxWidth: { content: "var(--container)" },
+      transitionTimingFunction: {
+        out: "var(--ease-out)",
+        "in-out-soft": "var(--ease-in-out)",
+      },
       keyframes: {
         "accordion-down": { from: { height: "0" }, to: { height: "var(--radix-accordion-content-height)" } },
         "accordion-up": { from: { height: "var(--radix-accordion-content-height)" }, to: { height: "0" } },
-        "draw-line": { from: { strokeDashoffset: "1" }, to: { strokeDashoffset: "0" } },
+        "spin-slow": { to: { transform: "rotate(360deg)" } },
+        "scroll-cue": {
+          "0%": { transform: "translateY(-100%)" },
+          "60%, 100%": { transform: "translateY(200%)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "spin-slow": "spin-slow 90s linear infinite",
+        "scroll-cue": "scroll-cue 2.4s var(--ease-in-out) infinite",
       },
     },
   },

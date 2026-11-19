@@ -1,0 +1,65 @@
+/*
+ * BECCI design tokens — single source of truth for colour, type, spacing and motion.
+ * Colours are stored as RGB channels so Tailwind opacity modifiers work
+ * (e.g. `text-navy-800/70`). Tailwind reads these in tailwind.config.js.
+ */
+:root {
+  /* ---- Core blues ---- */
+  --c-navy-950: 3 14 30;     /* Deep navy      #030E1E */
+  --c-navy-900: 6 27 58;     /* Primary navy   #061B3A */
+  --c-navy-800: 11 45 92;    /* Secondary navy #0B2D5C */
+  --c-navy-700: 18 75 140;   /* Corporate blue #124B8C */
+  --c-navy-600: 23 105 194;  /* Bright blue    #1769C2 */
+  --c-navy-500: 61 143 232;  /* Electric blue  #3D8FE8 */
+  --c-navy-400: 124 180 242; /* Light blue     #7CB4F2 */
+  --c-navy-300: 184 215 250; /* Pale blue      #B8D7FA */
+  --c-navy-100: 226 238 251;
+  --c-navy-50: 240 246 253;  /* Ice blue       #F0F6FD */
+  --c-brand: 10 35 82;       /* Continuum navy (logo) #0A2352 */
+
+  /* ---- Heritage accents ---- */
+  --c-gold: 212 175 90;          /* Imperial gold #D4AF5A */
+  --c-gold-champagne: 240 221 168;
+  --c-gold-antique: 167 123 50;
+  --c-ivory: 247 240 226;
+  --c-paper: 251 249 244;        /* warm off-white for editorial sections */
+  --c-burgundy: 112 46 61;
+  --c-midnight: 7 20 38;
+
+  /* ---- Typography ---- */
+  --font-display: "Bebas Neue", "Arial Narrow", sans-serif;
+  --font-heading: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Playfair Display", Georgia, serif;
+
+  /* Fluid type scale (min @ 360px → max @ 1440px) */
+  --fs-hero: clamp(3.4rem, 1.6rem + 8vw, 9.5rem);
+  --fs-display: clamp(2.6rem, 1.4rem + 5.2vw, 6.25rem);
+  --fs-h1: clamp(2.3rem, 1.6rem + 3vw, 4rem);
+  --fs-h2: clamp(1.95rem, 1.45rem + 2.1vw, 3.15rem);
+  --fs-h3: clamp(1.25rem, 1.1rem + 0.6vw, 1.6rem);
+  --fs-statement: clamp(1.6rem, 1.05rem + 2.35vw, 3.1rem);
+  --fs-lead: clamp(1.05rem, 0.98rem + 0.35vw, 1.3rem);
+
+  /* ---- Spacing ---- */
+  --header-h: 72px;
+  --space-section: clamp(5rem, 3.5rem + 6vw, 9.5rem);
+  --space-section-sm: clamp(3.5rem, 2.5rem + 4vw, 6rem);
+  --container: 1280px;
+  --gutter: clamp(1.25rem, 0.6rem + 2.6vw, 2.75rem);
+
+  /* ---- Motion ---- */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 180ms;
+  --dur-base: 320ms;
+  --dur-slow: 700ms;
+
+  /* ---- Elevation ---- */
+  --shadow-soft: 0 1px 2px rgb(var(--c-navy-950) / 0.04), 0 12px 32px -18px rgb(var(--c-navy-900) / 0.35);
+  --shadow-lift: 0 2px 4px rgb(var(--c-navy-950) / 0.05), 0 30px 60px -30px rgb(var(--c-navy-900) / 0.5);
+}
+
+@media (min-width: 1024px) {
+  :root { --header-h: 80px; }
+}

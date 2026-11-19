@@ -1,19 +1,21 @@
-import "@/App.css";
+import React, { lazy } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Toaster } from "@/components/ui/sonner";
 
 import Layout from "@/components/Layout";
 import Home from "@/pages/Home";
-import About from "@/pages/About";
-import WhatWeDo from "@/pages/WhatWeDo";
-import WhoWeServe from "@/pages/WhoWeServe";
-import Membership from "@/pages/Membership";
-import Schemes from "@/pages/Schemes";
-import WingsChapters from "@/pages/WingsChapters";
-import Knowledge from "@/pages/Knowledge";
-import Contact from "@/pages/Contact";
-import LegalPage from "@/pages/LegalPage";
-import NotFound from "@/pages/NotFound";
+
+// Inner pages are code-split so the homepage ships less JavaScript.
+const About = lazy(() => import("@/pages/About"));
+const WhatWeDo = lazy(() => import("@/pages/WhatWeDo"));
+const WhoWeServe = lazy(() => import("@/pages/WhoWeServe"));
+const Membership = lazy(() => import("@/pages/Membership"));
+const Schemes = lazy(() => import("@/pages/Schemes"));
+const WingsChapters = lazy(() => import("@/pages/WingsChapters"));
+const Knowledge = lazy(() => import("@/pages/Knowledge"));
+const Contact = lazy(() => import("@/pages/Contact"));
+const LegalPage = lazy(() => import("@/pages/LegalPage"));
+const NotFound = lazy(() => import("@/pages/NotFound"));
 
 function App() {
   return (

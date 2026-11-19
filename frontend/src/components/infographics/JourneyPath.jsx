@@ -1,39 +1,58 @@
 import React from "react";
 import { JOURNEY } from "@/data/becci";
-import { ChevronRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
+import { EASE_OUT, VIEWPORT } from "@/lib/motion";
+import { SkillToNationDiagram } from "@/components/illustrations/BecciArtwork";
 
-// SKILL -> ENTERPRISE -> PROSPERITY -> NATION BUILDING progression.
+// SKILL -> ENTERPRISE -> PROSPERITY -> NATION BUILDING 4-step progression
+// Anchored by the official BECCI Brand Kit v1.0 Skill-to-Nation elevation schematic.
 export const JourneyPath = () => {
   const reduce = useReducedMotion();
   return (
-    <div data-testid="journey-path" className="grid gap-4 md:grid-cols-7 md:items-stretch">
-      {JOURNEY.map((j, i) => (
-        <React.Fragment key={i}>
-          <motion.div
-            className="relative md:col-span-1 md:flex-1"
-            initial={reduce ? false : { opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.55, delay: i * 0.14, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <div className="flex h-full flex-col justify-between border-t-2 border-gold/80 bg-white/5 pt-5">
-              <div>
-                <span className="font-display text-sm tracking-widest text-gold">0{i + 1}</span>
-                <h3 className="mt-2 font-display text-2xl uppercase leading-none tracking-wide text-white sm:text-[1.7rem]">
-                  {j.step}
-                </h3>
+    <div data-testid="journey-path" className="space-y-8">
+      <SkillToNationDiagram />
+
+      <ol className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {JOURNEY.map((j, i) => {
+          const last = i === JOURNEY.length - 1;
+          return (
+            <motion.li
+              key={i}
+              className="relative"
+              initial={reduce ? false : { opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={VIEWPORT}
+              transition={{ duration: 0.45, delay: i * 0.08, ease: EASE_OUT }}
+            >
+              <div
+                className={`relative flex h-full flex-col justify-between rounded-sm border p-6 transition-colors ${
+                  last
+                    ? "border-gold/75 bg-gradient-to-b from-gold/15 to-navy-900/90"
+                    : "border-white/12 bg-navy-900/75 hover:border-gold/40"
+                }`}
+              >
+                <div>
+                  <div className="flex items-center justify-between">
+                    <span className="tabular font-display text-lg tracking-widest text-gold">
+                      0{i + 1}
+                    </span>
+                    {!last && (
+                      <ArrowRight className="h-4 w-4 text-navy-400" aria-hidden="true" />
+                    )}
+                  </div>
+                  <h3 className="mt-3 font-display text-2xl uppercase leading-none tracking-wide text-white sm:text-[1.85rem]">
+                    {j.step}
+                  </h3>
+                </div>
+                <p className="mt-4 border-t border-white/10 pt-3.5 font-body text-sm leading-relaxed text-navy-300">
+                  {j.line}
+                </p>
               </div>
-              <p className="mt-4 font-body text-sm leading-relaxed text-navy-300">{j.line}</p>
-            </div>
-          </motion.div>
-          {i < JOURNEY.length - 1 && (
-            <div className="hidden items-center justify-center md:flex">
-              <ChevronRight className="h-6 w-6 text-navy-500" />
-            </div>
-          )}
-        </React.Fragment>
-      ))}
+            </motion.li>
+          );
+        })}
+      </ol>
     </div>
   );
 };

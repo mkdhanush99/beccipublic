@@ -8,8 +8,8 @@ const CONTENT = {
     title: "Privacy Policy",
     intro: "A placeholder for BECCI's privacy policy.",
     body: [
-      "This is a public information website mockup. A full privacy policy will be published here before any personal information is collected.",
-      "In the current phase, the site does not run member login, application forms, payments or any feature that collects and stores personal data.",
+      "This is a public information website. A full privacy policy will be published here before any personal information is collected through member services.",
+      "In the current phase, the site does not run member login, application forms, payments or any member dashboard feature.",
     ],
   },
   terms: {
@@ -17,7 +17,7 @@ const CONTENT = {
     title: "Terms of Use",
     intro: "A placeholder for BECCI's terms of use.",
     body: [
-      "This is a public information website mockup. Full terms of use will be published here as the website develops.",
+      "Full terms of use will be published here as the website develops.",
       "Information about membership, schemes and future services is provided for general understanding and is subject to confirmation.",
     ],
   },
@@ -28,13 +28,15 @@ export default function LegalPage({ kind = "privacy" }) {
   return (
     <>
       <PageHero eyebrow={c.eyebrow} title={c.title} intro={c.intro} />
-      <section className="bg-white py-20 md:py-28">
+      <section className="section bg-paper">
         <div className="becci-container max-w-3xl">
-          <StatusChip label="[TO BE CONFIRMED]" />
-          <div className="mt-8 space-y-6">
-            {c.body.map((p, i) => (
-              <p key={i} className="font-body text-base leading-relaxed text-navy-800/80">{p}</p>
-            ))}
+          <div className="glass-light rounded-3xl p-8 md:p-12">
+            <StatusChip label="[TO BE CONFIRMED]" />
+            <div className="mt-6 space-y-5">
+              {c.body.map((p, i) => (
+                <p key={i} className="font-body text-base leading-relaxed text-navy-800/80">{p}</p>
+              ))}
+            </div>
           </div>
         </div>
       </section>

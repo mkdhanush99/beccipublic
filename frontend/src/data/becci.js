@@ -12,22 +12,62 @@ export const ORG = {
 
 export const NAV = [
   { label: "Home", to: "/" },
-  { label: "About BECCI", to: "/about" },
+  { label: "About BECCI", short: "About", to: "/about" },
   { label: "What We Do", to: "/what-we-do" },
   { label: "Who We Serve", to: "/who-we-serve" },
   { label: "Membership", to: "/membership" },
   { label: "Schemes", to: "/schemes" },
-  { label: "Wings & Chapters", to: "/wings-chapters" },
+  { label: "Wings & Chapters", short: "Chapters", to: "/wings-chapters" },
   { label: "Knowledge", to: "/knowledge" },
   { label: "Contact", to: "/contact" },
 ];
 
 export const ACRONYM = [
-  { letter: "B", word: "Bahujan", line: "Rooted in the many communities whose skills and labour have long powered India's economy." },
-  { letter: "E", word: "Entrepreneurs", line: "Built around founders, owners and makers who turn ideas and skills into enterprises." },
-  { letter: "C", word: "Chamber", line: "An organised, credible institution that convenes people, knowledge and opportunity." },
-  { letter: "C", word: "Commerce", line: "A focus on trade, markets and the exchange that keeps enterprises growing." },
-  { letter: "I", word: "Industry", line: "From manufacturing to services — the productive base of a stronger Bharat." },
+  {
+    letter: "B",
+    title: "Beginning of a Journey",
+    word: "Bahujan",
+    line: "Rooted in the many communities whose inherited skills, crafts and labour begin a new entrepreneurial journey.",
+    img: "craft",
+    to: "/about",
+    cta: "Why BECCI exists",
+  },
+  {
+    letter: "E",
+    title: "Enterprise & Entrepreneurship",
+    word: "Entrepreneurs",
+    line: "Built around founders, owners and makers who turn capabilities and ideas into formal, sustainable enterprises.",
+    img: "aspiring",
+    to: "/what-we-do",
+    cta: "What BECCI enables",
+  },
+  {
+    letter: "C",
+    title: "Community Building",
+    word: "Chamber",
+    line: "An organised, credible institution that convenes people, mentorship, knowledge and opportunity across Bharat.",
+    img: "about",
+    to: "/wings-chapters",
+    cta: "Explore our ecosystem",
+  },
+  {
+    letter: "C",
+    title: "Commerce & Collaboration",
+    word: "Commerce",
+    line: "A focus on trade, market pathways and institutional collaboration that keeps enterprises growing.",
+    img: "professionals",
+    to: "/who-we-serve",
+    cta: "Sectors & constituencies",
+  },
+  {
+    letter: "I",
+    title: "Impact Created",
+    word: "Industry",
+    line: "From manufacturing to services — generating employment, strengthening families and building a stronger Bharat.",
+    img: "manufacturers",
+    to: "/membership",
+    cta: "Participate in BECCI",
+  },
 ];
 
 export const WHY_BAHUJAN = {
@@ -92,12 +132,12 @@ export const STAKEHOLDERS = [
 ];
 
 export const AUDIENCES = [
-  { title: "Aspiring Entrepreneurs", line: "People ready to turn a skill or idea into a first enterprise.", img: "https://images.pexels.com/photos/7413908/pexels-photo-7413908.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=800&w=1000" },
-  { title: "Existing Businesses & MSMEs", line: "Owners looking to formalise, strengthen and grow.", img: "https://images.unsplash.com/photo-1653932548558-5e7154ef1deb?crop=entropy&cs=srgb&fm=jpg&q=85&w=1000" },
-  { title: "Manufacturers", line: "Makers building productive capacity and supply.", img: "https://images.pexels.com/photos/31336008/pexels-photo-31336008.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=800&w=1000" },
-  { title: "Professionals", line: "Service providers and specialists building practices.", img: "https://images.pexels.com/photos/31786661/pexels-photo-31786661.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=800&w=1000" },
-  { title: "Students & Young Entrepreneurs", line: "The next generation preparing to build.", img: "https://images.pexels.com/photos/40286202/pexels-photo-40286202.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=800&w=1000" },
-  { title: "Women Entrepreneurs", line: "Founders leading enterprises across every sector.", img: "https://images.unsplash.com/photo-1590650153855-d9e808231d41?crop=entropy&cs=srgb&fm=jpg&q=85&w=1000" },
+  { title: "Aspiring Entrepreneurs", line: "People ready to turn a skill or idea into a first enterprise.", img: "aspiring" },
+  { title: "Existing Businesses & MSMEs", line: "Owners looking to formalise, strengthen and grow.", img: "msme" },
+  { title: "Manufacturers", line: "Makers building productive capacity and supply.", img: "manufacturers" },
+  { title: "Professionals", line: "Service providers and specialists building practices.", img: "professionals" },
+  { title: "Students & Young Entrepreneurs", line: "The next generation preparing to build.", img: "students" },
+  { title: "Women Entrepreneurs", line: "Founders leading enterprises across every sector.", img: "women" },
 ];
 
 export const SECTORS = [

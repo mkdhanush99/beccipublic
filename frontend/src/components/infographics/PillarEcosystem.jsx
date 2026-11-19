@@ -1,86 +1,158 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { ArrowUpRight } from "lucide-react";
+import { motion, useReducedMotion } from "framer-motion";
 import { PILLARS } from "@/data/becci";
-import { BookOpen, Banknote, Store, Network, Landmark } from "lucide-react";
+import Img from "@/components/Img";
+import { PillarSvgIcon } from "@/components/illustrations/BecciArtwork";
+import { EASE_OUT } from "@/lib/motion";
 
-const ICONS = [BookOpen, Banknote, Store, Network, Landmark];
+const PILLAR_MEDIA = [
+  {
+    img: "about",
+    kicker: "01 · Capability & Clarity",
+    detail:
+      "Structured learning, compliance orientation and practical guidance that help founders make sound business decisions from day one.",
+    to: "/knowledge",
+    cta: "Explore Knowledge Centre",
+  },
+  {
+    img: "professionals",
+    kicker: "02 · Capital Readiness",
+    detail:
+      "Financial literacy, awareness of institutional lending products and formalisation pathways that bridge the gap between entrepreneurs and banks.",
+    to: "/what-we-do",
+    cta: "See financial literacy work",
+  },
+  {
+    img: "manufacturers",
+    kicker: "03 · Demand & Trade",
+    detail:
+      "Opening pathways to institutional buyers, supply chains and broader commercial markets across eleven productive sectors.",
+    to: "/who-we-serve",
+    cta: "View 11 industry sectors",
+  },
+  {
+    img: "women",
+    kicker: "04 · Institutional Connections",
+    detail:
+      "Convening peers, mentors, dedicated Women's & Youth Wings and local chapters so no founder builds in isolation.",
+    to: "/wings-chapters",
+    cta: "Explore Wings & Chapters",
+  },
+  {
+    img: "hero",
+    kicker: "05 · Public Programmes",
+    detail:
+      "Clear, transparent information on eight Central Government enterprise programmes with direct links to official portals.",
+    to: "/schemes",
+    cta: "Explore 8 Government Schemes",
+  },
+];
 
-// Five-pillar support ecosystem with the entrepreneur at the centre.
+// Full-Bleed Immersive Glassmorphism Business Ecosystem Stage
+// Panoramic atmospheric photography fills the entire surface while frosted dark glass panels float above it.
 export const PillarEcosystem = () => {
-  const [active, setActive] = useState(null);
+  const [active, setActive] = useState(0);
+  const reduce = useReducedMotion();
 
   return (
-    <div data-testid="pillar-ecosystem">
-      {/* Radial composition for desktop */}
-      <div className="relative mx-auto hidden aspect-[16/10] max-w-4xl lg:block">
-        <svg className="absolute inset-0 h-full w-full" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-          {[
-            [150, 110], [650, 110], [110, 360], [690, 360], [400, 450],
-          ].map(([x, y], i) => (
-            <line
-              key={i}
-              x1="400" y1="250" x2={x} y2={y}
-              stroke={active === i ? "#D4AF5A" : "#B8D7FA"}
-              strokeWidth={active === i ? 2.5 : 1.5}
-              className="transition-all duration-300"
+    <div
+      data-testid="pillar-ecosystem"
+      className="on-dark relative min-h-[580px] overflow-hidden rounded-3xl bg-navy-950 text-white shadow-lift lg:min-h-[620px]"
+    >
+      {/* Full-bleed crossfading cinematic photography backdrop */}
+      {PILLAR_MEDIA.map((media, i) => {
+        const on = active === i;
+        return (
+          <motion.div
+            key={media.kicker}
+            initial={false}
+            animate={{
+              opacity: on ? 1 : 0,
+              scale: reduce ? 1 : on ? 1 : 1.06,
+            }}
+            transition={{ duration: 0.7, ease: EASE_OUT }}
+            className="absolute inset-0"
+            style={{ pointerEvents: "none" }}
+          >
+            <Img
+              name={media.img}
+              sizes="(min-width: 1024px) 1240px, 100vw"
+              alt={PILLARS[i].title}
+              className="h-full w-full object-cover object-top"
             />
-          ))}
-          <circle cx="400" cy="250" r="88" fill="#061B3A" />
-          <circle cx="400" cy="250" r="88" fill="none" stroke="#D4AF5A" strokeWidth="1.5" />
-        </svg>
+            <div className="absolute inset-0 bg-gradient-to-r from-navy-950/90 via-navy-950/60 to-navy-950/40" />
+            <div className="absolute inset-0 bg-gradient-to-t from-navy-950/90 via-transparent to-navy-950/30" />
+          </motion.div>
+        );
+      })}
 
-        {/* center */}
-        <div className="absolute left-1/2 top-1/2 flex h-44 w-44 -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full text-center">
-          <span className="font-display text-xl uppercase tracking-wide text-gold">The</span>
-          <span className="font-display text-3xl uppercase leading-none tracking-wide text-white">Entrepreneur</span>
-          <span className="mt-1 font-body text-[0.7rem] text-navy-300">at the centre</span>
+      {/* Floating Glass Panels over the full-bleed stage */}
+      <div className="relative z-10 grid min-h-[580px] gap-6 p-5 sm:p-8 lg:min-h-[620px] lg:grid-cols-[0.88fr_1.12fr] lg:items-end lg:p-10">
+        {/* Left: Floating Frosted Glass Pillar Switcher */}
+        <div className="glass-dark flex flex-col gap-1.5 rounded-2xl p-2.5">
+          {PILLARS.map((p, i) => {
+            const on = active === i;
+            return (
+              <button
+                key={p.title}
+                type="button"
+                onMouseEnter={() => setActive(i)}
+                onFocus={() => setActive(i)}
+                onClick={() => setActive(i)}
+                data-testid={`pillar-node-${i}`}
+                className={`group flex items-center gap-4 rounded-xl px-4 py-3.5 text-left transition-[background-color,transform] duration-200 active:scale-[0.99] ${
+                  on ? "bg-white/15" : "hover:bg-white/[0.07]"
+                }`}
+              >
+                <span
+                  className={`inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition-colors ${
+                    on ? "bg-gold/20 ring-1 ring-gold/50" : "bg-white/10"
+                  }`}
+                >
+                  <PillarSvgIcon index={i} active className="h-5 w-5" />
+                </span>
+                <div className="min-w-0 flex-1">
+                  <p className={`font-heading text-base font-bold ${on ? "text-gold" : "text-white"}`}>
+                    {p.title}
+                  </p>
+                  <p className="mt-0.5 line-clamp-1 font-body text-xs text-navy-100/75">
+                    {p.desc}
+                  </p>
+                </div>
+                <ArrowUpRight
+                  className={`h-4 w-4 shrink-0 transition-transform duration-150 ${
+                    on ? "translate-x-0.5 -translate-y-0.5 text-gold" : "text-white/40"
+                  }`}
+                  aria-hidden="true"
+                />
+              </button>
+            );
+          })}
         </div>
 
-        {/* nodes */}
-        {[
-          { pos: "left-[12%] top-[12%]" },
-          { pos: "right-[12%] top-[12%]" },
-          { pos: "left-[6%] top-[64%]" },
-          { pos: "right-[6%] top-[64%]" },
-          { pos: "left-1/2 top-[84%] -translate-x-1/2" },
-        ].map((p, i) => {
-          const Icon = ICONS[i];
-          const on = active === i;
-          return (
-            <button
-              key={i}
-              onMouseEnter={() => setActive(i)}
-              onMouseLeave={() => setActive(null)}
-              onFocus={() => setActive(i)}
-              onBlur={() => setActive(null)}
-              data-testid={`pillar-node-${i}`}
-              className={`absolute ${p.pos} w-48 -translate-y-1/2 rounded-sm border bg-white px-4 py-3 text-left shadow-[0_8px_30px_-16px_rgba(6,27,58,0.45)] outline-none transition-all duration-300 ${
-                on ? "border-gold ring-1 ring-gold" : "border-navy-800/10"
-              }`}
+        {/* Right: Floating Frosted Glass Detail Lens */}
+        <div className="glass-dark rounded-2xl p-7 sm:p-9 lg:ml-auto lg:max-w-xl">
+          <span className="font-heading text-xs font-semibold uppercase tracking-[0.2em] text-gold">
+            {PILLAR_MEDIA[active].kicker}
+          </span>
+          <h3 className="mt-2 font-display text-4xl uppercase leading-none tracking-wide text-white sm:text-5xl">
+            {PILLARS[active].title}
+          </h3>
+          <p className="mt-4 font-body text-sm leading-relaxed text-navy-100/90 sm:text-base">
+            {PILLAR_MEDIA[active].detail}
+          </p>
+          <div className="mt-6">
+            <Link
+              to={PILLAR_MEDIA[active].to}
+              className="group inline-flex items-center gap-2 rounded-full bg-gold px-6 py-3 font-heading text-xs font-semibold uppercase tracking-wider text-navy-950 transition-[transform,background-color] duration-150 hover:bg-gold-champagne active:scale-[0.97]"
             >
-              <Icon className={`h-5 w-5 ${on ? "text-gold-antique" : "text-navy-700"}`} />
-              <p className="mt-2 font-heading text-sm font-semibold text-navy-950">{PILLARS[i].title}</p>
-              <p className="mt-1 font-body text-xs leading-snug text-navy-800/70">{PILLARS[i].desc}</p>
-            </button>
-          );
-        })}
-      </div>
-
-      {/* Stacked list for tablet/mobile */}
-      <div className="grid gap-3 sm:grid-cols-2 lg:hidden">
-        <div className="flex flex-col items-start justify-center rounded-sm bg-navy-900 p-6 sm:col-span-2">
-          <span className="eyebrow text-gold">At the centre</span>
-          <p className="mt-2 font-display text-3xl uppercase tracking-wide text-white">The Entrepreneur</p>
+              <span>{PILLAR_MEDIA[active].cta}</span>
+              <ArrowUpRight className="h-4 w-4 transition-transform duration-150 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" aria-hidden="true" />
+            </Link>
+          </div>
         </div>
-        {PILLARS.map((p, i) => {
-          const Icon = ICONS[i];
-          return (
-            <div key={i} className="rounded-sm border border-navy-800/10 bg-white p-5">
-              <Icon className="h-5 w-5 text-navy-700" />
-              <p className="mt-3 font-heading text-base font-semibold text-navy-950">{p.title}</p>
-              <p className="mt-1 font-body text-sm leading-relaxed text-navy-800/70">{p.desc}</p>
-            </div>
-          );
-        })}
       </div>
     </div>
   );
