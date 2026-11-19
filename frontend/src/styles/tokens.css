@@ -12,32 +12,32 @@
  * All colours are stored as space-separated RGB channels so Tailwind opacity modifiers work seamlessly.
  */
 :root {
-  /* ---- Core Navy Foundations ---- */
-  --c-navy-950: 3 14 30;       /* Obsidian Blue  #030E1E */
-  --c-navy-900: 6 27 58;       /* Midnight Navy  #061B3A */
-  --c-navy-800: 11 45 92;      /* Deep Slate Navy #0B2D5C */
-  --c-navy-700: 18 75 140;     /* Corporate Blue #124B8C */
-  --c-navy-600: 23 105 194;    /* Bright Blue    #1769C2 */
-  --c-navy-500: 61 143 232;    /* Electric Blue  #3D8FE8 */
-  --c-navy-400: 124 180 242;   /* Light Blue     #7CB4F2 */
-  --c-navy-300: 184 215 250;   /* Ice Blue       #B8D7FA */
-  --c-navy-100: 226 238 251;   /* Pale Ice       #E2EEFB */
-  --c-navy-50: 242 247 252;    /* Frost White    #F2F7FC */
-  --c-brand: 10 35 82;         /* Approved Logo Navy #0A2352 (untouched) */
-  --c-midnight: 6 27 58;       /* Midnight Navy  #061B3A */
+  /* ---- Core Navy Foundations (75-80% Dominant Brand Ground) ---- */
+  --c-navy-950: 3 14 30;       /* Deep Background Navy #030E1E */
+  --c-navy-900: 6 26 53;       /* Primary Brand Navy   #061A35 */
+  --c-navy-800: 11 37 71;      /* Secondary Navy       #0B2547 */
+  --c-navy-700: 18 65 125;     /* Structural Blue Navy #12417D */
+  --c-navy-600: 23 105 170;    /* Blue Accent          #1769AA */
+  --c-navy-500: 61 143 232;    /* Electric Blue        #3D8FE8 */
+  --c-navy-400: 124 180 242;   /* Light Blue           #7CB4F2 */
+  --c-navy-300: 169 188 210;   /* Muted Text Ice Navy  #A9BCD2 */
+  --c-navy-100: 226 238 251;   /* Pale Ice             #E2EEFB */
+  --c-navy-50: 245 248 252;    /* Crisp White          #F5F8FC */
+  --c-brand: 6 26 53;          /* Primary Brand Navy   #061A35 */
+  --c-midnight: 6 26 53;       /* Primary Brand Navy   #061A35 */
 
-  /* ---- Electric Teal Interaction System ---- */
-  --c-teal: 0 184 169;         /* Electric Teal  #00B8A9 (AAA on dark, AAA w/ Obsidian text) */
-  --c-teal-bright: 38 214 199; /* Luminous Teal  #26D6C7 (hover & specular highlight) */
-  --c-teal-deep: 0 118 109;    /* Deep Teal AA   #00766D (5.05:1+ on Frost / 5.45:1 on White) */
-  --c-teal-ink: 0 92 85;       /* Deep Teal AAA  #005C55 (7.5:1+ hovered link on Frost) */
-  --c-teal-mist: 227 247 245;  /* Teal Mist      #E3F7F5 (subtle active surface on light) */
+  /* ---- Turquoise Interaction Accent System (Subtle, Restrained Accent Only) ---- */
+  --c-teal: 0 191 175;         /* Turquoise Accent     #00BFAF */
+  --c-teal-bright: 38 214 199; /* Luminous Turquoise   #26D6C7 */
+  --c-teal-deep: 0 118 109;    /* Deep Teal AA         #00766D */
+  --c-teal-ink: 0 92 85;       /* Deep Teal AAA        #005C55 */
+  --c-teal-mist: 227 247 245;  /* Teal Mist            #E3F7F5 */
 
-  /* ---- Ice Blue & Frost Editorial Surfaces ---- */
-  --c-ice: 184 215 250;        /* Ice Blue       #B8D7FA */
-  --c-frost: 242 247 252;      /* Frost White    #F2F7FC */
-  --c-frost-deep: 230 240 251; /* Cool Mist      #E6F0FB */
-  --c-paper: 242 247 252;      /* Editorial Frost alias (replaces warm beige) */
+  /* ---- Crisp White & Muted Text Surfaces ---- */
+  --c-ice: 169 188 210;        /* Muted Text           #A9BCD2 */
+  --c-frost: 245 248 252;      /* White Text / Surface #F5F8FC */
+  --c-frost-deep: 230 240 251; /* Cool Mist            #E6F0FB */
+  --c-paper: 245 248 252;      /* Crisp White alias    #F5F8FC */
 
   /* ---- Controlled Ultraviolet (Motion & Optical Lighting ONLY) ---- */
   --c-uv: 121 91 255;          /* Ultraviolet    #795BFF */

@@ -321,15 +321,12 @@ export default function Pulse() {
           <div className="grid items-end gap-8 lg:grid-cols-[1.08fr_0.92fr] lg:gap-12">
             {/* Left: Monumental BECCI PULSE Exhibition Title & Context */}
             <div>
-              <div className="inline-flex items-center gap-2.5 rounded-full glass-pill px-4 py-1.5">
-                <Sparkles className="h-3.5 w-3.5 text-teal-bright" aria-hidden="true" />
-                <span className="font-heading text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-ice">
-                  BECCI PULSE · Interactive Digital Exhibition
-                </span>
-              </div>
+              <p className="font-heading text-xs sm:text-sm font-semibold uppercase tracking-[0.2em] text-teal-bright mb-2">
+                BECCI PULSE · Interactive Digital Exhibition
+              </p>
 
-              <h1 className="mt-5 display-head text-[3.5rem] leading-[0.88] text-white sm:text-[5.2rem] lg:text-[6.4rem]">
-                The Enterprise <span className="text-gradient-teal">Universe.</span>
+              <h1 className="display-head text-[3.2rem] leading-[0.92] text-white sm:text-[4.8rem] lg:text-[5.8rem] font-bold tracking-tight">
+                The Enterprise <span className="text-ice">Universe.</span>
               </h1>
 
               <p className="mt-5 max-w-xl font-body text-base leading-relaxed text-frost/88 sm:text-lg">
@@ -356,8 +353,8 @@ export default function Pulse() {
               </div>
             </div>
 
-            {/* Right: Active Territory Optical Glass Lens */}
-            <GlassSpotlight tone="dark" className="glass-iridescent rounded-3xl p-7 sm:p-8">
+            {/* Right: Active Territory Optical Glass Lens - Integrated with Hero */}
+            <div className="relative rounded-3xl border border-white/10 bg-navy-900/90 p-7 sm:p-8 backdrop-blur-xl shadow-2xl ring-1 ring-white/5">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={territory.id}
@@ -371,7 +368,7 @@ export default function Pulse() {
                     <span className="font-heading text-xs font-semibold uppercase tracking-[0.2em] text-teal-bright">
                       Territory {territory.num} · {territory.axis}
                     </span>
-                    <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-teal/15 ring-1 ring-teal/40">
+                    <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-navy-800/80 border border-white/10 text-teal-bright">
                       <PillarSvgIcon index={territoryIdx} active className="h-5 w-5" />
                     </span>
                   </div>
@@ -384,7 +381,7 @@ export default function Pulse() {
                     {territory.summary}
                   </p>
 
-                  <ul className="mt-5 space-y-2 border-t border-ice/15 pt-4">
+                  <ul className="mt-5 space-y-2 border-t border-white/10 pt-4">
                     {territory.verifiedItems.map((line) => (
                       <li key={line} className="flex items-start gap-2.5 font-body text-xs text-ice/90">
                         <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-teal" aria-hidden="true" />
@@ -406,7 +403,7 @@ export default function Pulse() {
                     </Magnetic>
                     <Link
                       to={territory.secondary.to}
-                      className="inline-flex min-h-[42px] items-center gap-1.5 rounded-full border border-ice/25 px-4 py-2 font-heading text-xs font-semibold text-frost transition-colors hover:border-teal/60 hover:text-teal-bright"
+                      className="inline-flex min-h-[42px] items-center gap-1.5 rounded-full border border-white/20 px-4 py-2 font-heading text-xs font-semibold text-frost transition-colors hover:border-teal/60 hover:text-teal-bright"
                     >
                       <span>{territory.secondary.label}</span>
                       <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
@@ -414,7 +411,7 @@ export default function Pulse() {
                   </div>
                 </motion.div>
               </AnimatePresence>
-            </GlassSpotlight>
+            </div>
           </div>
         </div>
 

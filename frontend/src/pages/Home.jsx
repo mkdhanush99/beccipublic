@@ -117,8 +117,8 @@ const Hero = () => {
             </motion.div>
           );
         })}
-        <div className="absolute inset-0 bg-gradient-to-b from-navy-950/75 via-navy-950/35 to-navy-950" />
-        <div className="absolute inset-0 bg-gradient-to-r from-navy-950/92 via-navy-950/55 to-navy-950/20" />
+        <div className="absolute inset-0 bg-gradient-to-b from-navy-950/85 via-navy-950/50 to-navy-950" />
+        <div className="absolute inset-0 bg-gradient-to-r from-navy-950/96 via-navy-950/70 to-navy-950/35" />
       </div>
 
       {/* Main Editorial Opening Stage: Asymmetric Typographic Left + Raymarched 3D Optical Glass Sculpture Right */}
@@ -181,7 +181,7 @@ const Hero = () => {
               <div className="mt-5 sm:mt-6">
                 <h1 className="font-telugu text-[2.3rem] font-bold leading-[1.32] text-white sm:text-[3.25rem] lg:text-[3.85rem]">
                   <span className="block">{HOME_TE.headlineLine1}</span>
-                  <span className="text-gradient-teal block">{HOME_TE.headlineLine2}</span>
+                  <span className="text-teal-bright block">{HOME_TE.headlineLine2}</span>
                 </h1>
                 <p className="mt-2 font-display text-lg uppercase tracking-wider text-ice/75 sm:text-2xl">
                   Building Businesses. Building Bharat.
@@ -189,15 +189,15 @@ const Hero = () => {
               </div>
             ) : (
               <div className="mt-5 max-w-[680px] sm:mt-6">
-                <h1 className="display-head text-4xl leading-[0.92] text-white sm:text-6xl lg:text-7xl">
+                <p className="font-heading text-xs sm:text-sm font-semibold uppercase tracking-[0.2em] text-teal-bright mb-2 sm:mb-3">
+                  Building Businesses. Building Bharat.
+                </p>
+                <h1 className="display-head text-4xl leading-[0.94] text-white sm:text-6xl lg:text-7xl font-bold tracking-tight">
                   Connecting Bahujan founders with{" "}
-                  <span className="bg-gradient-to-r from-white via-teal-bright to-ice bg-clip-text text-transparent">
+                  <span className="text-ice">
                     tenders, capital &amp; verified schemes.
                   </span>
                 </h1>
-                <p className="mt-3 font-heading text-sm font-semibold uppercase tracking-[0.16em] text-teal-bright sm:text-base">
-                  Building Businesses. Building Bharat.
-                </p>
               </div>
             )}
 

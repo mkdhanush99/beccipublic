@@ -113,13 +113,13 @@ vec3 calcNormal(vec3 p) {
   );
 }
 
-// Calibrated BECCI territory refraction palette
+// Calibrated BECCI territory refraction palette (Navy grounded, controlled accents)
 vec3 territoryAccent(float idx) {
-  vec3 c0 = vec3(0.45, 0.80, 0.96); // 0: Knowledge (Ice-Teal)
-  vec3 c1 = vec3(0.00, 0.78, 0.71); // 1: Finance (Electric Teal)
-  vec3 c2 = vec3(0.18, 0.86, 0.80); // 2: Markets (Luminous Teal-Ice)
-  vec3 c3 = vec3(0.49, 0.37, 1.00); // 3: Reach & Wings (Controlled Ultraviolet)
-  vec3 c4 = vec3(0.83, 0.69, 0.36); // 4: Schemes (Restrained Champagne Gold)
+  vec3 c0 = vec3(0.09, 0.41, 0.67); // 0: Knowledge (Blue Accent #1769AA)
+  vec3 c1 = vec3(0.00, 0.75, 0.69); // 1: Finance (Turquoise Accent #00BFAF)
+  vec3 c2 = vec3(0.09, 0.45, 0.70); // 2: Markets (Corporate Blue)
+  vec3 c3 = vec3(0.00, 0.75, 0.69); // 3: Reach & Wings (Turquoise Accent)
+  vec3 c4 = vec3(0.83, 0.69, 0.35); // 4: Schemes (Champagne Gold)
 
   vec3 a = mix(c0, c1, clamp(idx, 0.0, 1.0));
   a = mix(a, c2, clamp(idx - 1.0, 0.0, 1.0));
@@ -138,19 +138,21 @@ void main() {
   vec3 ro = vec3(0.0, 0.18, 4.85);
   vec3 rd = normalize(vec3(puv, -1.78));
 
-  vec3 obsidian    = vec3(0.012, 0.055, 0.118); // #030E1E
-  vec3 midnight    = vec3(0.024, 0.106, 0.227); // #061B3A
-  vec3 elecTeal    = vec3(0.000, 0.722, 0.663); // #00B8A9
-  vec3 iceBlue     = vec3(0.722, 0.843, 0.980); // #B8D7FA
-  vec3 ultraviolet = vec3(0.475, 0.357, 1.000); // #795BFF
-  vec3 accent      = territoryAccent(u_territory);
+  // BECCI 75-80% Navy ground palette
+  vec3 deepNavy     = vec3(0.012, 0.055, 0.118); // #030E1E deep background
+  vec3 primaryNavy  = vec3(0.024, 0.102, 0.208); // #061A35 primary navy
+  vec3 secondaryNavy= vec3(0.043, 0.145, 0.278); // #0B2547 secondary navy
+  vec3 blueAccent   = vec3(0.090, 0.412, 0.667); // #1769AA blue accent
+  vec3 turqAccent   = vec3(0.000, 0.749, 0.686); // #00BFAF turquoise accent
+  vec3 mutedText    = vec3(0.663, 0.737, 0.824); // #A9BCD2
+  vec3 accent       = territoryAccent(u_territory);
 
-  // Atmospheric studio background with territory-responsive horizon light
+  // Atmospheric studio background with dominant navy depth and subtle blue accent
   float gradY = smoothstep(-0.6, 0.7, uv.y);
-  vec3 bg = mix(obsidian, midnight, gradY * 0.72);
-  float horizonGlow = exp(-length(puv) * 2.1);
-  bg += mix(elecTeal, accent, 0.55) * horizonGlow * 0.24;
-  bg += ultraviolet * exp(-length(uv + vec2(0.55, 0.35)) * 2.2) * 0.10;
+  vec3 bg = mix(deepNavy, primaryNavy, gradY * 0.82);
+  float horizonGlow = exp(-length(puv) * 2.3);
+  bg += blueAccent * horizonGlow * 0.18;
+  bg += turqAccent * horizonGlow * 0.05; // very restrained accent
 
   // Raymarch the 3D crystal pavilion
   float t = 0.0;
@@ -170,9 +172,9 @@ void main() {
   }
 
   vec3 col = bg;
-  // Soft luminous volumetric light envelope around the architecture
-  float aura = exp(-minD * 5.2);
-  col += mix(elecTeal, accent, 0.62) * aura * 0.24;
+  // Soft volumetric navy & blue aura
+  float aura = exp(-minD * 5.6);
+  col += mix(blueAccent, accent, 0.35) * aura * 0.14;
 
   if (hit) {
     vec3 pos = ro + rd * t;
@@ -182,7 +184,7 @@ void main() {
     vec3 L1 = normalize(vec3(0.7, 0.9, 0.85));
     vec3 L2 = normalize(vec3(-0.8, -0.3, 0.6));
 
-    float fresnel = pow(1.0 - max(dot(N, V), 0.0), 2.7);
+    float fresnel = pow(1.0 - max(dot(N, V), 0.0), 3.0);
     float diff1 = max(dot(N, L1), 0.0);
     float diff2 = max(dot(N, L2), 0.0);
 
@@ -191,13 +193,13 @@ void main() {
     float spec1 = pow(max(dot(N, H1), 0.0), 46.0);
     float spec2 = pow(max(dot(N, H2), 0.0), 24.0);
 
-    // Stratified translucent architectural glass shading
-    vec3 glassBase = mix(midnight * 1.1, elecTeal * 0.42, 0.28 + 0.45 * diff1);
-    vec3 rimCol = mix(elecTeal, iceBlue, smoothstep(-0.3, 0.7, N.y));
-    rimCol = mix(rimCol, accent, 0.45);
+    // Deep architectural navy glass shading with crisp blue edges
+    vec3 glassBase = mix(primaryNavy * 1.05, secondaryNavy, 0.40 + 0.50 * diff1);
+    vec3 rimCol = mix(blueAccent, mutedText, smoothstep(-0.3, 0.7, N.y));
+    rimCol = mix(rimCol, accent, 0.28);
 
     vec3 surface = glassBase;
-    surface += rimCol * fresnel * 1.15;
+    surface += rimCol * fresnel * 0.85;
     surface += iceBlue * spec1 * 0.88;
     surface += accent * diff2 * 0.26 + accent * spec2 * 0.40;
     surface += ultraviolet * pow(max(0.0, -N.x), 2.0) * fresnel * 0.28;
