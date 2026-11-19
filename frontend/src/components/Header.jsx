@@ -10,12 +10,12 @@ const slug = (s) => s.toLowerCase().replace(/[^a-z]+/g, "-").replace(/^-|-$/g, "
 const PRIMARY = NAV.filter((n) => n.to !== "/");
 
 const MEGA_ITEMS = [
+  { label: "BECCI Intelligence", to: "/intelligence", desc: "Resource Finder, Opportunity Intelligence, Learning Journeys & Insights." },
+  { label: "BECCI PULSE", to: "/pulse", desc: "Interactive 3D Enterprise Universe, Opportunity Wall & Digital Observatory." },
   { label: "About BECCI", to: "/about", desc: "Institutional charter, Vision & Mission, and Section 8 standing." },
-  { label: "What We Do", to: "/what-we-do", desc: "Five support pillars and six areas of enterprise work." },
-  { label: "Who We Serve", to: "/who-we-serve", desc: "Six entrepreneur constituencies across eleven business sectors." },
-  { label: "Wings & Chapters", to: "/wings-chapters", desc: "National-to-city structure, Women's Wing and Youth Wing." },
-  { label: "Government Schemes", to: "/schemes", desc: "Eight Central Government programmes with direct official links." },
-  { label: "News & Knowledge", to: "/knowledge", desc: "Official announcements and eleven public enterprise portals." },
+  { label: "What We Do", to: "/what-we-do", desc: "Five support pillars, Phase 01 initiatives and six areas of work." },
+  { label: "Government Schemes", to: "/schemes", desc: "Twelve verified Central & State programmes with official links." },
+  { label: "News & Knowledge", to: "/knowledge", desc: "Official announcements and eleven public statutory portals." },
 ];
 
 export const Header = () => {
@@ -123,6 +123,24 @@ export const Header = () => {
                 </Link>
               );
             })}
+
+            <Link
+              to="/pulse"
+              aria-current={pathname === "/pulse" ? "page" : undefined}
+              data-testid="nav-pulse"
+              className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border px-3 py-1 font-heading text-[0.74rem] font-semibold uppercase tracking-[0.14em] transition-colors ${
+                pathname === "/pulse"
+                  ? solid
+                    ? "border-teal-deep bg-teal-mist text-teal-ink"
+                    : "border-teal bg-teal/20 text-teal-bright"
+                  : solid
+                    ? "border-navy-800/15 text-navy-900 hover:border-teal-deep hover:text-teal-deep"
+                    : "border-ice/25 text-ice hover:border-teal hover:text-teal-bright"
+              }`}
+            >
+              <span className="h-1.5 w-1.5 rounded-full bg-teal" aria-hidden="true" />
+              <span>Pulse</span>
+            </Link>
           </nav>
 
           <div className="flex items-center gap-2.5">
@@ -188,6 +206,35 @@ export const Header = () => {
                       </Link>
                     );
                   })}
+                  <Link
+                    to="/intelligence"
+                    aria-current={pathname.startsWith("/intelligence") ? "page" : undefined}
+                    data-testid="mobile-nav-intelligence"
+                    className={`mt-2 flex items-center justify-between rounded-xl border px-3.5 py-3 font-heading text-base font-semibold tracking-tight transition-colors ${
+                      pathname.startsWith("/intelligence")
+                        ? "border-teal/40 bg-teal-mist/70 text-teal-ink"
+                        : "border-navy-800/12 bg-frost text-navy-950 hover:border-teal-deep"
+                    }`}
+                  >
+                    <span>BECCI Intelligence</span>
+                    <ArrowUpRight className="h-4 w-4 text-teal-deep" aria-hidden="true" />
+                  </Link>
+                  <Link
+                    to="/pulse"
+                    aria-current={pathname === "/pulse" ? "page" : undefined}
+                    data-testid="mobile-nav-pulse"
+                    className={`mt-2 flex items-center justify-between rounded-xl border px-3.5 py-3 font-heading text-base font-semibold tracking-tight transition-colors ${
+                      pathname === "/pulse"
+                        ? "border-teal/40 bg-teal-mist/70 text-teal-ink"
+                        : "border-navy-800/12 bg-frost text-navy-950 hover:border-teal-deep"
+                    }`}
+                  >
+                    <span className="inline-flex items-center gap-2">
+                      <span className="h-2 w-2 rounded-full bg-teal" aria-hidden="true" />
+                      <span>BECCI PULSE</span>
+                    </span>
+                    <ArrowUpRight className="h-4 w-4 text-teal-deep" aria-hidden="true" />
+                  </Link>
                 </nav>
                 <div className="border-t border-navy-800/10 p-6">
                   <Link
@@ -255,8 +302,13 @@ export const Header = () => {
                     </p>
                   </div>
                 </div>
-                <div className="mt-5 flex items-center justify-between border-t border-white/10 pt-4">
-                  <span className="font-body text-xs text-ice/75">Begumpet, Hyderabad</span>
+                <div className="mt-5 flex items-center justify-between gap-3 border-t border-white/10 pt-4">
+                  <Link
+                    to="/about#governance"
+                    className="link-underline font-body text-xs text-ice/80 hover:text-teal-bright"
+                  >
+                    Governance &amp; Standing
+                  </Link>
                   <Link
                     to="/contact"
                     className="link-underline inline-flex items-center gap-1 font-heading text-xs font-semibold uppercase tracking-wider text-teal-bright"

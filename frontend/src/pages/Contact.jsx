@@ -1,6 +1,7 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import axios from "axios";
-import { Phone, MapPin, Clock, Globe, Building2, Loader2 } from "lucide-react";
+import { Phone, Mail, MapPin, Clock, Globe, Building2, Loader2, Copy, Check } from "lucide-react";
 import { toast } from "sonner";
 import { Eyebrow } from "@/components/primitives";
 import { InstitutionalSeal } from "@/components/Logo";
@@ -10,23 +11,83 @@ import { CONTACT } from "@/data/becci";
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = BACKEND_URL ? `${BACKEND_URL}/api` : "/api";
 
+const PATHWAY_TOPICS = [
+  {
+    id: "entrepreneur",
+    label: "Entrepreneur / MSME",
+    hint: "Enquire about Phase 01 outreach, enterprise formalisation orientation or government scheme links.",
+    placeholder: "Tell us about your enterprise, sector or question…",
+  },
+  {
+    id: "wings",
+    label: "Women's & Youth Wings",
+    hint: "Connect regarding dedicated forums for women entrepreneurs, students and young founders.",
+    placeholder: "Share your background and how you would like to connect with our wings…",
+  },
+  {
+    id: "institutional",
+    label: "Institutions & Industry",
+    hint: "For banks, industry bodies, academic institutions and prospective ecosystem collaborators.",
+    placeholder: "Outline your institution and area of collaborative interest…",
+  },
+  {
+    id: "official",
+    label: "Official / General",
+    hint: "Direct chamber correspondence, governance verification or general public enquiries.",
+    placeholder: "How can BECCI’s registered office help?…",
+  },
+];
+
 const ROWS = [
   { icon: Phone, label: "Phone", value: CONTACT.phone, href: `tel:${CONTACT.phone.replace(/\s/g, "")}` },
+  { icon: Mail, label: "Email", value: CONTACT.email, href: `mailto:${CONTACT.email}` },
   { icon: MapPin, label: "Registered office", value: CONTACT.address },
   { icon: Clock, label: "Hours", value: CONTACT.hours },
   { icon: Globe, label: "Website", value: CONTACT.website, href: `https://${CONTACT.website}` },
-  { icon: Building2, label: "Corporate Registry", value: `${CONTACT.incorporation} · CIN ${CONTACT.cin}` },
+  { icon: Building2, label: "Corporate Registry", value: `${CONTACT.incorporation} · CIN ${CONTACT.cin}`, copyCin: true },
 ];
 
 export default function Contact() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const initialTopic = PATHWAY_TOPICS.some((t) => t.id === searchParams.get("topic"))
+    ? searchParams.get("topic")
+    : "entrepreneur";
+
+  const [topic, setTopic] = useState(initialTopic);
   const [form, setForm] = useState({ name: "", phone: "", organisation: "", message: "" });
   const [errors, setErrors] = useState({});
   const [sending, setSending] = useState(false);
   const [done, setDone] = useState(false);
+  const [copiedCin, setCopiedCin] = useState(false);
 
   const nameRef = useRef(null);
   const phoneRef = useRef(null);
   const messageRef = useRef(null);
+
+  useEffect(() => {
+    const q = searchParams.get("topic");
+    if (q && PATHWAY_TOPICS.some((t) => t.id === q)) {
+      setTopic(q);
+    }
+  }, [searchParams]);
+
+  const activeTopic = PATHWAY_TOPICS.find((t) => t.id === topic) || PATHWAY_TOPICS[0];
+
+  const selectTopic = (id) => {
+    setTopic(id);
+    setSearchParams({ topic: id }, { replace: true });
+  };
+
+  const copyCin = async () => {
+    try {
+      await navigator.clipboard.writeText(CONTACT.cin);
+      setCopiedCin(true);
+      toast.success("CIN copied to clipboard", { description: CONTACT.cin });
+      window.setTimeout(() => setCopiedCin(false), 2200);
+    } catch {
+      toast(CONTACT.cin);
+    }
+  };
 
   const update = (k) => (e) => {
     const val = e.target.value;
@@ -52,7 +113,11 @@ export default function Contact() {
 
     setSending(true);
     try {
-      await axios.post(`${API}/enquiries`, form);
+      const payload = {
+        ...form,
+        message: `[${activeTopic.label}] ${form.message.trim()}`,
+      };
+      await axios.post(`${API}/enquiries`, payload);
       setDone(true);
       setErrors({});
       setForm({ name: "", phone: "", organisation: "", message: "" });
@@ -133,7 +198,20 @@ export default function Contact() {
                           {r.value}
                         </a>
                       ) : (
-                        <p className="mt-1 font-body text-base leading-relaxed text-navy-950">{r.value}</p>
+                        <div className="mt-1 flex items-start gap-2">
+                          <p className="font-body text-base leading-relaxed text-navy-950">{r.value}</p>
+                          {r.copyCin && (
+                            <button
+                              type="button"
+                              onClick={copyCin}
+                              data-testid="contact-copy-cin"
+                              aria-label="Copy Corporate Identity Number"
+                              className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-navy-800/12 bg-white text-teal-deep transition-colors hover:bg-teal-mist"
+                            >
+                              {copiedCin ? <Check className="h-3.5 w-3.5" aria-hidden="true" /> : <Copy className="h-3.5 w-3.5" aria-hidden="true" />}
+                            </button>
+                          )}
+                        </div>
                       )}
                     </div>
                   </div>
@@ -141,14 +219,37 @@ export default function Contact() {
               </div>
             </GlassSpotlight>
 
-            {/* Enquiry form */}
+            {/* Enquiry form with Audience Pathway Selector */}
             <GlassSpotlight tone="light" className="glass-light rounded-3xl p-8 md:p-10">
               <div className="relative z-10">
                 <span className="eyebrow text-teal-deep">Send an enquiry</span>
                 <h2 className="mt-3 font-heading text-2xl font-bold text-navy-950">Write to BECCI.</h2>
                 <p className="mt-2 font-body text-sm text-navy-800/75">
-                  Share your details and we’ll call you back during working hours.
+                  {activeTopic.hint}
                 </p>
+
+                {/* Audience Pathway Pills */}
+                <div className="mt-5 flex flex-wrap gap-2" role="group" aria-label="Select enquiry category">
+                  {PATHWAY_TOPICS.map((t) => {
+                    const active = topic === t.id;
+                    return (
+                      <button
+                        key={t.id}
+                        type="button"
+                        onClick={() => selectTopic(t.id)}
+                        data-testid={`contact-topic-${t.id}`}
+                        aria-pressed={active}
+                        className={`min-h-[36px] rounded-full border px-3.5 py-1.5 font-heading text-xs font-semibold transition-colors ${
+                          active
+                            ? "border-navy-950 bg-navy-950 text-white"
+                            : "border-navy-800/15 bg-white/80 text-navy-800 hover:border-teal-deep hover:text-teal-ink"
+                        }`}
+                      >
+                        {t.label}
+                      </button>
+                    );
+                  })}
+                </div>
                 {done ? (
                   <div
                     data-testid="enquiry-success"
@@ -255,7 +356,7 @@ export default function Contact() {
                     data-testid="enquiry-message"
                     rows={4}
                     className={field(errors.message)}
-                    placeholder="How can BECCI help?…"
+                    placeholder={activeTopic.placeholder}
                     value={form.message}
                     onChange={update("message")}
                   />

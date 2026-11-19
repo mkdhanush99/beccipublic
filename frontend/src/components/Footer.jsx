@@ -1,16 +1,22 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { ArrowUpRight, Phone, MapPin, Clock } from "lucide-react";
-import { NAV, ORG, CONTACT } from "@/data/becci";
+import { ArrowUpRight, Phone, Mail, MapPin, Clock } from "lucide-react";
+import { NAV, ORG, CONTACT, SCHEME_NOTE } from "@/data/becci";
 import { Logo, Symbol, InstitutionalSeal } from "@/components/Logo";
 
 const slug = (s) => s.toLowerCase().replace(/[^a-z]+/g, "-").replace(/^-|-$/g, "");
 
 const footerGroups = [
-  { title: "Explore", links: NAV.slice(0, 5) },
+  { title: "Explore", links: [...NAV.slice(0, 5), { label: "BECCI Pulse", to: "/pulse" }] },
   {
     title: "Information",
-    links: [...NAV.slice(5), { label: "Privacy", to: "/privacy" }, { label: "Terms", to: "/terms" }],
+    links: [
+      ...NAV.slice(5),
+      { label: "BECCI Intelligence", to: "/intelligence" },
+      { label: "Governance", to: "/about#governance" },
+      { label: "Privacy", to: "/privacy" },
+      { label: "Terms", to: "/terms" },
+    ],
   },
 ];
 
@@ -77,6 +83,15 @@ export const Footer = () => {
                   {CONTACT.phone}
                 </a>
               </p>
+              <p className="flex items-center gap-2.5">
+                <Mail className="h-4 w-4 shrink-0 text-teal" aria-hidden="true" />
+                <a
+                  href={`mailto:${CONTACT.email}`}
+                  className="link-underline inline-flex min-h-[40px] items-center break-all hover:text-teal-bright lg:min-h-0"
+                >
+                  {CONTACT.email}
+                </a>
+              </p>
               <p className="flex items-center gap-2.5 text-xs text-ice/65">
                 <Clock className="h-4 w-4 shrink-0 text-ice/65" aria-hidden="true" />
                 <span>{CONTACT.hours}</span>
@@ -95,8 +110,18 @@ export const Footer = () => {
           </div>
         </div>
 
+        {/* Official Scheme & Guidance Disclaimer */}
+        <div className="mt-14 rounded-2xl border border-ice/12 bg-white/[0.03] px-5 py-4">
+          <p className="font-body text-xs leading-relaxed text-ice/75">
+            <span className="font-heading font-semibold uppercase tracking-[0.14em] text-teal-bright">
+              Disclaimer ·{" "}
+            </span>
+            {SCHEME_NOTE}
+          </p>
+        </div>
+
         {/* Institutional registry bar */}
-        <div className="mt-14 flex flex-col items-start justify-between gap-4 border-t border-white/10 pt-7 font-body text-xs text-navy-400 md:flex-row md:items-center">
+        <div className="mt-8 flex flex-col items-start justify-between gap-4 border-t border-white/10 pt-7 font-body text-xs text-navy-400 md:flex-row md:items-center">
           <p>
             © {new Date().getFullYear()} {ORG.name} ({ORG.full}). {CONTACT.incorporation} · CIN{" "}
             <span className="tabular text-navy-300">{CONTACT.cin}</span>

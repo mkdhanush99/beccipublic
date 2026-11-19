@@ -1,10 +1,12 @@
 import React from "react";
+import { ArrowUpRight } from "lucide-react";
 import { PageHero, SectionHeading, NextPageBand } from "@/components/primitives";
 import Reveal from "@/components/Reveal";
 import StatusChip from "@/components/StatusChip";
 import OrgHierarchy from "@/components/infographics/OrgHierarchy";
 import { SectorSvgIcon, WingBadgeIcon } from "@/components/illustrations/BecciArtwork";
-import { WINGS, SECTORS } from "@/data/becci";
+import { GlassSpotlight } from "@/components/visuals/MotionPrimitives";
+import { WINGS, SECTORS, REGIONAL_CONTEXT } from "@/data/becci";
 
 export default function WingsChapters() {
   return (
@@ -67,29 +69,78 @@ export default function WingsChapters() {
       </section>
 
       <section className="section bg-white">
-        <div className="becci-container grid gap-14 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
-          <div>
+        <div className="becci-container">
+          <div className="grid gap-14 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
+            <div>
+              <SectionHeading
+                eyebrow="Organisational structure"
+                title="National to city."
+                intro="A single structure so entrepreneurs can connect close to home."
+                className="mb-10"
+              />
+              <OrgHierarchy />
+            </div>
+            <div className="lg:pt-16">
+              <div className="glass-light rounded-3xl p-8 sm:p-10">
+                <div className="flex items-center justify-between gap-3">
+                  <h3 className="font-heading text-xl font-bold text-navy-950">Chapters</h3>
+                  <StatusChip label="Planned" />
+                </div>
+                <p className="mt-4 font-body text-sm leading-relaxed text-navy-800/80">
+                  Specific chapter locations, offices and leadership are not published here. Chapter information will be
+                  added as locations become operational. No active chapters, offices or leadership names have been invented.
+                </p>
+                <div className="mt-6 border-t border-navy-800/10 pt-4 font-body text-xs text-navy-800/65">
+                  Phase 01 rollout begins with Telangana and Andhra Pradesh, focusing on district outreach and state membership desks, with other states following in phases.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Phase 01 Launch States — Sourced Regional Context (Telangana & Andhra Pradesh) */}
+          <div className="mt-20 border-t border-navy-800/12 pt-16" data-testid="regional-context">
             <SectionHeading
-              eyebrow="Organisational structure"
-              title="National to city."
-              intro="A single structure so entrepreneurs can connect close to home."
+              eyebrow="Phase 01 launch states"
+              title="Telangana & Andhra Pradesh context."
+              intro="Published state demographic and budget figures cited directly from official and news sources."
               className="mb-10"
             />
-            <OrgHierarchy />
-          </div>
-          <div className="lg:pt-16">
-            <div className="glass-light rounded-3xl p-8 sm:p-10">
-              <div className="flex items-center justify-between gap-3">
-                <h3 className="font-heading text-xl font-bold text-navy-950">Chapters</h3>
-                <StatusChip label="Planned" />
-              </div>
-              <p className="mt-4 font-body text-sm leading-relaxed text-navy-800/80">
-                Specific chapter locations, offices and leadership are not published here. Chapter information will be
-                added as locations become operational. No active chapters, offices or leadership names have been invented.
-              </p>
-              <div className="mt-6 border-t border-navy-800/10 pt-4 font-body text-xs text-navy-800/65">
-                Phase 01 rollout focuses on district outreach and state membership desks.
-              </div>
+            <div className="grid gap-6 md:grid-cols-2">
+              {REGIONAL_CONTEXT.map((region) => (
+                <GlassSpotlight
+                  key={region.state}
+                  tone="light"
+                  as="article"
+                  className="glass-light flex h-full min-w-0 flex-col justify-between rounded-3xl p-7 sm:p-9"
+                >
+                  <div className="relative z-10 min-w-0">
+                    <span className="font-heading text-xs font-semibold uppercase tracking-[0.16em] text-teal-deep">
+                      {region.tag}
+                    </span>
+                    <h3 className="mt-2 font-heading text-2xl font-bold text-navy-950">{region.state}</h3>
+                    <p className="mt-3 font-heading text-base font-semibold text-teal-ink">{region.headline}</p>
+                    <p className="mt-2.5 font-body text-sm leading-relaxed text-navy-800/80">{region.detail}</p>
+                  </div>
+
+                  <div className="relative z-10 mt-6 flex flex-wrap items-center gap-4 border-t border-navy-800/10 pt-4">
+                    <span className="font-heading text-[0.66rem] font-semibold uppercase tracking-[0.14em] text-navy-800/55">
+                      Sources
+                    </span>
+                    {region.sources.map((src) => (
+                      <a
+                        key={src.url}
+                        href={src.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="link-underline inline-flex items-center gap-1 font-heading text-xs font-semibold text-teal-ink"
+                      >
+                        <span>{src.label}</span>
+                        <ArrowUpRight className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                      </a>
+                    ))}
+                  </div>
+                </GlassSpotlight>
+              ))}
             </div>
           </div>
         </div>

@@ -13,6 +13,9 @@ const Membership = lazy(() => import("@/pages/Membership"));
 const Schemes = lazy(() => import("@/pages/Schemes"));
 const WingsChapters = lazy(() => import("@/pages/WingsChapters"));
 const Knowledge = lazy(() => import("@/pages/Knowledge"));
+const Pulse = lazy(() => import("@/pages/Pulse"));
+const Intelligence = lazy(() => import("@/pages/Intelligence"));
+const IntelligenceArticle = lazy(() => import("@/pages/IntelligenceArticle"));
 const Contact = lazy(() => import("@/pages/Contact"));
 const LegalPage = lazy(() => import("@/pages/LegalPage"));
 const NotFound = lazy(() => import("@/pages/NotFound"));
@@ -30,6 +33,9 @@ function App() {
           <Route path="/schemes" element={<Schemes />} />
           <Route path="/wings-chapters" element={<WingsChapters />} />
           <Route path="/knowledge" element={<Knowledge />} />
+          <Route path="/pulse" element={<Pulse />} />
+          <Route path="/intelligence" element={<Intelligence />} />
+          <Route path="/intelligence/article/:slug" element={<IntelligenceArticle />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/privacy" element={<LegalPage kind="privacy" />} />
           <Route path="/terms" element={<LegalPage kind="terms" />} />

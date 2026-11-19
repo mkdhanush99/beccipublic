@@ -13,6 +13,8 @@ const TITLES = {
   "/schemes": "Government Schemes · BECCI",
   "/wings-chapters": "Wings & Chapters · BECCI",
   "/knowledge": "News & Knowledge · BECCI",
+  "/pulse": "BECCI PULSE — Living Digital Universe",
+  "/intelligence": "BECCI Intelligence — Knowledge & Discovery",
   "/contact": "Contact · BECCI",
   "/privacy": "Privacy Policy · BECCI",
   "/terms": "Terms of Use · BECCI",
@@ -21,12 +23,27 @@ const TITLES = {
 const RouteEffects = () => {
   const { pathname, hash } = useLocation();
   useEffect(() => {
-    document.title = TITLES[pathname] || "Page not found · BECCI";
+    document.title = pathname.startsWith("/intelligence/article/")
+      ? "BECCI Insights · BECCI Intelligence"
+      : TITLES[pathname] || "Page not found · BECCI";
     if (hash) {
-      const el = document.getElementById(hash.slice(1));
-      if (el) { el.scrollIntoView(); return; }
+      const targetId = hash.slice(1);
+      const tryScroll = () => {
+        const el = document.getElementById(targetId);
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
+          return true;
+        }
+        return false;
+      };
+      if (!tryScroll()) {
+        const timer = window.setTimeout(tryScroll, 180);
+        return () => window.clearTimeout(timer);
+      }
+      return undefined;
     }
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    return undefined;
   }, [pathname, hash]);
   return null;
 };

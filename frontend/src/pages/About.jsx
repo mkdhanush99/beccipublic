@@ -1,13 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
+import { ArrowUpRight, Check, Copy, ShieldCheck } from "lucide-react";
+import { toast } from "sonner";
 import { SectionHeading, Eyebrow, NextPageBand } from "@/components/primitives";
 import Reveal from "@/components/Reveal";
 import Img from "@/components/Img";
+import StatusChip from "@/components/StatusChip";
 import { Symbol, InstitutionalSeal } from "@/components/Logo";
 import LiquidAuroraCanvas from "@/components/visuals/LiquidAuroraCanvas";
 import { GlassSpotlight } from "@/components/visuals/MotionPrimitives";
 import { CinemaAperture } from "@/components/visuals/CinemaStoryPrimitives";
-import { ORG, WHY_BAHUJAN, VISION_MISSION, STAKEHOLDERS, CONTACT } from "@/data/becci";
+import OrgHierarchy from "@/components/infographics/OrgHierarchy";
+import {
+  ORG,
+  WHY_BAHUJAN,
+  VISION_MISSION,
+  STAKEHOLDERS,
+  CONTACT,
+  INSTITUTIONAL_BRIEF,
+  INSTITUTIONAL_REGISTRY,
+  GOVERNANCE_DISCLOSURES,
+  HEADLINE_FACT_LINE,
+  VERIFIED_STATS,
+} from "@/data/becci";
 import { EASE_OUT } from "@/lib/motion";
 
 const APPROACH = [
@@ -19,10 +34,22 @@ const APPROACH = [
 
 export default function About() {
   const reduce = useReducedMotion();
+  const [copied, setCopied] = useState(false);
+
+  const copyCin = async () => {
+    try {
+      await navigator.clipboard.writeText(CONTACT.cin);
+      setCopied(true);
+      toast.success("Corporate Identity Number copied", { description: CONTACT.cin });
+      window.setTimeout(() => setCopied(false), 2200);
+    } catch {
+      toast(CONTACT.cin);
+    }
+  };
 
   return (
     <>
-      {/* Distinctive Editorial Photographic Split Opening (unique to About BECCI) */}
+      {/* Distinctive Editorial Photographic Split Opening */}
       <section className="on-dark relative overflow-hidden bg-navy-950 pb-20 pt-28 text-white sm:pt-32 lg:pb-28">
         <LiquidAuroraCanvas variant="page" />
         <div
@@ -116,38 +143,110 @@ export default function About() {
         </div>
       </section>
 
-      {/* Editorial Chamber Narrative + Photographic Moment */}
+      {/* Editorial Chamber Narrative + Institutional Identity Brief (6 Core Questions) */}
       <section className="section bg-white">
-        <div className="becci-container grid gap-14 lg:grid-cols-[0.95fr_1.05fr] lg:items-center lg:gap-16">
-          <CinemaAperture>
-            <div className="relative overflow-hidden rounded-3xl bg-navy-950 shadow-soft">
-              <Img
-                name="craft"
-                sizes="(min-width: 1024px) 540px, 100vw"
-                alt="Artisan handloom weaving craft in India"
-                className="h-[340px] w-full object-cover lg:h-[420px]"
+        <div className="becci-container">
+          <div className="grid gap-14 lg:grid-cols-[0.95fr_1.05fr] lg:items-center lg:gap-16">
+            <CinemaAperture>
+              <div className="relative overflow-hidden rounded-3xl bg-navy-950 shadow-soft">
+                <Img
+                  name="craft"
+                  sizes="(min-width: 1024px) 540px, 100vw"
+                  alt="Artisan handloom weaving craft in India"
+                  className="h-[340px] w-full object-cover lg:h-[420px]"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-navy-950/75 via-transparent to-transparent" />
+                <p className="glass-dark absolute bottom-4 left-4 right-4 rounded-xl px-4 py-3 font-body text-xs text-ice">
+                  Transforming inherited capability and crafts into formal, bankable enterprise.
+                </p>
+              </div>
+            </CinemaAperture>
+
+            <div>
+              <SectionHeading
+                eyebrow="Who we are"
+                title="A chamber built to bring entrepreneurs and institutions together."
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-navy-950/75 via-transparent to-transparent" />
-              <p className="glass-dark absolute bottom-4 left-4 right-4 rounded-xl px-4 py-3 font-body text-xs text-ice">
-                Transforming inherited capability and crafts into formal, bankable enterprise.
+              <p className="mt-6 font-body text-lead text-navy-800/85">
+                BECCI — the Bahujan Entrepreneurs Chamber for Commerce &amp; Industry — exists to bring entrepreneurs,
+                aspiring founders, MSMEs, manufacturers, professionals and institutions into a stronger business
+                ecosystem. It is a bridge between entrepreneurs and government, financial institutions, industry and academia.
+              </p>
+              <p className="mt-4 font-body text-base leading-relaxed text-navy-800/75">
+                BECCI is not a charity, political organisation or government department. Its focus is economic
+                participation, enterprise growth and nation building.
               </p>
             </div>
-          </CinemaAperture>
+          </div>
 
-          <div>
+          {/* Verified Economic Evidence — Sourced Public MSME Data */}
+          <div className="mt-20 border-t border-navy-800/12 pt-16" data-testid="about-msme-evidence">
             <SectionHeading
-              eyebrow="Who we are"
-              title="A chamber built to bring entrepreneurs and institutions together."
+              eyebrow="Sourced economic context"
+              title="Why an organised chamber matters."
+              intro={HEADLINE_FACT_LINE}
+              className="mb-12"
             />
-            <p className="mt-6 font-body text-lead text-navy-800/85">
-              BECCI — the Bahujan Entrepreneurs Chamber for Commerce &amp; Industry — exists to bring entrepreneurs,
-              aspiring founders, MSMEs, manufacturers, professionals and institutions into a stronger business
-              ecosystem. It is a bridge between entrepreneurs and government, financial institutions, industry and academia.
-            </p>
-            <p className="mt-4 font-body text-base leading-relaxed text-navy-800/75">
-              BECCI is not a charity, political organisation or government department. Its focus is economic
-              participation, enterprise growth and nation building.
-            </p>
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              {VERIFIED_STATS.map((stat, idx) => (
+                <Reveal key={stat.id} delay={(idx % 4) * 0.05}>
+                  <GlassSpotlight tone="light" className="glass-light flex h-full min-w-0 flex-col justify-between rounded-2xl p-6">
+                    <div className="relative z-10 min-w-0">
+                      <p className="tabular font-display text-4xl leading-none text-teal-deep">
+                        {stat.figure}
+                      </p>
+                      <p className="mt-3 font-heading text-sm font-bold text-navy-950">
+                        {stat.label}
+                      </p>
+                      <p className="mt-2 font-body text-xs leading-relaxed text-navy-800/80">
+                        {stat.detail}
+                      </p>
+                    </div>
+                    <div className="relative z-10 mt-5 border-t border-navy-800/10 pt-3">
+                      <p className="font-heading text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-navy-800/60">
+                        {stat.year}
+                      </p>
+                      <a
+                        href={stat.sourceUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="link-underline mt-1 inline-flex items-center gap-1 font-heading text-xs font-semibold text-teal-ink"
+                      >
+                        <span>{stat.sourceLabel}</span>
+                        <ArrowUpRight className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                      </a>
+                    </div>
+                  </GlassSpotlight>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+
+          {/* 6-Point Institutional Clarity Matrix */}
+          <div className="mt-20 border-t border-navy-800/12 pt-16">
+            <SectionHeading
+              eyebrow="Institutional clarity"
+              title="BECCI in plain terms."
+              intro="Clear answers on BECCI’s mandate, legal standing and present-phase scope."
+              className="mb-12"
+            />
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {INSTITUTIONAL_BRIEF.map((item, idx) => (
+                <Reveal key={item.question} delay={(idx % 3) * 0.05}>
+                  <GlassSpotlight tone="light" className="glass-light flex h-full flex-col rounded-2xl p-7">
+                    <span className="tabular relative z-10 font-display text-2xl leading-none text-teal-deep">
+                      0{idx + 1}
+                    </span>
+                    <h3 className="relative z-10 mt-3 font-heading text-lg font-bold text-navy-950">
+                      {item.question}
+                    </h3>
+                    <p className="relative z-10 mt-2.5 font-body text-sm leading-relaxed text-navy-800/80">
+                      {item.answer}
+                    </p>
+                  </GlassSpotlight>
+                </Reveal>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -224,6 +323,112 @@ export default function About() {
         </div>
       </section>
 
+      {/* Governance, Corporate Standing & Public Transparency Ledger */}
+      <section id="governance" className="section bg-frost" data-testid="about-governance">
+        <div className="becci-container">
+          <SectionHeading
+            eyebrow="Governance & Transparency"
+            title="Verified registration and honest public disclosures."
+            intro="BECCI publishes only verified institutional facts. Leadership profiles, constitutional documents and formal partnerships will appear here as they are approved for release."
+            className="mb-14"
+          />
+
+          <div className="grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-start">
+            {/* Official Corporate Registry Ledger */}
+            <GlassSpotlight tone="light" className="glass-light rounded-3xl p-7 sm:p-9">
+              <div className="relative z-10 flex flex-wrap items-center justify-between gap-4 border-b border-navy-800/10 pb-6">
+                <div className="flex items-center gap-3.5">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-teal-mist text-teal-deep">
+                    <ShieldCheck className="h-5 w-5" aria-hidden="true" />
+                  </span>
+                  <div>
+                    <p className="font-heading text-xs font-semibold uppercase tracking-[0.16em] text-teal-deep">
+                      Public Corporate Record
+                    </p>
+                    <h3 className="font-heading text-lg font-bold text-navy-950">Section 8 Registration</h3>
+                  </div>
+                </div>
+                <StatusChip label="Active" />
+              </div>
+
+              <dl className="relative z-10 divide-y divide-navy-800/10 pt-2">
+                {INSTITUTIONAL_REGISTRY.map((row) => (
+                  <div key={row.label} className="flex flex-col justify-between gap-2 py-4 sm:flex-row sm:items-center sm:gap-6">
+                    <dt className="font-heading text-xs font-semibold uppercase tracking-[0.14em] text-navy-800/60">
+                      {row.label}
+                    </dt>
+                    <dd className="flex items-center gap-2 font-body text-sm font-medium text-navy-950 sm:text-right">
+                      {row.href ? (
+                        <a
+                          href={row.href}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="link-underline inline-flex items-center gap-1 text-teal-ink"
+                        >
+                          <span>{row.value}</span>
+                          <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+                        </a>
+                      ) : (
+                        <span className={row.copyable ? "tabular font-heading font-bold" : ""}>{row.value}</span>
+                      )}
+                      {row.copyable && (
+                        <button
+                          type="button"
+                          onClick={copyCin}
+                          data-testid="copy-cin-btn"
+                          aria-label="Copy Corporate Identity Number"
+                          className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-navy-800/12 bg-white text-teal-deep transition-colors hover:bg-teal-mist"
+                        >
+                          {copied ? <Check className="h-3.5 w-3.5" aria-hidden="true" /> : <Copy className="h-3.5 w-3.5" aria-hidden="true" />}
+                        </button>
+                      )}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            </GlassSpotlight>
+
+            {/* Governance, Leadership & Document Publication Status */}
+            <div className="space-y-4">
+              {GOVERNANCE_DISCLOSURES.map((doc) => (
+                <div key={doc.title} className="glass-light rounded-2xl p-6">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <h3 className="font-heading text-base font-bold text-navy-950">{doc.title}</h3>
+                    <StatusChip label={doc.status} />
+                  </div>
+                  <p className="mt-2.5 font-body text-sm leading-relaxed text-navy-800/80">{doc.desc}</p>
+                  {doc.href && (
+                    <a
+                      href={doc.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="link-underline mt-3 inline-flex min-h-[36px] items-center gap-1.5 font-heading text-xs font-semibold uppercase tracking-wider text-teal-deep"
+                    >
+                      <span>{doc.actionLabel}</span>
+                      <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+                    </a>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Organisational Governance Tiers */}
+          <div className="mt-16 grid gap-12 border-t border-navy-800/10 pt-14 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+            <div>
+              <Eyebrow tone="teal">Organisational architecture</Eyebrow>
+              <h3 className="mt-3 font-heading text-2xl font-bold text-navy-950">
+                Four-tier institutional reach.
+              </h3>
+              <p className="mt-3 font-body text-sm leading-relaxed text-navy-800/75">
+                Designed from the National apex body down to State, District and City chapters so governance stays accountable and accessible close to entrepreneurs.
+              </p>
+            </div>
+            <OrgHierarchy />
+          </div>
+        </div>
+      </section>
+
       {/* Approach & Collaborative Ecosystem */}
       <section className="section bg-white">
         <div className="becci-container">
@@ -261,8 +466,8 @@ export default function About() {
 
       <NextPageBand
         eyebrow="Next chapter"
-        title="See the five pillars of BECCI’s work."
-        desc="Explore how BECCI connects entrepreneurs with knowledge, finance, markets, networks and government schemes."
+        title="See BECCI’s five pillars and Phase 01 initiatives."
+        desc="Explore active Phase 01 activities, core areas of work and how BECCI engages entrepreneurs and institutions."
         to="/what-we-do"
         ctaLabel="See what BECCI does"
         testid="about-to-what"

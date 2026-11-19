@@ -5,6 +5,7 @@ import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion
 import {
   ORG, WHY_BAHUJAN, VISION_MISSION, WORK_AREAS, STAKEHOLDERS,
   AUDIENCES, SECTORS, WINGS, ROADMAP, MEMBERSHIP_NOTE, CONTACT,
+  ENGAGEMENT_PATHWAYS, HEADLINE_FACT_LINE, VERIFIED_STATS, SCHEMES,
 } from "@/data/becci";
 import Reveal from "@/components/Reveal";
 import { SectionHeading, Eyebrow, CTA } from "@/components/primitives";
@@ -280,6 +281,44 @@ const WhyBahujan = () => (
           </p>
         </div>
       </div>
+
+      {/* Verified MSME Formalisation Gap — Sourced Headline Evidence */}
+      <GlassSpotlight
+        tone="dark"
+        data-testid="home-msme-evidence"
+        className="glass-iridescent mt-12 grid gap-8 rounded-3xl p-7 sm:p-10 lg:grid-cols-[1.15fr_0.85fr] lg:items-center"
+      >
+        <div className="relative z-10 min-w-0">
+          <p className="font-heading text-xs font-semibold uppercase tracking-[0.2em] text-teal-bright">
+            The Formalisation Gap · Official MSME Data
+          </p>
+          <p className="mt-3 font-heading text-xl font-bold leading-snug text-white sm:text-2xl">
+            {HEADLINE_FACT_LINE}
+          </p>
+          <p className="mt-3 font-body text-xs leading-relaxed text-ice/80">
+            OBC entrepreneurs already own about half of India’s small enterprises — yet many remain unregistered, missing formal credit and scheme benefits.
+          </p>
+        </div>
+
+        <div className="relative z-10 grid gap-4 sm:grid-cols-2">
+          {VERIFIED_STATS.slice(0, 2).map((stat) => (
+            <div key={stat.id} className="min-w-0 rounded-2xl bg-white/[0.04] p-5 ring-1 ring-ice/15">
+              <p className="tabular font-display text-4xl leading-none text-teal-bright">{stat.figure}</p>
+              <p className="mt-2 font-heading text-xs font-bold text-white">{stat.label}</p>
+              <p className="mt-1 font-body text-[0.72rem] leading-relaxed text-ice/80">{stat.year}</p>
+              <a
+                href={stat.sourceUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="link-underline mt-2.5 inline-flex items-center gap-1 font-heading text-[0.68rem] font-semibold uppercase tracking-wider text-ice hover:text-teal-bright"
+              >
+                <span>{stat.sourceLabel}</span>
+                <ArrowUpRight className="h-3 w-3 shrink-0" aria-hidden="true" />
+              </a>
+            </div>
+          ))}
+        </div>
+      </GlassSpotlight>
 
       {/* Wide Cinematic Photography Gallery with Scroll-Controlled Aperture Reveal & Layered Parallax */}
       <div className="mt-14 grid gap-5 md:grid-cols-12">
@@ -623,7 +662,7 @@ const MembershipRoad = () => (
             </p>
           </div>
           <CTA to="/schemes" variant="outline" testid="home-schemes-cta">
-            View 8 government schemes
+            View {SCHEMES.length} government schemes
           </CTA>
         </div>
 
@@ -636,6 +675,47 @@ const MembershipRoad = () => (
               <span className="font-heading text-sm font-semibold text-navy-950">{r.title}</span>
               <StatusChip label={r.status} />
             </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Tailored Engagement Pathways by Stakeholder Group */}
+      <div className="mt-16 border-t border-navy-800/10 pt-14" data-testid="engagement-pathways">
+        <Eyebrow tone="teal">Engage with BECCI</Eyebrow>
+        <h3 className="mt-2 font-heading text-2xl font-bold text-navy-950">
+          Choose your pathway into the chamber.
+        </h3>
+        <div className="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+          {ENGAGEMENT_PATHWAYS.map((p) => (
+            <GlassSpotlight key={p.id} tone="light" className="glass-light flex h-full flex-col justify-between rounded-2xl p-6">
+              <div className="relative z-10">
+                <p className="font-heading text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-teal-deep">
+                  {p.audience}
+                </p>
+                <h4 className="mt-2 font-heading text-base font-bold leading-snug text-navy-950">
+                  {p.title}
+                </h4>
+                <p className="mt-2 font-body text-xs leading-relaxed text-navy-800/75">
+                  {p.desc}
+                </p>
+              </div>
+              <div className="relative z-10 mt-6 flex flex-col gap-2 border-t border-navy-800/10 pt-4">
+                <Link
+                  to={p.primary.to}
+                  className="inline-flex min-h-[38px] items-center justify-between font-heading text-xs font-semibold text-navy-950 transition-colors hover:text-teal-deep"
+                >
+                  <span>{p.primary.label}</span>
+                  <ArrowUpRight className="h-3.5 w-3.5 text-teal-deep" aria-hidden="true" />
+                </Link>
+                <Link
+                  to={p.secondary.to}
+                  className="inline-flex min-h-[36px] items-center justify-between font-body text-xs text-navy-800/70 transition-colors hover:text-teal-ink"
+                >
+                  <span>{p.secondary.label}</span>
+                  <ArrowUpRight className="h-3 w-3" aria-hidden="true" />
+                </Link>
+              </div>
+            </GlassSpotlight>
           ))}
         </div>
       </div>
@@ -663,11 +743,33 @@ const InstitutionalBridge = () => (
         highlightWords={["bridge", "economic", "enterprise", "nation", "building"]}
         className="mt-8 font-heading text-statement font-semibold leading-[1.22] text-frost"
       />
+      {/* Interactive BECCI PULSE Digital Exhibition Portal */}
+      <div className="mt-14 text-left">
+        <GlassSpotlight
+          tone="dark"
+          className="on-dark glass-iridescent flex flex-col justify-between gap-6 rounded-3xl bg-navy-950 p-7 text-white sm:p-9 lg:flex-row lg:items-center"
+        >
+          <div className="relative z-10 max-w-2xl">
+            <p className="eyebrow text-teal-bright">Interactive Digital Exhibition · BECCI PULSE</p>
+            <h2 className="mt-2 font-heading text-2xl font-bold text-white sm:text-3xl">
+              Step inside the BECCI Enterprise Universe.
+            </h2>
+            <p className="mt-2 font-body text-sm leading-relaxed text-ice/88">
+              Explore our 3D spatial territories, search every verified scheme and statutory portal on the Opportunity Wall, and inspect BECCI’s transparent institutional record in the Digital Observatory.
+            </p>
+          </div>
+          <div className="relative z-10 shrink-0">
+            <Magnetic>
+              <CTA to="/pulse" variant="teal" testid="home-enter-pulse-cta">
+                Enter BECCI PULSE
+              </CTA>
+            </Magnetic>
+          </div>
+        </GlassSpotlight>
+      </div>
     </div>
   </section>
 );
-
-/* ------------------------------ Experience E: Signature 3D Glass Closing Invitation ------------------------------ */
 const Closing = () => (
   <section
     className="on-dark relative overflow-hidden bg-navy-950 py-28 text-white md:py-36"
