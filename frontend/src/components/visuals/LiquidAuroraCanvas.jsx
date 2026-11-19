@@ -112,10 +112,11 @@ export const LiquidAuroraCanvas = ({ className = "" }) => {
     let tx = 0.65;
     let ty = 0.45;
 
+    const isMobile = /iPhone|iPad|Android/i.test(navigator.userAgent) || window.innerWidth < 768;
     const resize = () => {
       const rect = canvas.getBoundingClientRect();
-      // Render shader at 0.75x DPR for silky 60fps even on high-DPI mobile screens
-      const scale = Math.min(window.devicePixelRatio || 1, 1.5) * 0.75;
+      // Cap DPR at 1 on mobile and 0.75x on desktop for silky 60fps
+      const scale = isMobile ? 0.7 : Math.min(window.devicePixelRatio || 1, 1.5) * 0.75;
       canvas.width = Math.max(1, Math.floor((rect.width || window.innerWidth) * scale));
       canvas.height = Math.max(1, Math.floor((rect.height || window.innerHeight) * scale));
       gl.viewport(0, 0, canvas.width, canvas.height);
@@ -131,18 +132,29 @@ export const LiquidAuroraCanvas = ({ className = "" }) => {
     window.addEventListener("resize", resize, { passive: true });
     window.addEventListener("pointermove", onMove, { passive: true });
 
+    let isVisible = true;
+    const io = new IntersectionObserver(
+      (entries) => {
+        isVisible = entries[0]?.isIntersecting ?? true;
+      },
+      { threshold: 0.01 }
+    );
+    io.observe(canvas);
+
     let raf = 0;
     const t0 = performance.now();
 
     const render = (now) => {
-      mx += (tx - mx) * 0.04;
-      my += (ty - my) * 0.04;
-      const elapsed = reduce ? 2.4 : (now - t0) * 0.001;
+      if (isVisible) {
+        mx += (tx - mx) * 0.04;
+        my += (ty - my) * 0.04;
+        const elapsed = reduce ? 2.4 : (now - t0) * 0.001;
 
-      gl.uniform2f(uRes, canvas.width, canvas.height);
-      gl.uniform1f(uTime, elapsed);
-      gl.uniform2f(uMouse, mx, my);
-      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+        gl.uniform2f(uRes, canvas.width, canvas.height);
+        gl.uniform1f(uTime, elapsed);
+        gl.uniform2f(uMouse, mx, my);
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+      }
 
       if (!reduce) {
         raf = requestAnimationFrame(render);
@@ -153,6 +165,7 @@ export const LiquidAuroraCanvas = ({ className = "" }) => {
 
     return () => {
       cancelAnimationFrame(raf);
+      io.disconnect();
       window.removeEventListener("resize", resize);
       window.removeEventListener("pointermove", onMove);
     };

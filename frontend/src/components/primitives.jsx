@@ -1,8 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { ArrowUpRight, ArrowRight } from "lucide-react";
+import { motion, useReducedMotion } from "framer-motion";
 import Reveal from "@/components/Reveal";
 import LiquidAuroraCanvas from "@/components/visuals/LiquidAuroraCanvas";
+import EnterpriseField3D from "@/components/visuals/EnterpriseField3D";
+import { Magnetic } from "@/components/visuals/MotionPrimitives";
+import { EASE_OUT } from "@/lib/motion";
 
 export const Eyebrow = ({ children, tone = "navy", className = "" }) => {
   const textTone =
@@ -92,32 +96,64 @@ export const CTA = ({ to, children, variant = "primary", testid, className = "" 
   );
 };
 
-// Inner-page hero band powered by the WebGL Liquid Light Shader
-export const PageHero = ({ eyebrow, title, intro, meta, children }) => (
-  <section className="on-dark relative overflow-hidden bg-navy-950 pt-28 text-white sm:pt-32">
-    <LiquidAuroraCanvas />
-    <div
-      className="pointer-events-none absolute inset-0 bg-gradient-to-b from-navy-950/30 via-transparent to-navy-950"
-      aria-hidden="true"
-    />
+// Inner-page hero band powered by the WebGL Liquid Light Shader + 3D Enterprise Field
+export const PageHero = ({ eyebrow, title, intro, meta, children }) => {
+  const reduce = useReducedMotion();
+  return (
+    <section className="on-dark relative overflow-hidden bg-navy-950 pt-28 text-white sm:pt-32">
+      <LiquidAuroraCanvas />
+      <EnterpriseField3D density="closing" className="opacity-55" />
+      <div
+        className="pointer-events-none absolute inset-0 bg-gradient-to-b from-navy-950/30 via-transparent to-navy-950"
+        aria-hidden="true"
+      />
 
-    <div className="becci-container relative z-10 py-16 md:py-24 lg:py-28">
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        {eyebrow && <Eyebrow tone="gold">{eyebrow}</Eyebrow>}
-        {meta && (
-          <span className="glass-pill rounded-full px-3.5 py-1 font-heading text-xs font-medium text-navy-100">
-            {meta}
-          </span>
+      <div className="becci-container relative z-10 py-16 md:py-24 lg:py-28">
+        <motion.div
+          initial={reduce ? false : { opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.45, ease: EASE_OUT }}
+          className="flex flex-wrap items-center justify-between gap-4"
+        >
+          {eyebrow && <Eyebrow tone="gold">{eyebrow}</Eyebrow>}
+          {meta && (
+            <span className="glass-pill rounded-full px-3.5 py-1 font-heading text-xs font-medium text-navy-100">
+              {meta}
+            </span>
+          )}
+        </motion.div>
+        <motion.h1
+          initial={reduce ? false : { opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.55, delay: 0.06, ease: EASE_OUT }}
+          className="mt-5 max-w-4xl font-heading text-h1 font-bold text-white"
+        >
+          {title}
+        </motion.h1>
+        {intro && (
+          <motion.p
+            initial={reduce ? false : { opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.55, delay: 0.14, ease: EASE_OUT }}
+            className="mt-6 max-w-[62ch] font-body text-lead text-navy-100/85"
+          >
+            {intro}
+          </motion.p>
+        )}
+        {children && (
+          <motion.div
+            initial={reduce ? false : { opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2, ease: EASE_OUT }}
+            className="mt-8 flex flex-wrap items-center gap-3"
+          >
+            {children}
+          </motion.div>
         )}
       </div>
-      <h1 className="mt-5 max-w-4xl font-heading text-h1 font-bold text-white">
-        {title}
-      </h1>
-      {intro && <p className="mt-6 max-w-[62ch] font-body text-lead text-navy-100/85">{intro}</p>}
-      {children && <div className="mt-8 flex flex-wrap items-center gap-3">{children}</div>}
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 export const NextPageBand = ({ eyebrow = "Continue exploring", title, desc, to, ctaLabel, testid }) => (
   <section className="bg-navy-50/50 py-16 md:py-24">
@@ -127,9 +163,11 @@ export const NextPageBand = ({ eyebrow = "Continue exploring", title, desc, to, 
         <h2 className="mt-3 font-heading text-2xl font-bold text-navy-950 md:text-3xl">{title}</h2>
         {desc && <p className="mt-2 font-body text-sm leading-relaxed text-navy-800/75">{desc}</p>}
       </div>
-      <CTA to={to} variant="primary" testid={testid}>
-        {ctaLabel}
-      </CTA>
+      <Magnetic strength={0.18}>
+        <CTA to={to} variant="primary" testid={testid}>
+          {ctaLabel}
+        </CTA>
+      </Magnetic>
     </div>
   </section>
 );

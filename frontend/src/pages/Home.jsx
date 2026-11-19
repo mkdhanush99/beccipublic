@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowUpRight } from "lucide-react";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import {
   ORG, WHY_BAHUJAN, VISION_MISSION, WORK_AREAS, STAKEHOLDERS,
   AUDIENCES, SECTORS, WINGS, ROADMAP, MEMBERSHIP_NOTE, CONTACT,
@@ -13,6 +13,8 @@ import StatusChip from "@/components/StatusChip";
 import Img from "@/components/Img";
 import { SectorSvgIcon, WingBadgeIcon } from "@/components/illustrations/BecciArtwork";
 import LiquidAuroraCanvas from "@/components/visuals/LiquidAuroraCanvas";
+import EnterpriseField3D from "@/components/visuals/EnterpriseField3D";
+import { Magnetic, GlassSpotlight, ParallaxFrame } from "@/components/visuals/MotionPrimitives";
 import SplitHeadline from "@/components/visuals/SplitText";
 import TransformationScroll from "@/components/visuals/TransformationScroll";
 import AcronymStory from "@/components/infographics/AcronymStory";
@@ -43,10 +45,18 @@ const HERO_REEL = [
   },
 ];
 
-/* ------------------------------ Chapter 1: Full-Bleed Immersive Cinema Hero ------------------------------ */
+/* ------------------------------ Chapter 1: Full-Bleed Immersive 3D Cinema Hero ------------------------------ */
 const Hero = () => {
   const [reelIndex, setReelIndex] = useState(0);
+  const heroRef = useRef(null);
   const reduce = useReducedMotion();
+
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"],
+  });
+  const stageY = useTransform(scrollYProgress, [0, 1], [0, -72]);
+  const stageOpacity = useTransform(scrollYProgress, [0, 0.72], [1, 0.12]);
 
   useEffect(() => {
     if (reduce) return undefined;
@@ -58,13 +68,17 @@ const Hero = () => {
 
   return (
     <section
+      ref={heroRef}
       className="on-dark relative flex min-h-[100svh] flex-col justify-between overflow-hidden bg-navy-950 pt-28 text-white sm:pt-32"
       data-testid="home-hero"
     >
       {/* Layer 1: Live GPU WebGL Fluid Light Shader */}
       <LiquidAuroraCanvas />
 
-      {/* Layer 2: Full-bleed crossfading atmospheric enterprise photography */}
+      {/* Layer 2: True 3D WebGL Volumetric Infinity-Current Field (scroll + pointer reactive) */}
+      <EnterpriseField3D density="hero" className="opacity-85" />
+
+      {/* Layer 3: Full-bleed crossfading atmospheric enterprise photography */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
         {HERO_REEL.map((item, i) => {
           const active = reelIndex === i;
@@ -90,12 +104,15 @@ const Hero = () => {
           );
         })}
         {/* Deep cinematic lighting vignette for high typographic contrast */}
-        <div className="absolute inset-0 bg-gradient-to-b from-navy-950/75 via-navy-950/45 to-navy-950" />
-        <div className="absolute inset-0 bg-gradient-to-r from-navy-950/90 via-navy-950/40 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-b from-navy-950/75 via-navy-950/40 to-navy-950" />
+        <div className="absolute inset-0 bg-gradient-to-r from-navy-950/90 via-navy-950/35 to-transparent" />
       </div>
 
-      {/* Main Editorial Opening Stage */}
-      <div className="becci-container relative z-10 my-auto py-12 md:py-16">
+      {/* Main Editorial Opening Stage with scroll-linked lift */}
+      <motion.div
+        style={reduce ? undefined : { y: stageY, opacity: stageOpacity }}
+        className="becci-container relative z-10 my-auto py-12 md:py-16"
+      >
         <div className="max-w-4xl">
           <div className="inline-flex items-center gap-3 rounded-full glass-pill px-4 py-1.5">
             <span className="h-2 w-2 rounded-full bg-gold" aria-hidden="true" />
@@ -125,20 +142,27 @@ const Hero = () => {
             transition={{ duration: 0.7, delay: 0.35, ease: EASE_OUT }}
             className="mt-9 flex flex-wrap items-center gap-4"
           >
-            <CTA to="/about" variant="gold" testid="hero-explore-cta">
-              Explore BECCI
-            </CTA>
-            <CTA to="/membership" variant="outlineWhite" testid="hero-membership-cta">
-              Membership information
-            </CTA>
+            <Magnetic>
+              <CTA to="/about" variant="gold" testid="hero-explore-cta">
+                Explore BECCI
+              </CTA>
+            </Magnetic>
+            <Magnetic strength={0.16}>
+              <CTA to="/membership" variant="outlineWhite" testid="hero-membership-cta">
+                Membership information
+              </CTA>
+            </Magnetic>
           </motion.div>
         </div>
-      </div>
+      </motion.div>
 
-      {/* Floating Glass Control & Orientation Capsule hovering at the base of the Hero */}
+      {/* Floating Glass Control & Orientation Capsule with specular spotlight */}
       <div className="becci-container relative z-10 pb-8 sm:pb-10">
-        <div className="glass-dark flex flex-col justify-between gap-6 rounded-2xl p-5 sm:p-6 lg:flex-row lg:items-center">
-          <div className="flex items-center gap-4">
+        <GlassSpotlight
+          tone="dark"
+          className="glass-dark flex flex-col justify-between gap-6 rounded-2xl p-5 sm:p-6 lg:flex-row lg:items-center"
+        >
+          <div className="relative z-10 flex items-center gap-4">
             <InstitutionalSeal className="h-12 w-12 shrink-0 sm:h-14 sm:w-14" />
             <div>
               <p className="font-heading text-xs font-semibold uppercase tracking-[0.18em] text-gold">
@@ -150,21 +174,29 @@ const Hero = () => {
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center justify-between gap-4 border-t border-white/10 pt-4 lg:border-l lg:border-t-0 lg:pl-6 lg:pt-0">
-            {/* Interactive backdrop film switcher */}
+          <div className="relative z-10 flex flex-wrap items-center justify-between gap-4 border-t border-white/10 pt-4 lg:border-l lg:border-t-0 lg:pl-6 lg:pt-0">
+            {/* Interactive backdrop film switcher with spring highlight */}
             <div className="flex items-center gap-1.5 rounded-full bg-white/[0.06] p-1">
               {HERO_REEL.map((item, i) => (
                 <button
                   key={item.tag}
                   type="button"
                   onClick={() => setReelIndex(i)}
-                  className={`rounded-full px-3.5 py-1.5 font-heading text-[0.68rem] font-semibold uppercase tracking-wider transition-colors ${
+                  className={`relative rounded-full px-3.5 py-1.5 font-heading text-[0.68rem] font-semibold uppercase tracking-wider transition-colors ${
                     reelIndex === i
-                      ? "bg-gold text-navy-950"
+                      ? "text-navy-950"
                       : "text-navy-100/75 hover:text-white"
                   }`}
                 >
-                  {item.tag.split(" ")[0]}
+                  {reelIndex === i && (
+                    <motion.span
+                      layoutId={reduce ? undefined : "hero-reel-pill"}
+                      transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                      className="absolute inset-0 rounded-full bg-gold"
+                      aria-hidden="true"
+                    />
+                  )}
+                  <span className="relative z-10">{item.tag.split(" ")[0]}</span>
                 </button>
               ))}
             </div>
@@ -174,7 +206,7 @@ const Hero = () => {
               <p className="tabular font-body text-[0.7rem] text-navy-300">CIN {CONTACT.cin}</p>
             </div>
           </div>
-        </div>
+        </GlassSpotlight>
       </div>
     </section>
   );
@@ -218,35 +250,37 @@ const WhyBahujan = () => (
         </div>
       </div>
 
-      {/* Wide Cinematic Photography Gallery with Floating Glass Captions */}
+      {/* Wide Cinematic Photography Gallery with Scroll-Linked Layered Parallax */}
       <div className="mt-14 grid gap-5 md:grid-cols-12">
         {[
-          { img: "craft", span: "md:col-span-5", label: "Weaving & Looms", sub: "Generational textile & craft mastery" },
-          { img: "artisan", span: "md:col-span-4", label: "Traditional Crafts", sub: "Independent makers & regional trades" },
-          { img: "farmer", span: "md:col-span-3", label: "Agrarian Enterprise", sub: "Food processing & rural value chains" },
+          { img: "craft", span: "md:col-span-5", offset: 18, label: "Weaving & Looms", sub: "Generational textile & craft mastery" },
+          { img: "artisan", span: "md:col-span-4", offset: -12, label: "Traditional Crafts", sub: "Independent makers & regional trades" },
+          { img: "farmer", span: "md:col-span-3", offset: 22, label: "Agrarian Enterprise", sub: "Food processing & rural value chains" },
         ].map((card) => (
-          <div
-            key={card.label}
-            className={`group relative overflow-hidden rounded-2xl bg-navy-900 shadow-lift ${card.span}`}
-          >
-            <Img
-              name={card.img}
-              sizes="(min-width: 768px) 440px, 100vw"
-              alt={card.label}
-              className="h-72 w-full object-cover transition-transform duration-700 group-hover:scale-105 md:h-80"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-navy-950/90 via-navy-950/15 to-transparent" />
-            <div className="glass-dark absolute bottom-4 left-4 right-4 rounded-xl px-4 py-3">
-              <p className="font-heading text-sm font-bold text-white">{card.label}</p>
-              <p className="mt-0.5 font-body text-xs text-navy-100/80">{card.sub}</p>
+          <ParallaxFrame key={card.label} offset={card.offset} className={card.span}>
+            <div className="group relative overflow-hidden rounded-2xl bg-navy-900 shadow-lift">
+              <Img
+                name={card.img}
+                sizes="(min-width: 768px) 440px, 100vw"
+                alt={card.label}
+                className="h-72 w-full object-cover transition-transform duration-700 group-hover:scale-105 md:h-80"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-navy-950/90 via-navy-950/15 to-transparent" />
+              <div className="glass-dark absolute bottom-4 left-4 right-4 rounded-xl px-4 py-3">
+                <p className="font-heading text-sm font-bold text-white">{card.label}</p>
+                <p className="mt-0.5 font-body text-xs text-navy-100/80">{card.sub}</p>
+              </div>
             </div>
-          </div>
+          </ParallaxFrame>
         ))}
       </div>
 
-      {/* Floating Glass Quotation Lens + Fluid Occupation Tags */}
-      <div className="glass-dark mt-14 grid gap-8 rounded-3xl p-8 sm:p-12 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
-        <figure>
+      {/* Floating Glass Quotation Lens with Optical Specular Spotlight */}
+      <GlassSpotlight
+        tone="dark"
+        className="glass-dark mt-14 grid gap-8 rounded-3xl p-8 sm:p-12 lg:grid-cols-[1.15fr_0.85fr] lg:items-center"
+      >
+        <figure className="relative z-10">
           <Symbol variant="white" className="mb-5 h-6 w-auto opacity-75" />
           <blockquote className="font-serif text-3xl italic leading-snug text-gold sm:text-4xl">
             “{WHY_BAHUJAN.quote.text}”
@@ -259,7 +293,7 @@ const WhyBahujan = () => (
           </figcaption>
         </figure>
 
-        <div>
+        <div className="relative z-10">
           <p className="font-heading text-xs font-semibold uppercase tracking-[0.2em] text-navy-300">
             Productive traditions across Bharat
           </p>
@@ -274,7 +308,7 @@ const WhyBahujan = () => (
             ))}
           </div>
         </div>
-      </div>
+      </GlassSpotlight>
     </div>
   </section>
 );
@@ -576,13 +610,14 @@ const MembershipRoad = () => (
   </section>
 );
 
-/* ------------------------------ Chapter 10: Living WebGL Closing Invitation ------------------------------ */
+/* ------------------------------ Chapter 10: Living 3D WebGL Closing Invitation ------------------------------ */
 const Closing = () => (
   <section
     className="on-dark relative overflow-hidden bg-navy-950 py-28 text-white md:py-36"
     data-testid="chapter-closing"
   >
     <LiquidAuroraCanvas />
+    <EnterpriseField3D density="closing" className="opacity-70" />
     <div
       className="pointer-events-none absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/35 to-navy-950/80"
       aria-hidden="true"
@@ -600,15 +635,21 @@ const Closing = () => (
       </Reveal>
       <Reveal delay={0.12}>
         <div className="mt-12 flex flex-wrap justify-center gap-4">
-          <CTA to="/membership" variant="gold" testid="closing-membership">
-            Explore Membership
-          </CTA>
-          <CTA to="/schemes" variant="outlineWhite" testid="closing-schemes">
-            Explore Schemes
-          </CTA>
-          <CTA to="/contact" variant="outlineWhite" testid="closing-contact">
-            Contact BECCI
-          </CTA>
+          <Magnetic>
+            <CTA to="/membership" variant="gold" testid="closing-membership">
+              Explore Membership
+            </CTA>
+          </Magnetic>
+          <Magnetic strength={0.16}>
+            <CTA to="/schemes" variant="outlineWhite" testid="closing-schemes">
+              Explore Schemes
+            </CTA>
+          </Magnetic>
+          <Magnetic strength={0.16}>
+            <CTA to="/contact" variant="outlineWhite" testid="closing-contact">
+              Contact BECCI
+            </CTA>
+          </Magnetic>
         </div>
       </Reveal>
     </div>

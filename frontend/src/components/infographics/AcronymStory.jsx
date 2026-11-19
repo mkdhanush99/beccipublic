@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowUpRight } from "lucide-react";
+import { motion, useReducedMotion } from "framer-motion";
 import { ACRONYM, WHY_BAHUJAN } from "@/data/becci";
 import Img from "@/components/Img";
 import { BecciInfinityEmblem, PillarEmblemIcon } from "@/components/illustrations/BecciArtwork";
+import { EASE_OUT, VIEWPORT } from "@/lib/motion";
 
 const INFINITY_DIMENSIONS = [
   {
@@ -27,11 +29,18 @@ const INFINITY_DIMENSIONS = [
 // official Brand Kit v1.0 emblem & pillar emblems, and unboxed editorial Why · How · What philosophy.
 export const AcronymStory = () => {
   const [active, setActive] = useState(0);
+  const reduce = useReducedMotion();
 
   return (
     <div data-testid="acronym-infographic">
       {/* 1. Heart of the section: Official BECCI Infinity Continuum Emblem */}
-      <div className="mx-auto max-w-4xl text-center">
+      <motion.div
+        initial={reduce ? false : { opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={VIEWPORT}
+        transition={{ duration: 0.65, ease: EASE_OUT }}
+        className="mx-auto max-w-4xl text-center"
+      >
         <div className="flex justify-center">
           <BecciInfinityEmblem className="h-24 w-auto sm:h-28" />
         </div>
@@ -58,7 +67,7 @@ export const AcronymStory = () => {
         <p className="mt-1.5 font-body text-xs text-navy-800/70">
           {WHY_BAHUJAN.quote.translation}
         </p>
-      </div>
+      </motion.div>
 
       {/* 2. Five Photographic Cards — 1 horizontal row on desktop, 2-column grid on mobile */}
       <div
@@ -72,18 +81,25 @@ export const AcronymStory = () => {
           const selected = active === i;
 
           return (
-            <Link
+            <motion.div
               key={i}
-              to={item.to}
               role="listitem"
-              onMouseEnter={() => setActive(i)}
-              onFocus={() => setActive(i)}
-              data-testid={`acronym-letter-${i}`}
-              aria-label={`${item.letter} — ${item.title} (${item.word}): ${item.line}`}
-              className={`group relative flex min-h-[300px] flex-col justify-between overflow-hidden rounded-2xl p-5 text-white shadow-soft transition-[transform,box-shadow] duration-300 ease-out hover:-translate-y-1.5 hover:shadow-lift active:scale-[0.98] sm:min-h-[360px] sm:p-6 ${
-                isLastOdd ? "col-span-2 lg:col-span-1" : ""
-              } ${selected ? "ring-2 ring-gold/75" : ""}`}
+              initial={reduce ? false : { opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={VIEWPORT}
+              transition={{ duration: 0.55, delay: i * 0.07, ease: EASE_OUT }}
+              className={isLastOdd ? "col-span-2 lg:col-span-1" : ""}
             >
+              <Link
+                to={item.to}
+                onMouseEnter={() => setActive(i)}
+                onFocus={() => setActive(i)}
+                data-testid={`acronym-letter-${i}`}
+                aria-label={`${item.letter} — ${item.title} (${item.word}): ${item.line}`}
+                className={`group relative flex h-full min-h-[300px] flex-col justify-between overflow-hidden rounded-2xl p-5 text-white shadow-soft transition-[transform,box-shadow] duration-300 ease-out hover:-translate-y-1.5 hover:shadow-lift active:scale-[0.98] sm:min-h-[360px] sm:p-6 ${
+                  selected ? "ring-2 ring-gold/75" : ""
+                }`}
+              >
               {/* Background photograph */}
               <Img
                 name={item.img}
@@ -154,7 +170,8 @@ export const AcronymStory = () => {
                   </div>
                 </div>
               </div>
-            </Link>
+              </Link>
+            </motion.div>
           );
         })}
       </div>

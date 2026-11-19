@@ -1,8 +1,9 @@
 import React, { useRef, useState } from "react";
-import { motion, useScroll, useSpring, useMotionValue, useMotionValueEvent, useReducedMotion } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useSpring, useMotionValue, useMotionValueEvent, useReducedMotion } from "framer-motion";
 import { JOURNEY } from "@/data/becci";
 import Img from "@/components/Img";
 import { Eyebrow } from "@/components/primitives";
+import { GlassSpotlight } from "@/components/visuals/MotionPrimitives";
 import { EASE_OUT } from "@/lib/motion";
 
 const SCENES = [
@@ -202,25 +203,34 @@ export const TransformationScroll = () => {
                   ))}
                 </div>
 
-                {/* Floating Glass Caption Capsule */}
-                <div className="glass-dark absolute bottom-5 left-5 right-5 z-10 rounded-2xl p-6">
-                  <div className="flex items-end justify-between gap-4">
-                    <div>
-                      <p className="font-heading text-xs font-semibold uppercase tracking-[0.18em] text-gold">
-                        {SCENES[activeIndex].kicker}
-                      </p>
-                      <p className="mt-1.5 font-display text-3xl uppercase leading-none tracking-wide text-white">
-                        {SCENES[activeIndex].step}
-                      </p>
-                      <p className="mt-2 font-body text-sm text-navy-100/85">
-                        {SCENES[activeIndex].caption}
-                      </p>
-                    </div>
-                    <span className="tabular font-display text-4xl leading-none text-white/30">
-                      0{activeIndex + 1}/04
-                    </span>
-                  </div>
-                </div>
+                {/* Floating Glass Caption Capsule with smooth choreographed swap */}
+                <GlassSpotlight tone="dark" className="glass-dark absolute bottom-5 left-5 right-5 z-10 rounded-2xl p-6">
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={activeIndex}
+                      initial={reduce ? false : { opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={reduce ? undefined : { opacity: 0, y: -8 }}
+                      transition={{ duration: 0.26, ease: EASE_OUT }}
+                      className="relative z-10 flex items-end justify-between gap-4"
+                    >
+                      <div>
+                        <p className="font-heading text-xs font-semibold uppercase tracking-[0.18em] text-gold">
+                          {SCENES[activeIndex].kicker}
+                        </p>
+                        <p className="mt-1.5 font-display text-3xl uppercase leading-none tracking-wide text-white">
+                          {SCENES[activeIndex].step}
+                        </p>
+                        <p className="mt-2 font-body text-sm text-navy-100/85">
+                          {SCENES[activeIndex].caption}
+                        </p>
+                      </div>
+                      <span className="tabular font-display text-4xl leading-none text-white/30">
+                        0{activeIndex + 1}/04
+                      </span>
+                    </motion.div>
+                  </AnimatePresence>
+                </GlassSpotlight>
               </div>
             </motion.div>
           </div>
