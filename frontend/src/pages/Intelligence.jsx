@@ -17,6 +17,7 @@ import { Eyebrow, SectionHeading, NextPageBand } from "@/components/primitives";
 import StatusChip from "@/components/StatusChip";
 import LiquidAuroraCanvas from "@/components/visuals/LiquidAuroraCanvas";
 import { GlassSpotlight } from "@/components/visuals/MotionPrimitives";
+import { SCHEME_DATASET_STATS } from "@/data/becci";
 import {
   INSIGHT_ARTICLES,
   INTELLIGENCE_DISCLAIMER,
@@ -507,20 +508,49 @@ export default function Intelligence() {
 
                   <div className="relative z-10 mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-navy-800/10 pt-4">
                     <span className="font-body text-xs text-navy-800/60">{o.publishedDate}</span>
-                    <a
-                      href={o.url}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex min-h-[40px] items-center gap-1.5 rounded-full bg-navy-950 px-5 py-2 font-heading text-xs font-semibold uppercase tracking-wider text-white transition-colors hover:bg-teal-deep"
-                    >
-                      <span>Visit Official Source</span>
-                      <ArrowUpRight className="h-3.5 w-3.5 text-teal-bright" aria-hidden="true" />
-                    </a>
+                    <div className="flex flex-wrap items-center gap-2">
+                      {o.to && (
+                        <Link
+                          to={o.to}
+                          className="inline-flex min-h-[40px] items-center gap-1.5 rounded-full border border-navy-800/15 bg-white px-4 py-2 font-heading text-xs font-semibold text-navy-950 transition-colors hover:border-teal-deep hover:text-teal-ink"
+                        >
+                          <span>Full Details</span>
+                        </Link>
+                      )}
+                      <a
+                        href={o.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        data-cursor="open"
+                        className="inline-flex min-h-[40px] items-center gap-1.5 rounded-full bg-navy-950 px-5 py-2 font-heading text-xs font-semibold uppercase tracking-wider text-white transition-colors hover:bg-teal-deep"
+                      >
+                        <span>Official Portal</span>
+                        <ArrowUpRight className="h-3.5 w-3.5 text-teal-bright" aria-hidden="true" />
+                      </a>
+                    </div>
                   </div>
                 </GlassSpotlight>
               ))}
             </div>
           )}
+
+          <div className="mt-8 flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-teal/20 bg-white p-5">
+            <div>
+              <p className="font-heading text-sm font-bold text-navy-950">
+                Explore the full {SCHEME_DATASET_STATS.totalShown}-scheme verified Government directory.
+              </p>
+              <p className="mt-0.5 font-body text-xs text-navy-800/70">
+                Includes {SCHEME_DATASET_STATS.centralCount} Central, {SCHEME_DATASET_STATS.telanganaCount} Telangana &amp; {SCHEME_DATASET_STATS.andhraPradeshCount} Andhra Pradesh schemes sourced from myScheme, Government of India ({SCHEME_DATASET_STATS.verifiedDate}).
+              </p>
+            </div>
+            <Link
+              to="/schemes"
+              className="inline-flex min-h-[42px] shrink-0 items-center gap-2 rounded-full bg-navy-950 px-5 py-2 font-heading text-xs font-semibold uppercase tracking-wider text-white transition-colors hover:bg-teal-deep"
+            >
+              <span>Open {SCHEME_DATASET_STATS.totalShown}-Scheme Finder</span>
+              <ArrowUpRight className="h-3.5 w-3.5 text-teal-bright" aria-hidden="true" />
+            </Link>
+          </div>
         </div>
       </section>
 

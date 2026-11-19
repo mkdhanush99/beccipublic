@@ -1,0 +1,19 @@
+{
+  "name": "BECCI \u2014 Bahujan Entrepreneurs Chamber for Commerce & Industry",
+  "short_name": "BECCI",
+  "icons": [
+    {
+      "src": "/android-chrome-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#061B3A",
+  "background_color": "#FFFFFF",
+  "display": "standalone"
+}

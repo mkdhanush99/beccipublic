@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import emblemUrl from "@/assets/brand/emblem/becci-infinity-emblem-dark.svg";
 
 /**
  * BecciPrismSculpture3D — Real-Time Raymarched 3D Optical Glass Continuum Sculpture
@@ -32,164 +33,120 @@ uniform vec2 u_res;
 uniform float u_time;
 uniform vec2 u_mouse;
 uniform float u_scroll;
-uniform float u_mode; // 0.0 = hero focal sculpture, 1.0 = closing serene sculpture
+uniform float u_mode;  // 0.0 = hero, 1.0 = closing
+uniform float u_intro; // 0 -> 1 entrance: the two C's converge into the continuum
 
-mat2 rot(float a) {
-  float c = cos(a), s = sin(a);
-  return mat2(c, -s, s, c);
-}
+mat2 rot(float a) { float c = cos(a), s = sin(a); return mat2(c, -s, s, c); }
 
-// Smooth minimum for organic blown-glass fusion
-float smin(float a, float b, float k) {
-  float h = clamp(0.5 + 0.5 * (b - a) / k, 0.0, 1.0);
-  return mix(b, a, h) - k * h * (1.0 - h);
-}
-
-// Sculpted C-arc (open torus segment) in XY plane
-float sdCappedTorus(vec3 p, vec2 sc, float ra, float rb) {
+// Open torus arc in XY, symmetric about +Y, half-angle given by sc = (sin, cos)
+float sdArc(vec3 p, vec2 sc, float ra, float rb) {
   p.x = abs(p.x);
   float k = (sc.y * p.x > sc.x * p.y) ? dot(p.xy, sc) : length(p.xy);
   return sqrt(dot(p, p) + ra * ra - 2.0 * ra * k) - rb;
 }
 
-// BECCI Continuum Glass Sculpture SDF:
-// Two sculpted interlocking translucent crystal arcs (facing C continuum) + floating orbital glass ring
-float map(vec3 p) {
-  // Gentle floating breath + scroll/pointer driven 3D orbit
-  float t = u_time * 0.42;
-  p.xz *= rot(t * 0.55 + (u_mouse.x - 0.5) * 0.85 + u_scroll * 1.1);
-  p.yz *= rot(sin(t * 0.7) * 0.16 + (u_mouse.y - 0.5) * 0.55 - 0.22);
+// Octahedron = the keystone diamond seen face-on
+float sdOcta(vec3 p, float s) { p = abs(p); return (p.x + p.y + p.z - s) * 0.57735027; }
 
-  // Arc aperture ~ 135 degrees (clear iconic C geometry)
-  float an = 2.32;
-  vec2 sc = vec2(sin(an), cos(an));
+// Geometry traced from the official emblem SVG (viewBox 360x160):
+// arc centres at x = 126 / 234 (±54 from axis), radii 56 / 44 / 32, stroke 7,
+// every C open towards the centre with a 34° half-aperture. Units: 56px -> 0.86.
+const float S = 0.015357;
+vec3 orient(vec3 p) {
+  float t = u_time;
+  float yaw = sin(t * 0.21) * 0.20 + (u_mouse.x - 0.5) * 0.55 + (1.0 - u_intro) * 0.75 + u_scroll * 0.6;
+  float pitch = -0.10 + sin(t * 0.17) * 0.05 + (u_mouse.y - 0.5) * -0.35 + u_scroll * 0.25;
+  p.xz *= rot(yaw);
+  p.yz *= rot(pitch);
+  p.y += sin(t * 0.33) * 0.025;
+  return p / 0.70; // fit the 3.4-unit-wide emblem into frame
+}
 
-  // Left sculpted crystal C-arc (open towards centre)
-  vec3 pL = p - vec3(-0.56, 0.0, 0.0);
-  pL.xy *= rot(-1.5708); // orient opening towards +X
-  pL.xz *= rot(0.24);
-  float dLeft = sdCappedTorus(pL, sc, 0.68, 0.155);
-
-  // Right sculpted crystal C-arc (mirrored, facing left arc across an illuminated bridge)
-  vec3 pR = p - vec3(0.56, 0.0, 0.0);
-  pR.xy *= rot(1.5708); // orient opening towards -X
-  pR.xz *= rot(-0.24);
-  float dRight = sdCappedTorus(pR, sc, 0.68, 0.155);
-
-  // Sculpted saddle-warped outer continuum glass halo linking both arcs in 3D depth
-  vec3 pHalo = p;
-  pHalo.yz *= rot(0.68 + sin(t * 0.45) * 0.08);
-  pHalo.z += sin(atan(pHalo.y, pHalo.x) * 2.0 + t * 0.6) * 0.16;
-  vec2 q = vec2(length(pHalo.xy) - 1.28, pHalo.z);
-  float dHalo = length(q) - 0.055;
-
-  // Inner crystalline keystone bridge where the two facing arcs meet
-  float dArcs = smin(dLeft, dRight, 0.14);
-  float d = smin(dArcs, dHalo, 0.09);
-
-  return d;
+// returns (distance, material): 1 outer navy, 2 middle blue, 3 inner gold, 4 keystone
+vec2 scene(vec3 q) {
+  vec3 p = orient(q);
+  float sep = 54.0 * S + (1.0 - u_intro) * 0.55;
+  vec2 sc = vec2(sin(2.5482), cos(2.5482)); // 146° arc half-angle = 180° - 34°
+  float rb = 4.1 * S;                        // tube a touch fuller than the 3.5px stroke for light
+  vec3 pl = p - vec3(-sep, 0.0, 0.0); pl.xy *= rot(-1.5708);
+  vec3 pr = p - vec3( sep, 0.0, 0.0); pr.xy *= rot( 1.5708);
+  vec2 r = vec2(1e5, 0.0);
+  float rad[3]; rad[0] = 56.0 * S; rad[1] = 44.0 * S; rad[2] = 32.0 * S;
+  for (int i = 0; i < 3; i++) {
+    float d = min(sdArc(pl, sc, rad[i], rb), sdArc(pr, sc, rad[i], rb));
+    if (d < r.x) r = vec2(d, float(i + 1));
+  }
+  vec3 pk = p; // keystone stays square-on: the emblem's fixed centre
+  float k = sdOcta(pk * vec3(1.0, 1.0, 1.9), 7.8 * S * u_intro) / 1.9;
+  if (k < r.x) r = vec2(k, 4.0);
+  return vec2(r.x * 0.70, r.y);
 }
 
 vec3 calcNormal(vec3 p) {
-  vec2 e = vec2(0.0022, -0.0022);
-  return normalize(
-    e.xyy * map(p + e.xyy) +
-    e.yyx * map(p + e.yyx) +
-    e.yxy * map(p + e.yxy) +
-    e.xxx * map(p + e.xxx)
-  );
+  vec2 e = vec2(0.0015, -0.0015);
+  return normalize(e.xyy * scene(p + e.xyy).x + e.yyx * scene(p + e.yyx).x +
+                   e.yxy * scene(p + e.yxy).x + e.xxx * scene(p + e.xxx).x);
+}
+
+// Studio environment: navy floor, turquoise softbox upper-right, cool ice key overhead
+vec3 env(vec3 r) {
+  vec3 col = mix(vec3(0.012, 0.035, 0.08), vec3(0.03, 0.09, 0.18), smoothstep(-0.6, 0.8, r.y));
+  col += vec3(0.0, 0.72, 0.66) * smoothstep(0.55, 0.95, dot(r, normalize(vec3(0.8, 0.45, 0.4)))) * 1.1;
+  col += vec3(0.72, 0.84, 0.98) * smoothstep(0.80, 0.99, dot(r, normalize(vec3(-0.25, 1.0, 0.35)))) * 1.6;
+  col += vec3(0.09, 0.41, 0.76) * smoothstep(0.6, 0.95, dot(r, normalize(vec3(-0.9, -0.1, 0.4)))) * 0.5;
+  return col;
 }
 
 void main() {
   vec2 uv = (gl_FragCoord.xy - 0.5 * u_res.xy) / max(1.0, min(u_res.x, u_res.y));
+  vec3 ro = vec3(0.0, 0.0, 4.6);
+  vec3 rd = normalize(vec3(uv, -1.9));
 
-  vec3 ro = vec3(0.0, 0.0, 4.45);
-  vec3 rd = normalize(vec3(uv, -1.72));
-
-  // Subtle ambient refractive halo behind the glass object (strictly bounded, zero hard edge)
-  float radial = length(uv);
-  vec3 elecTeal    = vec3(0.000, 0.722, 0.663); // #00B8A9
-  vec3 tealBright  = vec3(0.150, 0.855, 0.790); // #26D6C7
-  vec3 iceBlue     = vec3(0.722, 0.843, 0.980); // #B8D7FA
-  vec3 ultraviolet = vec3(0.475, 0.357, 1.000); // #795BFF
-  vec3 champGold   = vec3(0.831, 0.686, 0.353); // #D4AF5A
-  vec3 deepNavy    = vec3(0.024, 0.106, 0.227); // #061B3A
-
-  float t = 0.0;
-  float minD = 10.0;
-  bool hit = false;
-
-  for (int i = 0; i < 52; i++) {
-    vec3 p = ro + rd * t;
-    float d = map(p);
-    minD = min(minD, d);
-    if (d < 0.0025) {
-      hit = true;
-      break;
-    }
-    t += d * 0.85;
-    if (t > 7.5) break;
+  float t = 0.0, minD = 10.0; vec2 h = vec2(0.0); bool hit = false;
+  for (int i = 0; i < 72; i++) {
+    h = scene(ro + rd * t);
+    minD = min(minD, h.x);
+    if (h.x < 0.0012) { hit = true; break; }
+    t += h.x * 0.9;
+    if (t > 7.0) break;
   }
 
-  // Soft controlled luminous glass aura near the sculpture silhouette
-  float aura = exp(-minD * 5.8) * smoothstep(0.68, 0.08, radial);
-  vec3 auraCol = mix(elecTeal, ultraviolet, smoothstep(-0.35, 0.45, uv.x - uv.y) * 0.55);
-  vec3 col = auraCol * aura * (u_mode > 0.5 ? 0.24 : 0.34);
-  float alpha = aura * (u_mode > 0.5 ? 0.32 : 0.44);
+  // faint turquoise bloom hugging the silhouette only — no free-floating glow
+  vec3 col = vec3(0.0, 0.72, 0.66) * exp(-minD * 22.0) * 0.18;
+  float alpha = exp(-minD * 22.0) * 0.22;
 
   if (hit) {
-    vec3 pos = ro + rd * t;
-    vec3 N = calcNormal(pos);
+    vec3 p = ro + rd * t;
+    vec3 N = calcNormal(p);
     vec3 V = -rd;
+    vec3 R = reflect(rd, N);
+    float ndv = max(dot(N, V), 0.0);
+    float m = h.y;
 
-    // Three-point optical studio lighting
-    vec3 L1 = normalize(vec3(0.75, 0.85, 0.95));   // Teal-Ice key light
-    vec3 L2 = normalize(vec3(-0.85, -0.45, 0.65)); // Subtle Ultraviolet rim light
-    vec3 L3 = normalize(vec3(0.15, 0.95, 0.25));   // Top Champagne Gold specular highlight
+    // official emblem colours as metals; navy lifted so it reads on a navy stage
+    vec3 base; float rough;
+    if (m < 1.5)      { base = vec3(0.24, 0.36, 0.58); rough = 0.32; } // #0A2352 anodised navy
+    else if (m < 2.5) { base = vec3(0.09, 0.41, 0.76); rough = 0.22; } // #1769C2 polished blue
+    else              { base = vec3(0.83, 0.69, 0.35); rough = 0.18; } // #D4AF5A gold (inner arcs + keystone)
 
-    float fresnel = pow(1.0 - max(dot(N, V), 0.0), 2.8);
-    float diff1 = max(dot(N, L1), 0.0);
-    float diff2 = max(dot(N, L2), 0.0);
-
-    vec3 H1 = normalize(L1 + V);
-    vec3 H2 = normalize(L2 + V);
-    vec3 H3 = normalize(L3 + V);
-
-    float spec1 = pow(max(dot(N, H1), 0.0), 48.0);
-    float spec2 = pow(max(dot(N, H2), 0.0), 26.0);
-    float spec3 = pow(max(dot(N, H3), 0.0), 82.0);
-
-    // Simulated chromatic optical glass body + internal thickness sheen
-    float thickness = smoothstep(-0.5, 0.85, dot(N, V));
-    vec3 glassBody = mix(deepNavy * 1.15, elecTeal * 0.55, 0.35 + 0.45 * diff1);
-
-    // Chromatic Fresnel edge refraction (Teal -> Ice Blue -> restrained Ultraviolet dispersion)
-    float dispersion = clamp(N.x * 0.5 + 0.5, 0.0, 1.0);
-    vec3 rimCol = mix(tealBright, iceBlue, smoothstep(0.15, 0.65, dispersion));
-    rimCol = mix(rimCol, ultraviolet, smoothstep(0.62, 1.0, dispersion) * 0.72);
-
-    vec3 surface = glassBody * (0.55 + 0.45 * thickness);
-    surface += rimCol * fresnel * 1.18;
-    surface += iceBlue * spec1 * 0.95;
-    surface += ultraviolet * diff2 * 0.24 + ultraviolet * spec2 * 0.35;
-
-    // Restrained Champagne Gold heritage reflection on the uppermost crystal crest
-    float goldWeight = u_mode > 0.5 ? 0.78 : 0.42;
-    surface += champGold * spec3 * goldWeight;
-
-    // Subtle internal glowing vein along the crystal axis
-    float coreGlow = pow(1.0 - abs(dot(N, V)), 1.6) * 0.28;
-    surface += elecTeal * coreGlow;
-
-    col = surface;
-    alpha = clamp(0.76 + fresnel * 0.24, 0.0, 1.0);
+    vec3 F = base + (1.0 - base) * pow(1.0 - ndv, 5.0);          // Schlick, metallic
+    vec3 refl = mix(env(R), env(normalize(R + N * rough)), rough);
+    // metals tint what they reflect: keep only a trace of the studio's turquoise hue
+    // so gold stays gold and blue stays blue
+    refl = mix(vec3(dot(refl, vec3(0.3, 0.59, 0.11))) * 1.35, refl, 0.22);
+    col = refl * F;
+    col += base * 0.10;                                           // ambient floor
+    vec3 L = normalize(vec3(0.6, 0.8, 0.9));
+    col += mix(vec3(0.7, 1.0, 0.96), base, 0.5) * pow(max(dot(N, normalize(L + V)), 0.0), mix(180.0, 40.0, rough)) * 0.9;
+    // cursor-led key light: the highlight follows the pointer across the metal
+    vec3 Lm = normalize(vec3((u_mouse.x - 0.5) * 2.4, (u_mouse.y - 0.5) * 2.0, 1.2));
+    col += vec3(0.6, 0.95, 0.9) * pow(max(dot(N, normalize(Lm + V)), 0.0), 90.0) * 0.45;
+    if (m > 3.5) col += base * 0.25;                              // keystone holds the eye
+    col *= u_mode > 0.5 ? 0.92 : 1.0;
+    alpha = 1.0;
   }
 
-  // Smooth circular edge falloff right at the outer margin so the entire sculpture stays razor-sharp
-  float edgeFade = smoothstep(0.50, 0.45, radial);
-  col *= edgeFade;
-  alpha *= edgeFade;
-
+  col = col / (1.0 + col * 0.35); // gentle tone-map, keeps highlights from clipping to neon
   gl_FragColor = vec4(col, alpha);
 }
 `;
@@ -248,6 +205,7 @@ export const BecciPrismSculpture3D = ({ className = "", mode = "hero", defer = f
     gl.attachShader(prog, fs);
     gl.linkProgram(prog);
     if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) {
+      if (process.env.NODE_ENV !== "production") console.warn(gl.getShaderInfoLog(fs));
       setSupported(false);
       return undefined;
     }
@@ -265,6 +223,7 @@ export const BecciPrismSculpture3D = ({ className = "", mode = "hero", defer = f
     const uMouse = gl.getUniformLocation(prog, "u_mouse");
     const uScroll = gl.getUniformLocation(prog, "u_scroll");
     const uMode = gl.getUniformLocation(prog, "u_mode");
+    const uIntro = gl.getUniformLocation(prog, "u_intro");
 
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
@@ -277,8 +236,9 @@ export const BecciPrismSculpture3D = ({ className = "", mode = "hero", defer = f
       canvas.width = Math.max(1, Math.floor((rect.width || 420) * scale));
       canvas.height = Math.max(1, Math.floor((rect.height || 420) * scale));
       gl.viewport(0, 0, canvas.width, canvas.height);
+      if (reduce && drawn) requestAnimationFrame(render);
     };
-    resize();
+    let drawn = false;
 
     let mx = 0.56, my = 0.46, tx = 0.56, ty = 0.46;
     let scrollNorm = 0;
@@ -306,15 +266,18 @@ export const BecciPrismSculpture3D = ({ className = "", mode = "hero", defer = f
     );
     io.observe(canvas);
 
+    resize();
     let raf = 0;
     const t0 = performance.now();
     const modeVal = mode === "closing" ? 1.0 : 0.0;
 
-    const render = (now) => {
+    function render(now) {
       if (isVisible) {
         mx += (tx - mx) * 0.05;
         my += (ty - my) * 0.05;
-        const elapsed = reduce ? 1.65 : (now - t0) * 0.001;
+        const elapsed = reduce ? 0 : (now - t0) * 0.001;
+        const k = reduce ? 1 : Math.min(1, elapsed / 2.2);
+        const intro = 1 - Math.pow(1 - k, 3);
 
         gl.clearColor(0, 0, 0, 0);
         gl.clear(gl.COLOR_BUFFER_BIT);
@@ -323,12 +286,14 @@ export const BecciPrismSculpture3D = ({ className = "", mode = "hero", defer = f
         gl.uniform2f(uMouse, mx, my);
         gl.uniform1f(uScroll, reduce ? 0 : scrollNorm);
         gl.uniform1f(uMode, modeVal);
+        gl.uniform1f(uIntro, intro);
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+        drawn = true;
       }
       if (!reduce) {
         raf = requestAnimationFrame(render);
       }
-    };
+    }
 
     raf = requestAnimationFrame(render);
 
@@ -346,19 +311,10 @@ export const BecciPrismSculpture3D = ({ className = "", mode = "hero", defer = f
   }
 
   if (!supported) {
-    // Graceful architectural CSS optical fallback if WebGL is unavailable
+    // No WebGL: the official emblem, flat and exact
     return (
-      <div
-        aria-hidden="true"
-        className={`pointer-events-none relative flex items-center justify-center ${className}`}
-      >
-        <div
-          className="h-64 w-64 rounded-full border border-teal/40 shadow-teal-glow sm:h-80 sm:w-80"
-          style={{
-            background:
-              "radial-gradient(circle at 35% 35%, rgba(0,184,169,0.28), rgba(184,215,250,0.14) 45%, rgba(121,91,255,0.12) 72%, transparent 80%)",
-          }}
-        />
+      <div aria-hidden="true" className={`pointer-events-none flex h-full w-full items-center justify-center ${className}`}>
+        <img src={emblemUrl} alt="" className="w-[88%] max-w-[520px]" />
       </div>
     );
   }

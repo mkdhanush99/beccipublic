@@ -1,5 +1,16 @@
-/* Fonts are loaded via <link> in public/index.html (non-blocking, preconnected). */
+/* Fonts are loaded via <link> in public/index.html with local @font-face fallback. */
+@font-face {
+  font-family: "Mandali";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src:
+    local("Mandali"),
+    url("./assets/fonts/Mandali-Regular.ttf") format("truetype");
+}
+
 @import "./styles/tokens.css";
+@import "./styles/cursor.css";
 
 @tailwind base;
 @tailwind components;
@@ -230,6 +241,11 @@
 
   .skip-link {
     @apply sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-3 focus:z-[100] focus:rounded-full focus:bg-teal focus:px-4 focus:py-2 focus:font-heading focus:text-sm focus:font-semibold focus:text-navy-950;
+  }
+
+  .font-telugu {
+    font-family: var(--font-telugu, "Mandali", "Noto Sans Telugu", sans-serif);
+    line-height: 1.75;
   }
 }
 

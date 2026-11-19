@@ -1,11 +1,13 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { ArrowUpRight, ArrowRight } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
+import { ArrowUpRight, ArrowRight, Languages } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import Reveal from "@/components/Reveal";
 import LiquidAuroraCanvas from "@/components/visuals/LiquidAuroraCanvas";
 import EnterpriseField3D from "@/components/visuals/EnterpriseField3D";
 import { Magnetic } from "@/components/visuals/MotionPrimitives";
+import { useSchemeLanguage } from "@/lib/schemesStore";
+import { PAGE_HERO_TE } from "@/data/teluguUi";
 import { EASE_OUT } from "@/lib/motion";
 
 export const Eyebrow = ({ children, tone = "teal", className = "" }) => {
@@ -110,6 +112,15 @@ export const CTA = ({ to, children, variant = "primary", testid, className = "" 
 // Inner-page hero band powered by calm Ice-Blue & Electric-Teal WebGL mood (distinct from homepage hero)
 export const PageHero = ({ eyebrow, title, intro, meta, children }) => {
   const reduce = useReducedMotion();
+  const { pathname } = useLocation();
+  const [lang, setLang] = useSchemeLanguage();
+  const isTelugu = lang === "te";
+  const teData = PAGE_HERO_TE[pathname];
+
+  const activeEyebrow = isTelugu && teData?.eyebrow ? teData.eyebrow : eyebrow;
+  const activeTitle = isTelugu && teData?.title ? teData.title : title;
+  const activeIntro = isTelugu && teData?.intro ? teData.intro : intro;
+
   return (
     <section className="on-dark relative overflow-hidden bg-navy-950 pt-28 text-white sm:pt-32">
       <LiquidAuroraCanvas variant="page" />
@@ -126,29 +137,78 @@ export const PageHero = ({ eyebrow, title, intro, meta, children }) => {
           transition={{ duration: 0.45, ease: EASE_OUT }}
           className="flex flex-wrap items-center justify-between gap-4"
         >
-          {eyebrow && <Eyebrow tone="tealDark">{eyebrow}</Eyebrow>}
-          {meta && (
-            <span className="glass-pill rounded-full px-3.5 py-1 font-heading text-xs font-medium text-ice">
-              {meta}
-            </span>
+          {activeEyebrow && (
+            <Eyebrow tone="tealDark" className={isTelugu && teData?.eyebrow ? "font-telugu" : ""}>
+              {activeEyebrow}
+            </Eyebrow>
           )}
+          <div className="flex flex-wrap items-center gap-2.5">
+            {meta && (
+              <span className="glass-pill rounded-full px-3.5 py-1 font-heading text-xs font-medium text-ice">
+                {meta}
+              </span>
+            )}
+            <div
+              role="group"
+              aria-label="Page language toggle"
+              data-testid="page-hero-lang-toggle"
+              className="inline-flex items-center rounded-full border border-ice/20 bg-white/[0.06] p-1"
+            >
+              <button
+                type="button"
+                aria-pressed={!isTelugu}
+                onClick={() => setLang("en")}
+                data-testid="page-hero-lang-en"
+                className={`min-h-[30px] rounded-full px-3 py-0.5 font-heading text-xs font-semibold transition-colors ${
+                  !isTelugu
+                    ? "bg-teal text-navy-950"
+                    : "text-ice/80 hover:text-white"
+                }`}
+              >
+                English
+              </button>
+              <button
+                type="button"
+                aria-pressed={isTelugu}
+                onClick={() => setLang("te")}
+                data-testid="page-hero-lang-te"
+                className={`font-telugu inline-flex min-h-[30px] items-center gap-1 rounded-full px-3 py-0.5 text-xs font-semibold transition-colors ${
+                  isTelugu
+                    ? "bg-teal text-navy-950 shadow-teal-glow"
+                    : "text-teal-bright hover:text-white"
+                }`}
+              >
+                <Languages className="h-3.5 w-3.5" aria-hidden="true" />
+                <span>తెలుగు</span>
+              </button>
+            </div>
+          </div>
         </motion.div>
         <motion.h1
           initial={reduce ? false : { opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.55, delay: 0.06, ease: EASE_OUT }}
-          className="mt-5 max-w-4xl font-heading text-h1 font-bold text-white"
+          className={`mt-5 max-w-4xl text-h1 font-bold text-white ${
+            isTelugu && teData?.title ? "font-telugu leading-[1.35]" : "font-heading"
+          }`}
         >
-          {title}
+          {activeTitle}
         </motion.h1>
-        {intro && (
+        {isTelugu && teData?.title && (
+          <p className="mt-2 font-heading text-sm font-medium text-ice/75 sm:text-base">
+            {title}
+          </p>
+        )}
+        {activeIntro && (
           <motion.p
             initial={reduce ? false : { opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 0.14, ease: EASE_OUT }}
-            className="mt-6 max-w-[62ch] font-body text-lead text-ice/85"
+            className={`mt-6 max-w-[62ch] text-lead text-ice/85 ${
+              isTelugu && teData?.intro ? "font-telugu" : "font-body"
+            }`}
           >
-            {intro}
+            {activeIntro}
           </motion.p>
         )}
         {children && (

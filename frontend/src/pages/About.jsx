@@ -20,6 +20,8 @@ import {
   INSTITUTIONAL_BRIEF,
   INSTITUTIONAL_REGISTRY,
   GOVERNANCE_DISCLOSURES,
+  GOVERNANCE_STRUCTURE,
+  MILESTONES,
   HEADLINE_FACT_LINE,
   VERIFIED_STATS,
 } from "@/data/becci";
@@ -125,7 +127,10 @@ export default function About() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.75, delay: 0.12, ease: EASE_OUT }}
           >
-            <div className="relative overflow-hidden rounded-3xl bg-navy-900 shadow-lift ring-1 ring-ice/18">
+            <div
+              data-cursor="view"
+              className="relative overflow-hidden rounded-3xl bg-navy-900 shadow-lift ring-1 ring-ice/18"
+            >
               <Img
                 name="about"
                 priority
@@ -148,7 +153,10 @@ export default function About() {
         <div className="becci-container">
           <div className="grid gap-14 lg:grid-cols-[0.95fr_1.05fr] lg:items-center lg:gap-16">
             <CinemaAperture>
-              <div className="relative overflow-hidden rounded-3xl bg-navy-950 shadow-soft">
+              <div
+                data-cursor="view"
+                className="relative overflow-hidden rounded-3xl bg-navy-950 shadow-soft"
+              >
                 <Img
                   name="craft"
                   sizes="(min-width: 1024px) 540px, 100vw"
@@ -264,6 +272,7 @@ export default function About() {
         <div className="becci-container relative z-10">
           <GlassSpotlight
             tone="dark"
+            data-cursor-surface="heritage"
             className="glass-iridescent grid gap-10 rounded-3xl p-8 sm:p-12 lg:grid-cols-[0.85fr_1.15fr] lg:items-center lg:gap-16"
           >
             <div className="relative z-10">
@@ -271,7 +280,19 @@ export default function About() {
               <h2 className="mt-4 font-heading text-h2 font-bold text-white">
                 The welfare of the many.
               </h2>
-              <div className="mt-7 flex flex-wrap gap-2">
+              <div className="mt-5 flex flex-wrap gap-2">
+                {WHY_BAHUJAN.etymology.map((e) => (
+                  <span
+                    key={e.part}
+                    className="glass-pill inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 font-heading text-xs font-semibold text-white"
+                  >
+                    <span className="text-teal-bright">{e.part}</span>
+                    <span className="text-ice/70">=</span>
+                    <span>{e.meaning}</span>
+                  </span>
+                ))}
+              </div>
+              <div className="mt-6 flex flex-wrap gap-2">
                 {WHY_BAHUJAN.occupations.map((o) => (
                   <span
                     key={o}
@@ -283,14 +304,33 @@ export default function About() {
               </div>
             </div>
             <div className="relative z-10">
-              <p className="font-body text-lead text-frost/88">{WHY_BAHUJAN.intro}</p>
+              <p className="font-heading text-sm font-semibold text-teal-bright">
+                {WHY_BAHUJAN.backboneHeading}
+              </p>
+              <p className="mt-3 font-body text-lead text-frost/88">{WHY_BAHUJAN.backboneBody}</p>
               <blockquote className="mt-8 border-l-2 border-gold pl-6 font-serif text-2xl italic leading-snug text-gold sm:text-3xl">
                 “{WHY_BAHUJAN.quote.text}”
                 <footer className="mt-4 font-body not-italic">
                   <p className="text-base text-white/90">{WHY_BAHUJAN.quote.translation}</p>
-                  <p className="mt-2 font-heading text-xs font-semibold uppercase tracking-[0.18em] text-ice/75">
-                    {WHY_BAHUJAN.quote.attribution} · {WHY_BAHUJAN.quote.note}
-                  </p>
+                  <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 font-heading text-xs font-semibold uppercase tracking-[0.18em] text-ice/80">
+                    <span>{WHY_BAHUJAN.quote.attribution}</span>
+                    <span aria-hidden="true">·</span>
+                    <a
+                      href={WHY_BAHUJAN.quote.sourceUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="link-underline inline-flex items-center gap-1 text-gold hover:text-white"
+                    >
+                      <span>{WHY_BAHUJAN.quote.sourceLabel}</span>
+                      <ArrowUpRight className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                    </a>
+                  </div>
+                  <details className="mt-3 text-xs text-ice/75">
+                    <summary className="cursor-pointer font-heading font-semibold uppercase tracking-[0.14em] text-teal-bright hover:text-white">
+                      Historical context
+                    </summary>
+                    <p className="mt-2 leading-relaxed text-ice/80">{WHY_BAHUJAN.quote.context}</p>
+                  </details>
                 </footer>
               </blockquote>
             </div>
@@ -413,18 +453,69 @@ export default function About() {
             </div>
           </div>
 
-          {/* Organisational Governance Tiers */}
-          <div className="mt-16 grid gap-12 border-t border-navy-800/10 pt-14 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+          {/* Governance Reporting Architecture & Organisational Tiers */}
+          <div className="mt-16 grid gap-12 border-t border-navy-800/10 pt-14 lg:grid-cols-2 lg:items-start">
+            <div>
+              <Eyebrow tone="teal">Governance chart</Eyebrow>
+              <h3 className="mt-3 font-heading text-2xl font-bold text-navy-950">
+                Accountable governance structure.
+              </h3>
+              <p className="mt-3 font-body text-sm leading-relaxed text-navy-800/75">
+                Reporting lines defined in BECCI’s institutional charter. Names, photographs and biographies of each body will be published only once formally approved with individual consent.
+              </p>
+              <ol className="mt-6 divide-y divide-navy-800/10 border-y border-navy-800/10">
+                {GOVERNANCE_STRUCTURE.map((g, idx) => (
+                  <li key={g.body} className="flex items-baseline gap-5 py-4">
+                    <span className="tabular font-display text-2xl leading-none text-teal-deep">0{idx + 1}</span>
+                    <div>
+                      <p className="font-heading text-base font-bold text-navy-950">{g.body}</p>
+                      <p className="mt-1 font-body text-sm text-navy-800/75">{g.role}</p>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            </div>
             <div>
               <Eyebrow tone="teal">Organisational architecture</Eyebrow>
               <h3 className="mt-3 font-heading text-2xl font-bold text-navy-950">
                 Four-tier institutional reach.
               </h3>
-              <p className="mt-3 font-body text-sm leading-relaxed text-navy-800/75">
-                Designed from the National apex body down to State, District and City chapters so governance stays accountable and accessible close to entrepreneurs.
+              <p className="mt-3 mb-6 font-body text-sm leading-relaxed text-navy-800/75">
+                Designed from the National apex body down to State, District and City chapters so governance stays accessible close to entrepreneurs.
               </p>
+              <OrgHierarchy />
             </div>
-            <OrgHierarchy />
+          </div>
+
+          {/* Verified Organisational Timeline & Phased Roadmap */}
+          <div id="timeline" className="mt-16 border-t border-navy-800/10 pt-14" data-testid="about-timeline">
+            <SectionHeading
+              eyebrow="Timeline & Milestones"
+              title="Where BECCI is, and what comes next."
+              intro="Completed milestones are marked verified on record. Every subsequent phase is clearly labelled as a roadmap plan, never an existing achievement."
+              className="mb-10"
+            />
+            <ol className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {MILESTONES.map((m) => (
+                <li
+                  key={m.title}
+                  className={`flex min-w-0 flex-col justify-between rounded-2xl p-6 ${
+                    m.verified ? "glass-light border-teal/35" : "border border-ice/80 bg-white/75"
+                  }`}
+                >
+                  <div>
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <span className="tabular font-heading text-xs font-bold uppercase tracking-[0.16em] text-teal-deep">
+                        {m.when}
+                      </span>
+                      <StatusChip label={m.status} />
+                    </div>
+                    <h3 className="mt-3 font-heading text-base font-bold text-navy-950">{m.title}</h3>
+                    <p className="mt-2 font-body text-sm leading-relaxed text-navy-800/78">{m.detail}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
           </div>
         </div>
       </section>

@@ -5,7 +5,7 @@ import { motion, useMotionValue, useSpring, useScroll, useTransform, useReducedM
  * Magnetic — Subtle pointer-responsive magnetic pull for primary interactive controls.
  * Automatically disabled on touch devices and when `prefers-reduced-motion` is enabled.
  */
-export const Magnetic = ({ children, strength = 0.14, className = "" }) => {
+export const Magnetic = ({ children, strength = 0.14, maxOffset = 6, className = "" }) => {
   const ref = useRef(null);
   const reduce = useReducedMotion();
   const x = useMotionValue(0);
@@ -15,12 +15,17 @@ export const Magnetic = ({ children, strength = 0.14, className = "" }) => {
 
   const onMove = (e) => {
     if (reduce || e.pointerType === "touch") return;
+    if (typeof window !== "undefined" && !window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+      return;
+    }
     const rect = ref.current?.getBoundingClientRect();
     if (!rect) return;
     const dx = e.clientX - (rect.left + rect.width / 2);
     const dy = e.clientY - (rect.top + rect.height / 2);
-    x.set(dx * strength);
-    y.set(dy * strength);
+    const clampedX = Math.max(-maxOffset, Math.min(maxOffset, dx * strength));
+    const clampedY = Math.max(-maxOffset, Math.min(maxOffset, dy * strength));
+    x.set(clampedX);
+    y.set(clampedY);
   };
 
   const onLeave = () => {
@@ -35,6 +40,7 @@ export const Magnetic = ({ children, strength = 0.14, className = "" }) => {
   return (
     <motion.span
       ref={ref}
+      data-cursor-magnet="true"
       onPointerMove={onMove}
       onPointerLeave={onLeave}
       style={{ x: sx, y: sy }}

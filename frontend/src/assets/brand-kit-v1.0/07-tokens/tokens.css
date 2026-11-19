@@ -1,0 +1,144 @@
+:root {
+  /* Colour — palette */
+  --becci-navy-950: #030E1E;
+  --becci-navy-900: #061B3A;
+  --becci-navy-logo: #0A2352;
+  --becci-navy-800: #0B2D5C;
+  --becci-blue-700: #124B8C;
+  --becci-blue-600: #1769C2;
+  --becci-blue-500: #3D8FE8;
+  --becci-blue-300: #7CB4F2;
+  --becci-blue-200: #B8D7FA;
+  --becci-blue-50: #F0F6FD;
+  --becci-gold-500: #D4AF5A;
+  --becci-gold-200: #F0DDA8;
+  --becci-gold-700: #A77B32;
+  --becci-heritage-midnight: #071426;
+  --becci-heritage-ivory: #F7F0E2;
+  --becci-heritage-burgundy: #702E3D;
+  --becci-white: #FFFFFF;
+  /* Colour — semantic */
+  --becci-bg-page: #FFFFFF;
+  --becci-bg-subtle: #F0F6FD;
+  --becci-bg-warm: #F7F0E2;
+  --becci-bg-inverse: #061B3A;
+  --becci-bg-inverse-deep: #030E1E;
+  --becci-surface-card: #FFFFFF;
+  --becci-surface-card-inverse: #0B2D5C;
+  --becci-border-default: #B8D7FA;
+  --becci-border-strong: #124B8C;
+  --becci-border-inverse: #0B2D5C;
+  --becci-text-primary: #061B3A;
+  --becci-text-secondary: #0B2D5C;
+  --becci-text-muted: #124B8C;
+  --becci-text-inverse: #FFFFFF;
+  --becci-text-inverse-muted: #B8D7FA;
+  --becci-text-link: #124B8C;
+  --becci-text-link-inverse: #7CB4F2;
+  --becci-text-accent-light: #A77B32;
+  --becci-text-accent-dark: #D4AF5A;
+  --becci-action-primary: #124B8C;
+  --becci-action-primary-hover: #0B2D5C;
+  --becci-action-primary-text: #FFFFFF;
+  --becci-action-inverse: #D4AF5A;
+  --becci-action-inverse-hover: #F0DDA8;
+  --becci-action-inverse-text: #030E1E;
+  --becci-focus-ring: #3D8FE8;
+  --becci-brand-logo: #0A2352;
+  --becci-status-error: #B3261E;
+  --becci-status-success: #1B7A4B;
+  --becci-status-warning: #A77B32;
+  /* Type families */
+  --becci-font-display: 'Bebas Neue', 'Plus Jakarta Sans', Impact, 'Arial Narrow', sans-serif;
+  --becci-font-heading: 'Plus Jakarta Sans', 'Inter', 'Segoe UI', Roboto, Arial, sans-serif;
+  --becci-font-body: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --becci-font-editorial: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --becci-font-devanagari: 'Noto Sans Devanagari', 'Mukta', sans-serif;
+  --becci-font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+  /* Type scale (mobile first; desktop values in the media query below) */
+  --becci-type-display-size: 56px; --becci-type-display-weight: 400; --becci-type-display-lh: 0.92; --becci-type-display-tracking: 0.01em;
+  --becci-type-h1-size: 34px; --becci-type-h1-weight: 800; --becci-type-h1-lh: 1.12; --becci-type-h1-tracking: -0.02em;
+  --becci-type-h2-size: 28px; --becci-type-h2-weight: 700; --becci-type-h2-lh: 1.18; --becci-type-h2-tracking: -0.015em;
+  --becci-type-h3-size: 21px; --becci-type-h3-weight: 700; --becci-type-h3-lh: 1.3; --becci-type-h3-tracking: -0.01em;
+  --becci-type-h4-size: 17px; --becci-type-h4-weight: 600; --becci-type-h4-lh: 1.4; --becci-type-h4-tracking: 0em;
+  --becci-type-overline-size: 12px; --becci-type-overline-weight: 700; --becci-type-overline-lh: 1.4; --becci-type-overline-tracking: 0.14em;
+  --becci-type-lead-size: 18px; --becci-type-lead-weight: 400; --becci-type-lead-lh: 1.6; --becci-type-lead-tracking: 0em;
+  --becci-type-body-size: 16px; --becci-type-body-weight: 400; --becci-type-body-lh: 1.65; --becci-type-body-tracking: 0em;
+  --becci-type-small-size: 14px; --becci-type-small-weight: 400; --becci-type-small-lh: 1.55; --becci-type-small-tracking: 0em;
+  --becci-type-caption-size: 12px; --becci-type-caption-weight: 500; --becci-type-caption-lh: 1.5; --becci-type-caption-tracking: 0.01em;
+  --becci-type-nav-size: 16px; --becci-type-nav-weight: 600; --becci-type-nav-lh: 1.2; --becci-type-nav-tracking: 0em;
+  --becci-type-button-size: 15px; --becci-type-button-weight: 700; --becci-type-button-lh: 1; --becci-type-button-tracking: 0.01em;
+  --becci-type-quote-size: 24px; --becci-type-quote-weight: 400; --becci-type-quote-lh: 1.32; --becci-type-quote-tracking: 0em;
+  --becci-type-data-xl-size: 48px; --becci-type-data-xl-weight: 400; --becci-type-data-xl-lh: 0.95; --becci-type-data-xl-tracking: 0.01em;
+  --becci-type-data-label-size: 13px; --becci-type-data-label-weight: 600; --becci-type-data-label-lh: 1.3; --becci-type-data-label-tracking: 0.04em;
+  /* Space (4px base) */
+  --becci-space-0: 0px;
+  --becci-space-1: 4px;
+  --becci-space-2: 8px;
+  --becci-space-3: 12px;
+  --becci-space-4: 16px;
+  --becci-space-5: 24px;
+  --becci-space-6: 32px;
+  --becci-space-7: 48px;
+  --becci-space-8: 64px;
+  --becci-space-9: 96px;
+  --becci-space-10: 128px;
+  --becci-radius-none: 0px;
+  --becci-radius-xs: 2px;
+  --becci-radius-sm: 4px;
+  --becci-radius-md: 6px;
+  --becci-radius-lg: 10px;
+  --becci-radius-pill: 999px;
+  --becci-container: 1200px;
+  --becci-container-wide: 1320px;
+  --becci-reading: 720px;
+  --becci-gutter-mobile: 20px;
+  --becci-gutter-desktop: 32px;
+  --becci-header-height: 72px;
+  --becci-header-height-mobile: 64px;
+  --becci-section-y-desktop: 112px;
+  --becci-section-y-tablet: 80px;
+  --becci-section-y-mobile: 56px;
+  --becci-grid-columns: 12;
+  --becci-grid-gap: 24px;
+  --becci-duration-instant: 90ms;
+  --becci-duration-fast: 150ms;
+  --becci-duration-base: 220ms;
+  --becci-duration-slow: 360ms;
+  --becci-duration-reveal: 600ms;
+  --becci-ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --becci-ease-enter: cubic-bezier(0, 0, 0, 1);
+  --becci-ease-exit: cubic-bezier(0.3, 0, 1, 1);
+  --becci-shadow-1: 0 1px 2px rgba(3,14,30,0.06), 0 1px 1px rgba(3,14,30,0.04);
+  --becci-shadow-2: 0 4px 12px rgba(3,14,30,0.08), 0 1px 3px rgba(3,14,30,0.06);
+  --becci-shadow-3: 0 16px 40px rgba(3,14,30,0.14), 0 4px 12px rgba(3,14,30,0.08);
+}
+@media (min-width: 1024px) {
+  :root {
+    --becci-type-display-size: 96px;
+    --becci-type-h1-size: 48px;
+    --becci-type-h2-size: 36px;
+    --becci-type-h3-size: 24px;
+    --becci-type-h4-size: 18px;
+    --becci-type-lead-size: 20px;
+    --becci-type-nav-size: 15px;
+    --becci-type-quote-size: 32px;
+    --becci-type-data-xl-size: 72px;
+  }
+}
+@media (min-width: 768px) and (max-width: 1023.98px) {
+  :root {
+    --becci-type-display-size: 76px;
+    --becci-type-h1-size: 41px;
+    --becci-type-h2-size: 32px;
+    --becci-type-h3-size: 22px;
+    --becci-type-h4-size: 18px;
+    --becci-type-lead-size: 19px;
+    --becci-type-nav-size: 16px;
+    --becci-type-quote-size: 28px;
+    --becci-type-data-xl-size: 60px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  :root { --becci-duration-fast: 0ms; --becci-duration-base: 0ms; --becci-duration-slow: 0ms; --becci-duration-reveal: 0ms; }
+}

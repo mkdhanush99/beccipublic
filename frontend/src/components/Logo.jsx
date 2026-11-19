@@ -33,13 +33,13 @@ export const Logo = ({
       alt="BECCI — Bahujan Entrepreneurs Chamber for Commerce & Industry"
       width={lockup ? "760" : "427"}
       height={lockup ? "110" : "105"}
-      className={className}
+      className={`max-w-none ${className}`}
       draggable={false}
     />
   );
   if (!withLink) return img;
   return (
-    <Link to="/" data-testid={testid} aria-label="BECCI home" className="inline-flex min-h-[40px] items-center">
+    <Link to="/" data-testid={testid} aria-label="BECCI home" className="inline-flex min-h-[40px] shrink-0 items-center">
       {img}
     </Link>
   );
@@ -52,7 +52,7 @@ export const Symbol = ({ variant = "navy", className = "h-6 w-auto" }) => (
     aria-hidden="true"
     width="207"
     height="105"
-    className={className}
+    className={`max-w-none ${className}`}
     draggable={false}
   />
 );
@@ -63,7 +63,7 @@ export const InstitutionalSeal = ({ variant = "navy", className = "h-24 w-24" })
     alt="BECCI Institutional Seal — Est. 2026"
     width="240"
     height="240"
-    className={className}
+    className={`max-w-none ${className}`}
     draggable={false}
   />
 );

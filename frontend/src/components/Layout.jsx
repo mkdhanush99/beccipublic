@@ -3,6 +3,8 @@ import { useLocation, Outlet } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { CursorProvider } from "@/components/cursor/CursorContext";
+import CustomCursor from "@/components/cursor/CustomCursor";
 
 const TITLES = {
   "/": "BECCI — Building Businesses. Building Bharat.",
@@ -15,6 +17,7 @@ const TITLES = {
   "/knowledge": "News & Knowledge · BECCI",
   "/pulse": "BECCI PULSE — Living Digital Universe",
   "/intelligence": "BECCI Intelligence — Knowledge & Discovery",
+  "/navigator": "BECCI Opportunity Navigator — Guided Discovery",
   "/contact": "Contact · BECCI",
   "/privacy": "Privacy Policy · BECCI",
   "/terms": "Terms of Use · BECCI",
@@ -25,7 +28,9 @@ const RouteEffects = () => {
   useEffect(() => {
     document.title = pathname.startsWith("/intelligence/article/")
       ? "BECCI Insights · BECCI Intelligence"
-      : TITLES[pathname] || "Page not found · BECCI";
+      : pathname.startsWith("/schemes/")
+        ? "Verified Scheme Details · BECCI"
+        : TITLES[pathname] || "Page not found · BECCI";
     if (hash) {
       const targetId = hash.slice(1);
       const tryScroll = () => {
@@ -56,25 +61,28 @@ export const Layout = () => {
   const reduce = useReducedMotion();
 
   return (
-    <div className="relative flex min-h-screen flex-col bg-white">
-      <a href="#main" className="skip-link">Skip to content</a>
-      <RouteEffects />
-      <Header />
-      <main id="main" tabIndex={-1} className="relative flex-1 outline-none">
-        <Suspense fallback={<RouteFallback />}>
-          <motion.div
-            key={pathname}
-            initial={reduce ? false : { opacity: 0.92, y: 6 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ type: "spring", bounce: 0, duration: 0.35 }}
-            className="relative"
-          >
-            <Outlet />
-          </motion.div>
-        </Suspense>
-      </main>
-      <Footer />
-    </div>
+    <CursorProvider>
+      <div className="relative flex min-h-screen flex-col bg-white">
+        <a href="#main" className="skip-link">Skip to content</a>
+        <RouteEffects />
+        <CustomCursor />
+        <Header />
+        <main id="main" tabIndex={-1} className="relative flex-1 outline-none">
+          <Suspense fallback={<RouteFallback />}>
+            <motion.div
+              key={pathname}
+              initial={reduce ? false : { opacity: 0.92, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ type: "spring", bounce: 0, duration: 0.35 }}
+              className="relative"
+            >
+              <Outlet />
+            </motion.div>
+          </Suspense>
+        </main>
+        <Footer />
+      </div>
+    </CursorProvider>
   );
 };
 

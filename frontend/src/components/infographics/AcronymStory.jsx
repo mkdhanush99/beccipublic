@@ -94,6 +94,7 @@ export const AcronymStory = () => {
                 to={item.to}
                 onMouseEnter={() => setActive(i)}
                 onFocus={() => setActive(i)}
+                data-cursor="explore"
                 data-testid={`acronym-letter-${i}`}
                 aria-label={`${item.letter} — ${item.title} (${item.word}): ${item.line}`}
                 className={`group relative flex h-full min-h-[300px] flex-col justify-between overflow-hidden rounded-2xl p-5 text-white shadow-soft transition-[transform,box-shadow] duration-300 ease-out hover:-translate-y-1.5 hover:shadow-lift active:scale-[0.98] sm:min-h-[360px] sm:p-6 ${

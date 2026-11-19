@@ -1,17 +1,29 @@
-// BECCI INTELLIGENCE — Maintainable, integrity-first knowledge & discovery registry.
-// Populated from the authoritative BECCI Website Content Pack (Nov 18, 2026).
-// Strictly separates verified official sources from BECCI educational guidance.
+// BECCI INTELLIGENCE — Reconciled knowledge, opportunity & global search registry.
+// Follows BECCI_MASTER_DATA.md (19 Nov 2026) & BECCI Content Pack (18 Nov 2026):
+// - Zero unverified scheme rupee limits, interest slabs or subsidy percentages
+// - Zero unconfirmed email addresses or raw internal editorial markers
+// - Strict separation between official government sources & BECCI educational guidance
 
-import { CONTACT, KNOWLEDGE_PORTALS, NEWS, SCHEMES, SCHEME_NOTE } from "@/data/becci";
+import {
+  CONTACT,
+  KNOWLEDGE_PORTALS,
+  NAV,
+  NEWS,
+  SCHEMES,
+  SCHEME_CARD_NOTE,
+  SCHEME_DATASET_STATS,
+  SCHEME_NOTE,
+  SECTORS,
+} from "@/data/becci";
 
 export const INTELLIGENCE_DISCLAIMER = SCHEME_NOTE;
 
 export const QUICK_INTENTS = [
   { label: "Register MSME (Udyam)", query: "Udyam" },
-  { label: "OBC 35% Subsidy (PMEGP)", query: "PMEGP" },
+  { label: "OBC Subsidy (PMEGP)", query: "PMEGP" },
   { label: "NBCFDC BC Loans", query: "NBCFDC" },
   { label: "18 Artisan Trades", query: "Vishwakarma" },
-  { label: "Mudra up to ₹20L", query: "Mudra" },
+  { label: "PM Mudra Yojana", query: "Mudra" },
   { label: "Collateral-free (CGTMSE)", query: "CGTMSE" },
 ];
 
@@ -27,46 +39,47 @@ export const OPPORTUNITY_CATEGORIES = [
 ];
 
 const schemeCategories = {
-  nbcfdc: ["government-schemes", "funding-info"],
+  "nbcfdc-gls": ["government-schemes", "funding-info"],
   pmegp: ["government-schemes", "msme-programmes", "funding-info"],
-  "pm-vishwakarma": ["government-schemes", "msme-programmes", "training-skilling", "market-access"],
-  mudra: ["government-schemes", "msme-programmes", "funding-info"],
+  pmv: ["government-schemes", "msme-programmes", "training-skilling", "market-access"],
+  pmmy: ["government-schemes", "msme-programmes", "funding-info"],
   cgtmse: ["government-schemes", "msme-programmes", "funding-info"],
-  "stand-up-india": ["government-schemes", "funding-info"],
+  sui: ["government-schemes", "funding-info"],
   "pm-daksh": ["government-schemes", "training-skilling"],
-  sisfs: ["government-schemes", "funding-info"],
+  "sisfs-fs": ["government-schemes", "funding-info"],
   "vcf-bc": ["government-schemes", "funding-info"],
-  zed: ["government-schemes", "msme-programmes", "market-access"],
+  mszcs: ["government-schemes", "msme-programmes", "market-access"],
   "rajiv-yuva-vikasam": ["government-schemes", "funding-info"],
   "ap-obmms": ["government-schemes", "funding-info"],
 };
 
-// Built directly from verified SCHEMES & official portals in becci.js
+// Built directly from flagship verified SCHEMES & official portals in becci.js
 export const OPPORTUNITIES = [
   ...SCHEMES.map((s) => ({
-    id: `opp-${s.id}`,
+    id: `opp-${s.slug || s.id}`,
+    slug: s.slug || s.id,
     name: s.name,
-    authority: s.ministry,
-    sourceLabel: s.status ? s.status : s.featured ? "Featured OBC Scheme" : "Official Scheme",
-    categories: schemeCategories[s.id] || ["government-schemes"],
+    authority: s.agency ? `${s.ministry} · ${s.agency}` : s.ministry,
+    sourceLabel: s.status ? s.status : `${s.level} · ${s.state || "All India"} · ${s.type}`,
+    categories: schemeCategories[s.slug || s.id] || ["government-schemes"],
     editorialSummary: s.desc,
-    eligibilityNote:
-      s.eligibility ||
-      "BECCI provides guidance only. Eligibility and approval are decided by the implementing agency. Check the official website before applying.",
+    eligibilityNote: s.beneficiaries ? `${s.beneficiaries} ${SCHEME_CARD_NOTE}` : SCHEME_CARD_NOTE,
     url: s.source,
-    publishedDate: `Last verified: ${s.lastVerified || "18 Nov 2026"}`,
+    to: `/schemes/${s.slug || s.id}`,
+    myschemeUrl: s.myschemeUrl || "",
+    publishedDate: `Verified · ${s.lastVerified || SCHEME_DATASET_STATS.verifiedDate}`,
   })),
   {
     id: "opp-gem",
     name: "Government e-Marketplace (GeM) Seller & Tenders",
-    authority: "Government of India",
+    authority: "Ministry of Commerce & Industry, Government of India",
     sourceLabel: "Official Public Procurement Portal",
     categories: ["tenders-procurement", "market-access", "msme-programmes"],
     editorialSummary:
       "National public procurement platform enabling registered Indian sellers, MSMEs and service providers to list products and bid on government tenders directly.",
     eligibilityNote: "Seller registration, Udyam linkage and tender bidding rules are governed solely by gem.gov.in.",
     url: "https://gem.gov.in/",
-    publishedDate: "Last verified: 18 Nov 2026",
+    publishedDate: "Official statutory portal",
   },
   {
     id: "opp-nsic",
@@ -78,7 +91,7 @@ export const OPPORTUNITIES = [
       "Institutional portal providing information on marketing assistance, raw material support and public-procurement facilitation for micro and small enterprises.",
     eligibilityNote: "Confirm current registration criteria and active schemes directly on nsic.co.in.",
     url: "https://www.nsic.co.in/",
-    publishedDate: "Last verified: 18 Nov 2026",
+    publishedDate: "Official statutory portal",
   },
   {
     id: "opp-skillindia",
@@ -90,21 +103,21 @@ export const OPPORTUNITIES = [
       "Official national digital platform for discovering vocational courses, skilling programmes and enterprise capability modules.",
     eligibilityNote: "Course availability and enrolment rules are managed solely by skillindiadigital.gov.in.",
     url: "https://www.skillindiadigital.gov.in/",
-    publishedDate: "Last verified: 18 Nov 2026",
+    publishedDate: "Official statutory portal",
   },
 ];
 
-// Progressive educational pathways grounded in the 5 authoritative Content Pack guides.
+// Progressive educational pathways grounded in the 5 authoritative Knowledge Centre guides (procedural, zero unverified limits).
 export const LEARNING_JOURNEYS = [
   {
     id: "udyam-registration",
     num: "01",
     topic: "Starting a Business",
     title: "How to Register Your Business on Udyam (Free)",
-    readTime: "6 verified steps",
+    readTime: "6 steps",
     audience: "Unregistered OBC small businesses & aspiring founders",
     summary:
-      "Udyam is required for most MSME schemes, CGTMSE guarantees, GeM selling and priority lending. Selecting 'OBC' correctly helps you get matched to the right schemes.",
+      "Udyam is required for most MSME schemes, CGTMSE guarantees, GeM selling and priority lending. Selecting “OBC” accurately helps your unit align with applicable MSME programmes.",
     stages: [
       {
         title: "Visit udyamregistration.gov.in (the only official site — free)",
@@ -115,144 +128,160 @@ export const LEARNING_JOURNEYS = [
       {
         title: "Select New Entrepreneur & verify Aadhaar via OTP",
         detail:
-          "Choose 'For New Entrepreneurs who are not Registered yet as MSME', enter the owner's Aadhaar number and verify with the OTP sent to the Aadhaar-linked mobile.",
+          "Choose “For New Entrepreneurs who are not Registered yet as MSME”, enter the owner's Aadhaar number and verify with the OTP sent to the Aadhaar-linked mobile.",
       },
       {
-        title: "Enter PAN & business details — select Social Category: OBC",
+        title: "Enter PAN & verify business classification",
         detail:
-          "Enter your PAN (investment and turnover are fetched from income-tax and GST records where available). Fill in business name, address, bank details, activity (NIC code) and select OBC as your social category.",
+          "Enter your PAN; investment and turnover figures are automatically fetched from income-tax and GST records where available.",
       },
       {
-        title: "Submit with OTP & download your Udyam certificate",
+        title: "Fill business details, NIC code & select Social Category: OBC",
         detail:
-          "Once submitted with OTP, your official Udyam Registration Certificate is emailed and can be downloaded any time.",
+          "Complete business name, address, bank details, primary activity (NIC code), select Social Category: OBC accurately, and submit with OTP to receive your Udyam certificate by email.",
       },
     ],
   },
   {
-    id: "pmegp-subsidy",
+    id: "bc-certificate",
     num: "02",
-    topic: "Subsidy & Manufacturing",
-    title: "PMEGP in 6 Steps (Up to 35% Subsidy for OBC Applicants)",
-    readTime: "6 progressive steps",
-    audience: "New micro enterprises in manufacturing (up to ₹50L) & services (up to ₹20L)",
+    topic: "Documentation",
+    title: "Getting Your Caste (BC) & Central OBC-NCL Certificate",
+    readTime: "3 pathways",
+    audience: "Telangana, Andhra Pradesh & Central scheme applicants",
     summary:
-      "OBC applicants qualify as 'Special Category' under PMEGP: 25% subsidy in urban areas and 35% in rural areas with only 5% own contribution.",
+      "Understand where to apply in Telangana (MeeSeva) and Andhra Pradesh (Village/Ward Sachivalayam), and why Central schemes require an OBC Non-Creamy Layer certificate in the central format.",
     stages: [
       {
-        title: "Pick a viable activity & prepare a project report",
+        title: "Telangana — apply via MeeSeva",
         detail:
-          "Plan costs realistically (max project cost ₹50 lakh for manufacturing, ₹20 lakh for services). BECCI can help you prepare the project report.",
+          "Apply at any MeeSeva centre or the official MeeSeva portal with Aadhaar, ration/family card, school record showing caste, parent's caste certificate (if available) and residence proof. The Tahsildar issues it after verification.",
       },
       {
-        title: "Apply online at the PMEGP e-Portal & upload documents",
+        title: "Andhra Pradesh — apply via Village/Ward Sachivalayam",
         detail:
-          "Choose KVIC, KVIB or DIC as the implementing agency. Upload Aadhaar, PAN, your caste certificate (for special-category subsidy), project report, and education or training proof.",
-        portal: { label: "kviconline.gov.in/pmegpeportal", url: "https://www.kviconline.gov.in/pmegpeportal/" },
+          "Apply at your Village or Ward Sachivalayam or an authorised MeeSeva centre with the required supporting documents. Check your state portal for the current document checklist and statutory fee.",
       },
       {
-        title: "District Task Force interview & bank sanction (5% contribution)",
+        title: "Central schemes require Central OBC (Non-Creamy Layer)",
         detail:
-          "The district task force interviews you and recommends the project to a bank. Once sanctioned, you contribute only 5% of project cost (e.g. ₹50,000 on a ₹10 lakh rural project).",
-      },
-      {
-        title: "Complete mandatory EDP training & 3-year subsidy lock-in",
-        detail:
-          "Finish the mandatory Entrepreneurship Development Programme (EDP) training. Your subsidy (25% urban, 35% rural) is held for 3 years and then adjusted against your loan.",
-        portal: { label: "myScheme PMEGP Guide", url: "https://myscheme.gov.in/schemes/pmegp" },
-      },
-    ],
-  },
-  {
-    id: "caste-certificate-docs",
-    num: "03",
-    topic: "Documentation & Eligibility",
-    title: "BC Certificate & Five Essential Entrepreneur Documents",
-    readTime: "4 practical checkpoints",
-    audience: "Telangana, Andhra Pradesh & pan-India OBC/BC entrepreneurs",
-    summary:
-      "Prepare your state BC certificate, Central OBC-NCL certificate, Udyam, banking trail and simple project report before approaching any bank or scheme portal.",
-    stages: [
-      {
-        title: "Telangana BC Certificate via MeeSeva",
-        detail:
-          "Apply at any MeeSeva centre or the MeeSeva portal with Aadhaar, ration/family card, a school record showing caste, parent's caste certificate if available, and residence proof. The Tahsildar issues it after verification.",
-      },
-      {
-        title: "Andhra Pradesh BC Certificate via Village/Ward Sachivalayam",
-        detail:
-          "Apply at your Village/Ward Sachivalayam or a MeeSeva centre with the same core documents. [CONFIRM exact current document checklist and fees for TG/AP, which change from time to time.]",
-      },
-      {
-        title: "Obtain Central OBC (Non-Creamy Layer) for central schemes",
-        detail:
-          "For central schemes and central agencies you need an OBC (Non-Creamy Layer) certificate in the central format — a state BC certificate alone may not be accepted.",
+          "For Central Government schemes and agencies, obtain an OBC (Non-Creamy Layer) certificate in the prescribed central format — a state BC certificate alone may not be accepted. For BECCI membership, recognition in either the Central OBC list or your State BC/OBC list qualifies.",
         portal: { label: "NCBC Central OBC Lists", url: "https://ncbc.nic.in/" },
       },
+    ],
+  },
+  {
+    id: "pmegp-steps",
+    num: "03",
+    topic: "Subsidy & Credit",
+    title: "PMEGP in 6 Steps (OBC Special Category)",
+    readTime: "6 steps",
+    audience: "New manufacturing or service micro-enterprise founders",
+    summary:
+      "OBC applicants qualify under PMEGP's Special Category for higher margin-money subsidy and reduced beneficiary contribution. Confirm current project ceilings and subsidy percentages directly on the PMEGP e-Portal.",
+    stages: [
       {
-        title: "Keep all 5 essential entrepreneur documents ready",
+        title: "Choose a viable activity & prepare a project report",
         detail:
-          "Maintain: (1) Aadhaar & PAN (personal and business), (2) State BC & Central OBC-NCL certificate, (3) Udyam certificate, (4) Current account + 6–12 months bank statements, and (5) A simple project report showing activity, cost, funding and expected income.",
+          "Define your manufacturing or service activity, machinery/capital cost, funding mix and projected income.",
+      },
+      {
+        title: "Apply online via the official PMEGP e-Portal",
+        detail:
+          "Register on kviconline.gov.in/pmegpeportal/, select KVIC, KVIB or DIC as the implementing agency, and upload Aadhaar, PAN, caste certificate, project report and education/training proof.",
+        portal: { label: "PMEGP Official e-Portal", url: "https://www.kviconline.gov.in/pmegpeportal/" },
+      },
+      {
+        title: "District Task Force interview & bank sanction",
+        detail:
+          "Attend the district task force interview; recommended projects are forwarded to a participating bank for appraisal and sanction.",
+      },
+      {
+        title: "Complete mandatory EDP training",
+        detail:
+          "Finish mandatory Entrepreneurship Development Programme (EDP) training. Margin-money subsidy is adjusted against the loan after the stipulated lock-in period per official KVIC rules.",
+        portal: { label: "myScheme PMEGP", url: "https://myscheme.gov.in/schemes/pmegp" },
       },
     ],
   },
   {
-    id: "loan-decision-markets",
+    id: "readiness-dossier",
     num: "04",
-    topic: "Credit & Markets",
-    title: "Matching Your Enterprise to the Right Loan & Market Portal",
-    readTime: "4 strategic tracks",
-    audience: "Artisans, women founders, micro units, growing MSEs & startups",
+    topic: "Credit & Market Readiness",
+    title: "Five Documents Every Entrepreneur Should Keep Ready",
+    readTime: "5 essentials",
+    audience: "Founders preparing for bank credit, schemes or GeM",
     summary:
-      "Match your exact stage to PM Vishwakarma, NBCFDC, PMEGP, Mudra, CGTMSE, Stand-Up India or GeM without relying on intermediaries.",
+      "Prepare five foundational documents before approaching banks, State BC Corporations or government procurement portals so applications move smoothly without middlemen.",
     stages: [
       {
-        title: "Artisans (18 trades) & Low-Income OBC Ventures",
+        title: "Identity, Community & Udyam Records",
         detail:
-          "Traditional artisans in 18 trades can start with PM Vishwakarma (₹1L + ₹2L at 5% + ₹15,000 toolkit). OBC families with income under ₹3 lakh can explore NBCFDC General Loan (up to ₹15L) or New Swarnima for women (₹2L at 5%).",
-        portal: { label: "pmvishwakarma.gov.in", url: "https://pmvishwakarma.gov.in/" },
+          "Keep ready: (1) Aadhaar and PAN (personal and business), (2) Caste certificate (state BC and, for central schemes, OBC-NCL), and (3) your free Udyam registration certificate.",
+        portal: { label: "udyamregistration.gov.in", url: "https://udyamregistration.gov.in/" },
       },
       {
-        title: "Working Capital & Collateral-Free Scale",
+        title: "Banking History & Simple Project Report",
         detail:
-          "Existing micro units needing working capital can explore Mudra (Shishu up to ₹50K, Kishor ₹50K–5L, Tarun ₹5–10L, Tarun Plus ₹10–20L). Growing MSEs can pair bank loans with CGTMSE guarantee cover (up to ₹10 crore).",
-        portal: { label: "mudra.org.in", url: "https://www.mudra.org.in/" },
+          "Maintain (4) recent bank statements (6–12 months) and a dedicated business current account, plus (5) a clear project report detailing activity, cost, funding structure and expected income.",
       },
       {
-        title: "Women Founders & Innovation Startups",
+        title: "Access Government Buyers Directly via GeM",
         detail:
-          "OBC women qualify for both NBCFDC New Swarnima and Stand-Up India (₹10L–₹1Cr greenfield). Tech/innovation founders can explore Startup India Seed Fund and the Venture Capital Fund for Backward Classes (IFCI Venture).",
-        portal: { label: "standupmitra.in", url: "https://www.standupmitra.in/" },
-      },
-      {
-        title: "Sell Directly to Government Buyers via GeM",
-        detail:
-          "Once Udyam-registered with GST/banking records in place, register on Government e-Marketplace (GeM) to access transparent national public procurement.",
+          "Once Udyam-registered with banking and compliance records in order, register directly on Government e-Marketplace (GeM) to explore transparent national procurement opportunities.",
         portal: { label: "gem.gov.in", url: "https://gem.gov.in/" },
       },
     ],
   },
 ];
 
-// Decision matrix from Guide 4 ("Which loan fits you?") — rendered cleanly in Knowledge & Intelligence.
+// Decision matrix from Guide 4 ("Which loan fits you?") — strictly without unverified rupee caps or rates.
 export const LOAN_DECISION_GUIDE = [
-  { situation: "Traditional artisan in one of 18 trades", startWith: "PM Vishwakarma (₹1 lakh + ₹2 lakh at 5%)", url: "https://pmvishwakarma.gov.in/" },
-  { situation: "OBC family income under ₹3 lakh, any small business", startWith: "NBCFDC General Loan via state BC Corporation", url: "https://nbcfdc.gov.in/nbcfdc/web/node/65" },
-  { situation: "OBC woman, small venture", startWith: "NBCFDC New Swarnima (₹2 lakh at 5%) or Stand-Up India (₹10 lakh–₹1 crore, greenfield)", url: "https://www.standupmitra.in/" },
-  { situation: "New manufacturing or service unit, need subsidy", startWith: "PMEGP (25% urban / 35% rural OBC special-category subsidy)", url: "https://www.kviconline.gov.in/pmegpeportal/" },
-  { situation: "Existing micro business needing working capital", startWith: "Mudra (Shishu, Kishor, Tarun & Tarun Plus up to ₹20 lakh)", url: "https://www.mudra.org.in/" },
-  { situation: "Growing MSE needing larger collateral-free credit", startWith: "Bank loan with CGTMSE guarantee (up to ₹10 crore)", url: "https://www.cgtmse.in/" },
-  { situation: "Tech or innovation startup", startWith: "Startup India recognition + Seed Fund; Venture Capital Fund for Backward Classes", url: "https://seedfund.startupindia.gov.in/" },
+  {
+    situation: "Traditional artisan in one of 18 notified trades",
+    startWith: "PM Vishwakarma (recognition, training, toolkit & concessional credit)",
+    url: "https://pmvishwakarma.gov.in/",
+  },
+  {
+    situation: "OBC/BC family within income criteria starting any small business",
+    startWith: "NBCFDC General Loan via State BC Corporation",
+    url: "https://nbcfdc.gov.in/nbcfdc/web/node/65",
+  },
+  {
+    situation: "OBC woman launching a small or greenfield venture",
+    startWith: "NBCFDC New Swarnima or Stand-Up India (greenfield)",
+    url: "https://www.standupmitra.in/",
+  },
+  {
+    situation: "New manufacturing or service unit seeking capital subsidy",
+    startWith: "PMEGP (OBC Special Category via KVIC / KVIB / DIC)",
+    url: "https://www.kviconline.gov.in/pmegpeportal/",
+  },
+  {
+    situation: "Existing non-farm micro business needing working capital",
+    startWith: "PM Mudra Yojana (Shishu, Kishor, Tarun & Tarun Plus)",
+    url: "https://www.mudra.org.in/",
+  },
+  {
+    situation: "Growing MSE needing larger collateral-free credit",
+    startWith: "Bank loan backed by CGTMSE credit guarantee",
+    url: "https://www.cgtmse.in/",
+  },
+  {
+    situation: "Tech or innovation startup",
+    startWith: "Startup India Seed Fund (SISFS) & Venture Capital Fund for Backward Classes",
+    url: "https://seedfund.startupindia.gov.in/",
+  },
 ];
 
-// Shareable Knowledge Centre Guides (All 5 Content Pack guides) + Verified Official Dispatches
+// Shareable Knowledge Centre Guides (All 5 Content Pack guides, reconciled) + Verified Official Dispatches
 export const INSIGHT_ARTICLES = [
   {
     slug: "how-to-register-on-udyam-free",
     category: "Knowledge Guide",
     label: "BECCI Knowledge Centre · Guide 01",
     attribution: "BECCI Knowledge Centre · Official Portal Walkthrough",
-    published: "Nov 18, 2026",
+    published: "Published guide",
     readTime: "3 min read",
     title: "How to register your business on Udyam (free)",
     excerpt:
@@ -260,24 +289,24 @@ export const INSIGHT_ARTICLES = [
     keyPoints: [
       "udyamregistration.gov.in is the only official site — registration is free; ignore paid look-alike sites.",
       "Requires Aadhaar (OTP-verified) and PAN; investment and turnover are fetched from IT/GST records where available.",
-      "Select Social Category: OBC accurately so your unit matches OBC-eligible schemes.",
+      "Select Social Category: OBC accurately so your unit matches applicable MSME programmes.",
       "Your Udyam certificate is emailed and can be downloaded any time.",
     ],
     sections: [
       {
         heading: "Step-by-Step Free Registration",
         body:
-          "1. Go to udyamregistration.gov.in — it is the only official site and registration is free. Ignore paid look-alike sites. 2. Choose 'For New Entrepreneurs who are not Registered yet as MSME'. 3. Enter the owner's Aadhaar number and verify it with the OTP sent to the Aadhaar-linked mobile. 4. Enter your PAN; investment and turnover are picked up from income-tax and GST records where available. 5. Fill in business name, address, bank details, activity (NIC code) and social category: select OBC. 6. Submit with OTP — your Udyam certificate is emailed and can be downloaded any time.",
+          "1. Go to udyamregistration.gov.in — it is the only official site and registration is free. Ignore paid look-alike sites. 2. Choose “For New Entrepreneurs who are not Registered yet as MSME”. 3. Enter the owner's Aadhaar number and verify it with the OTP sent to the Aadhaar-linked mobile. 4. Enter your PAN; investment and turnover are picked up from income-tax and GST records where available. 5. Fill in business name, address, bank details, activity (NIC code) and social category: select OBC. 6. Submit with OTP — your Udyam certificate is emailed and can be downloaded any time.",
       },
       {
         heading: "Why Udyam Registration Matters",
         body:
-          "OBC entrepreneurs own 49.72% of India's proprietary MSMEs (NSS 73rd Round, 2015–16), yet accounted for only ~30% (23.31 lakh of 80.16 lakh) of Udyam-registered units as of 31 March 2022. Registering on Udyam is required for most MSME schemes, CGTMSE collateral-free guarantees, GeM selling and priority-sector lending.",
+          "Historical MSME data shows OBC entrepreneurs owned 49.72% of India's proprietary MSMEs (NSS 73rd Round, 2015–16), yet accounted for only ~30% (23.31 lakh of 80.16 lakh) of Udyam-registered units in the March 2022 snapshot. Registering on Udyam unlocks access to official MSME schemes, CGTMSE collateral-free guarantees, GeM public procurement and priority-sector lending.",
       },
     ],
     sources: [
       { label: "udyamregistration.gov.in (Official Free Portal)", url: "https://udyamregistration.gov.in/" },
-      { label: "Revised 2025 MSME Limits (GJEPC)", url: "https://www.gjepc.org/msme-defination.php" },
+      { label: "Ministry of MSME Portal", url: "https://msme.gov.in/" },
     ],
   },
   {
@@ -285,55 +314,60 @@ export const INSIGHT_ARTICLES = [
     category: "Knowledge Guide",
     label: "BECCI Knowledge Centre · Guide 02",
     attribution: "BECCI Knowledge Centre · Documentation Guide",
-    published: "Nov 18, 2026",
+    published: "Published guide",
     readTime: "3 min read",
     title: "Getting your caste (BC) certificate — Telangana, Andhra Pradesh & Central OBC-NCL",
     excerpt:
       "Where to apply in Telangana (MeeSeva) and Andhra Pradesh (Village/Ward Sachivalayam), and why Central Government schemes require an OBC Non-Creamy Layer certificate in the central format.",
     keyPoints: [
       "Telangana: Apply at any MeeSeva centre or the MeeSeva portal; issued by the Tahsildar after verification.",
-      "Andhra Pradesh: Apply at your Village/Ward Sachivalayam or a MeeSeva centre.",
+      "Andhra Pradesh: Apply at your Village/Ward Sachivalayam or an authorised MeeSeva centre.",
       "Central schemes require an OBC (Non-Creamy Layer) certificate in the central format — a state BC certificate alone may not be accepted.",
-      "[CONFIRM with BECCI: exact current document checklist and statutory fees for TG/AP, which change periodically.]",
+      "Check your state MeeSeva or Sachivalayam portal for the latest document checklist and statutory fees, which are updated periodically.",
     ],
     sections: [
       {
         heading: "Telangana & Andhra Pradesh Process",
         body:
-          "In Telangana, apply at any MeeSeva centre or the MeeSeva portal with Aadhaar, a ration/family card, a school record showing caste, parent's caste certificate if available, and a residence proof; the Tahsildar issues the certificate after verification. In Andhra Pradesh, apply at your Village/Ward Sachivalayam or a MeeSeva centre with the same core documents.",
+          "In Telangana, apply at any MeeSeva centre or the official MeeSeva portal with Aadhaar, a ration/family card, a school record showing caste, parent's caste certificate if available, and residence proof; the Tahsildar issues the certificate after verification. In Andhra Pradesh, apply at your Village/Ward Sachivalayam or an authorised MeeSeva centre with equivalent supporting documents. Always confirm the current local checklist and applicable statutory fee on your state portal before submitting.",
       },
       {
         heading: "State BC vs. Central OBC (Non-Creamy Layer)",
         body:
-          "For central schemes and central agencies you need an OBC (Non-Creamy Layer) certificate in the central format — a state BC certificate alone may not be accepted. For BECCI membership, you qualify if your community appears on either the Central OBC list for your state or your state's BC/OBC list.",
+          "For Central Government schemes and agencies you need an OBC (Non-Creamy Layer) certificate in the central format — a state BC certificate alone may not be accepted. For BECCI membership, you qualify if your community appears on either the Central OBC list for your state or your state's official BC/OBC list.",
       },
     ],
     sources: [
       { label: "NCBC Central OBC Lists", url: "https://ncbc.nic.in/" },
-      { label: "BECCI Membership FAQs", to: "/membership" },
+      { label: "BECCI Membership Eligibility", to: "/membership" },
     ],
   },
   {
     slug: "pmegp-in-6-steps-obc-subsidy",
     category: "Knowledge Guide",
     label: "BECCI Knowledge Centre · Guide 03",
-    attribution: "BECCI Knowledge Centre · Subsidy Guide",
-    published: "Nov 18, 2026",
+    attribution: "BECCI Knowledge Centre · Subsidy Process Guide",
+    published: "Published guide",
     readTime: "3 min read",
-    title: "PMEGP in 6 steps (subsidy of up to 35% for OBC applicants)",
+    title: "PMEGP in 6 steps (OBC Special Category guide)",
     excerpt:
-      "OBC applicants qualify as Special Category under PMEGP — receiving 25% (urban) or 35% (rural) project-cost subsidy with only 5% own contribution.",
+      "How OBC applicants navigate the Prime Minister's Employment Generation Programme — from project report and KVIC e-Portal submission to District Task Force interview and mandatory EDP training.",
     keyPoints: [
-      "Max project cost: ₹50 lakh (manufacturing) and ₹20 lakh (service/business).",
-      "OBC Special Category: 25% urban / 35% rural subsidy with 5% own contribution.",
-      "Worked example: On a ₹10 lakh rural project, OBC applicant receives ₹3.5L subsidy, contributes ₹50,000, and the bank lends ~₹6L.",
-      "Mandatory EDP training required; subsidy is held for 3 years then adjusted against the loan.",
+      "OBC applicants are categorised under PMEGP's Special Category (higher margin-money subsidy and lower own contribution than General Category).",
+      "Applies to new micro enterprises in manufacturing and services; apply strictly through kviconline.gov.in/pmegpeportal/.",
+      "Always verify current project-cost ceilings, rural/urban subsidy percentages and own-contribution rules on the official KVIC portal.",
+      "Mandatory EDP training is required before margin-money subsidy adjustment.",
     ],
     sections: [
       {
         heading: "The 6 Steps to Apply",
         body:
-          "1. Pick a viable activity and prepare a project report (BECCI can help). 2. Apply online at the PMEGP e-Portal (kviconline.gov.in/pmegpeportal/) and choose KVIC, KVIB or DIC as your agency. 3. Upload Aadhaar, PAN, your caste certificate (for special-category subsidy), the project report, and education or training proof. 4. The district task force interviews you and recommends the project to a bank. 5. The bank sanctions the loan; you put in 5% of the project cost (OBC = special category). 6. Finish the mandatory EDP training; the subsidy (25% urban, 35% rural) is held for 3 years and then adjusted against your loan.",
+          "1. Pick a viable manufacturing or service activity and prepare a clear project report. 2. Apply online at the official PMEGP e-Portal (kviconline.gov.in/pmegpeportal/) and choose KVIC, KVIB or DIC as the implementing agency. 3. Upload Aadhaar, PAN, your caste certificate (to qualify under Special Category), the project report, and education or training proof. 4. Attend the district task force interview, which recommends viable projects to a financing bank. 5. After bank appraisal and loan sanction, deposit the prescribed Special Category beneficiary contribution. 6. Complete the mandatory EDP training; margin-money subsidy is retained for the prescribed lock-in period and then adjusted against your loan per official KVIC rules.",
+      },
+      {
+        heading: "Verify Live Slabs on Official Portals",
+        body:
+          "Project ceilings, margin-money rates and eligibility guidelines are revised periodically by the Ministry of MSME and KVIC. Always confirm active terms on kviconline.gov.in/pmegpeportal/ or myscheme.gov.in/schemes/pmegp before committing project expenditure.",
       },
     ],
     sources: [
@@ -346,31 +380,31 @@ export const INSIGHT_ARTICLES = [
     category: "Knowledge Guide",
     label: "BECCI Knowledge Centre · Guide 04",
     attribution: "BECCI Knowledge Centre · Credit Decision Matrix",
-    published: "Nov 18, 2026",
+    published: "Published guide",
     readTime: "3 min read",
     title: "Which loan fits you? (Decision guide)",
     excerpt:
-      "Match your exact enterprise stage — from traditional artisans and women-led small ventures to growing MSEs and tech startups — to the right verified scheme.",
+      "Match your exact enterprise stage — from traditional artisans and women-led small ventures to growing MSEs and tech startups — to the right official government programme.",
     keyPoints: [
-      "Traditional artisan (18 trades) → PM Vishwakarma (₹1 lakh + ₹2 lakh at 5%).",
-      "OBC family income under ₹3 lakh → NBCFDC General Loan via state BC Corporation.",
-      "OBC woman, small venture → NBCFDC New Swarnima (₹2 lakh at 5%) or Stand-Up India (₹10 lakh–₹1 crore, greenfield).",
-      "New unit needing subsidy → PMEGP; Existing micro unit → Mudra; Larger collateral-free credit → CGTMSE; Tech startup → SISFS & VCF-BC.",
+      "Traditional artisan (18 notified trades) → PM Vishwakarma.",
+      "OBC/BC family within income limits → NBCFDC General Loan via State BC Corporation.",
+      "OBC woman launching a venture → NBCFDC New Swarnima or Stand-Up India (greenfield).",
+      "New unit needing subsidy → PMEGP · Working capital → Mudra · Larger collateral-free credit → CGTMSE · Tech startups → SISFS & VCF-BC.",
     ],
     sections: [
       {
         heading: "Matching Your Situation to the Right Programme",
         body:
-          "Traditional artisans in 18 covered trades can start with PM Vishwakarma (₹1 lakh + ₹2 lakh at 5%). OBC families with annual income under ₹3 lakh seeking any small business loan can explore the NBCFDC General Loan through their state BC Corporation. OBC women launching small or greenfield ventures qualify for NBCFDC New Swarnima (₹2 lakh at 5%) as well as Stand-Up India (₹10 lakh to ₹1 crore).",
+          "Traditional artisans across 18 notified trades can begin with PM Vishwakarma. OBC/BC households within NBCFDC's notified annual income limit can explore NBCFDC General Loans through their State BC Corporation, while OBC women entrepreneurs can review both NBCFDC New Swarnima and Stand-Up India for greenfield ventures.",
       },
       {
         heading: "Subsidies, Working Capital, Collateral-Free Credit & Startups",
         body:
-          "New manufacturing or service units seeking a capital subsidy should review PMEGP (25% urban / 35% rural for OBC Special Category). Existing micro businesses needing working capital can apply under PM Mudra Yojana (Shishu, Kishor, Tarun & Tarun Plus up to ₹20 lakh). Growing MSEs requiring larger collateral-free loans can explore bank loans backed by CGTMSE guarantees (up to ₹10 crore). Tech or innovation startups can explore Startup India recognition + Seed Fund (SISFS) alongside the Venture Capital Fund for Backward Classes.",
+          "New manufacturing or service units seeking a credit-linked subsidy should review PMEGP; existing non-farm micro enterprises seeking working capital can explore PM Mudra Yojana (Shishu, Kishor, Tarun and Tarun Plus); growing MSEs requiring larger collateral-free credit can explore bank loans backed by CGTMSE guarantees; and innovative startups can review Startup India Seed Fund (SISFS) alongside the Venture Capital Fund for Backward Classes. Always confirm current limits and interest slabs on each official website.",
       },
     ],
     sources: [
-      { label: "Compare All 12 Verified Schemes on BECCI", to: "/schemes" },
+      { label: `Explore All ${SCHEME_DATASET_STATS.totalShown} Verified Schemes on BECCI`, to: "/schemes" },
       { label: "NBCFDC Official Schemes", url: "https://nbcfdc.gov.in/nbcfdc/web/node/65" },
       { label: "PM Mudra Yojana", url: "https://www.mudra.org.in/" },
     ],
@@ -380,7 +414,7 @@ export const INSIGHT_ARTICLES = [
     category: "Knowledge Guide",
     label: "BECCI Knowledge Centre · Guide 05",
     attribution: "BECCI Knowledge Centre · Document Readiness Checklist",
-    published: "Nov 18, 2026",
+    published: "Published guide",
     readTime: "2 min read",
     title: "Five documents every entrepreneur should keep ready",
     excerpt:
@@ -389,7 +423,7 @@ export const INSIGHT_ARTICLES = [
       "1. Aadhaar and PAN (personal and business).",
       "2. Caste certificate (state BC and, for central schemes, OBC-NCL).",
       "3. Udyam certificate (free at udyamregistration.gov.in).",
-      "4. Bank statements for the last 6–12 months and a current account.",
+      "4. Bank statements for the last 6–12 months and a business current account.",
       "5. A simple project report or business plan: activity, cost, funding and expected income.",
     ],
     sections: [
@@ -399,9 +433,9 @@ export const INSIGHT_ARTICLES = [
           "1. Aadhaar and PAN (personal and business). 2. Caste certificate (state BC and, for central schemes, OBC Non-Creamy Layer in central format). 3. Udyam certificate (register free at udyamregistration.gov.in with Social Category: OBC). 4. Bank statements for the last 6–12 months and an active current account. 5. A simple project report or business plan detailing your business activity, project cost, funding mix and expected income.",
       },
       {
-        heading: "How BECCI Supports Document Preparation",
+        heading: "Safe Application Practices",
         body:
-          "BECCI guides entrepreneurs on assembling project reports and verifying official portal checklists — never charging for scheme information and never requesting government portal passwords or OTPs.",
+          "Apply only through verified official government portals or recognised banks. BECCI provides orientation only — it never charges for scheme information and never requests government portal passwords or OTPs.",
       },
     ],
     sources: [
@@ -414,7 +448,7 @@ export const INSIGHT_ARTICLES = [
     slug: "section-8-incorporation-2026",
     category: "Official Update",
     label: "Official BECCI Dispatch · 2026",
-    attribution: "BECCI Chamber Desk · Verified Corporate Notice",
+    attribution: "BECCI Secretariat · Verified Corporate Notice",
     published: "2026",
     readTime: "2 min read",
     title: NEWS[0].title,
@@ -423,7 +457,7 @@ export const INSIGHT_ARTICLES = [
       `Legal Form: ${CONTACT.incorporation}`,
       `Corporate Identity Number (CIN): ${CONTACT.cin}`,
       `Registered Office: ${CONTACT.address}`,
-      `Contact: ${CONTACT.phone} · ${CONTACT.email}`,
+      `Secretariat Phone: ${CONTACT.phone} (${CONTACT.hours})`,
     ],
     sections: [
       {
@@ -434,7 +468,7 @@ export const INSIGHT_ARTICLES = [
       {
         heading: "Registered Office & Official Contact",
         body:
-          `BECCI’s registered office operates at ${CONTACT.address}. Enquiries are welcomed Monday to Saturday, 9:30 am – 6:30 pm IST on ${CONTACT.phone}, by email at ${CONTACT.email}, or through the official Contact page.`,
+          `BECCI's registered office operates at ${CONTACT.address}. Enquiries are welcomed ${CONTACT.hours} on ${CONTACT.phone} or through our Contact page (prior appointments recommended for in-person meetings).`,
       },
     ],
     sources: [
@@ -446,7 +480,7 @@ export const INSIGHT_ARTICLES = [
     slug: "phase-01-district-outreach-2026",
     category: "Official Update",
     label: "Official BECCI Announcement · 2026",
-    attribution: "BECCI Chamber Desk · Rollout Notice",
+    attribution: "BECCI Secretariat · Rollout Notice",
     published: "2026",
     readTime: "2 min read",
     title: NEWS[1].title,
@@ -454,13 +488,13 @@ export const INSIGHT_ARTICLES = [
     keyPoints: [
       "Initial Phase 01 launch states: Telangana and Andhra Pradesh, with other states following in phases.",
       "Focuses on district-level outreach, state membership desks and scam-free scheme orientation.",
-      "Chapter locations and launch dates will be published only once confirmed.",
+      "Chapter locations and event dates will be published only once formally confirmed.",
     ],
     sections: [
       {
         heading: "Phased National Rollout",
         body:
-          "BECCI is rolling out across Bharat in phases, starting with Telangana and Andhra Pradesh. Phase 01 focuses on publishing verified enterprise and scheme guides online alongside district outreach and state membership desks.",
+          "BECCI is rolling out across Bharat in phases, starting with Telangana and Andhra Pradesh. Phase 01 focuses on publishing verified enterprise guides and official scheme links online alongside district outreach and state membership desks.",
       },
     ],
     sources: [
@@ -517,9 +551,141 @@ export const LIBRARY_ITEMS = [
     type: "official-documents",
     format: "Official Government Portal",
     title: p.name,
-    summary: `Direct statutory portal hosted at ${p.url.replace("https://", "")}.`,
-    sourceKind: "External Government Authority",
+    summary: p.summary,
+    sourceKind: p.source,
     href: p.url,
     actionLabel: "Open Official Portal",
   })),
 ];
+
+// Unified site-wide deterministic search index (used by Header SearchDialog — single source of truth)
+export const SITE_SEARCH_INDEX = [
+  ...NAV.map((n) => ({
+    id: `page-${n.to}`,
+    group: "Pages",
+    title: n.label,
+    summary:
+      n.to === "/"
+        ? "Building Businesses. Building Bharat. — BECCI public home."
+        : `Explore ${n.label} on the official BECCI public website.`,
+    to: n.to,
+    keywords: n.short || "",
+  })),
+  {
+    id: "page-navigator",
+    group: "Pages",
+    title: "BECCI Opportunity Navigator",
+    summary: "Guided discovery journey matching verified schemes, guides, official portals, sectors and membership pathways.",
+    to: "/navigator",
+    keywords: "navigator guided discovery brief explore pathway",
+  },
+  {
+    id: "page-intelligence",
+    group: "Pages",
+    title: "BECCI Intelligence",
+    summary: "Resource Finder, Opportunity Intelligence, Learning Journeys & Knowledge Library.",
+    to: "/intelligence",
+    keywords: "guides library research search",
+  },
+  {
+    id: "page-pulse",
+    group: "Pages",
+    title: "BECCI PULSE",
+    summary: "Interactive 3D Enterprise Universe, Opportunity Wall & Digital Observatory.",
+    to: "/pulse",
+    keywords: "exhibition 3d universe observatory",
+  },
+  {
+    id: "page-governance",
+    group: "Pages",
+    title: "Governance & Corporate Standing",
+    summary: "Section 8 registration, CIN U94110TS2026NPL222589, governance hierarchy & disclosures.",
+    to: "/about#governance",
+    keywords: "leadership board cin mca legal",
+  },
+  {
+    id: "page-privacy",
+    group: "Pages",
+    title: "Privacy Policy (Draft)",
+    summary: "Draft privacy summary under DPDP Act 2023 & IT Act 2000, awaiting legal review.",
+    to: "/privacy",
+    keywords: "data caste privacy dpdp legal",
+  },
+  {
+    id: "page-terms",
+    group: "Pages",
+    title: "Terms of Use (Draft)",
+    summary: "Draft terms governing website and upcoming member services, awaiting legal review.",
+    to: "/terms",
+    keywords: "legal terms hyderabad jurisdiction",
+  },
+  ...SCHEMES.map((s) => ({
+    id: `scheme-${s.slug || s.id}`,
+    group: "Schemes",
+    title: s.short ? `${s.short} — ${s.name}` : s.name,
+    summary: s.desc,
+    to: `/schemes/${s.slug || s.id}`,
+    keywords: `${s.ministry} ${s.agency || ""} ${s.level} ${s.state || ""} ${s.type} ${(s.categories || []).join(" ")}`,
+  })),
+  ...INSIGHT_ARTICLES.map((a) => ({
+    id: `guide-${a.slug}`,
+    group: a.category === "Official Update" ? "News" : "Guides",
+    title: a.title,
+    summary: a.excerpt,
+    to: `/intelligence/article/${a.slug}`,
+    keywords: a.label,
+  })),
+  ...SECTORS.map((sec) => ({
+    id: `sector-${sec.id}`,
+    group: "Sectors",
+    title: sec.name,
+    summary: sec.covers,
+    to: `/who-we-serve?sector=${sec.id}#sectors`,
+    keywords: `industry sector ${(sec.schemeCategories || []).join(" ")}`,
+  })),
+  ...KNOWLEDGE_PORTALS.map((p, idx) => ({
+    id: `portal-${idx}`,
+    group: "Official Portals",
+    title: p.name,
+    summary: p.summary,
+    href: p.url,
+    keywords: `${p.source} ${p.topic}`,
+  })),
+];
+
+export function searchSite(query, limit = 18, liveSchemes = null) {
+  const words = (query || "").toLowerCase().trim().split(/\s+/).filter(Boolean);
+  if (!words.length) return [];
+
+  let pool = SITE_SEARCH_INDEX;
+  if (Array.isArray(liveSchemes) && liveSchemes.length > 0) {
+    const nonSchemes = SITE_SEARCH_INDEX.filter((item) => item.group !== "Schemes");
+    const schemeItems = liveSchemes
+      .filter((s) => s.showOnBecci)
+      .map((s) => ({
+        id: `scheme-${s.slug}`,
+        group: s.obcRelevant ? "OBC / BC Scheme" : "Schemes",
+        title: s.short ? `${s.short} — ${s.name}` : s.name,
+        summary: s.teName ? `${s.teName} · ${s.brief}` : s.brief,
+        to: `/schemes/${s.slug}`,
+        keywords: `${s.teName || ""} ${s.teBrief || ""} ${s.ministry || ""} ${s.agency || ""} ${s.level || ""} ${s.state || ""} ${s.primaryCategory || ""} ${(s.categories || []).join(" ")} ${(s.tags || []).join(" ")}`,
+        featured: Boolean(s.featured),
+      }));
+    pool = [...nonSchemes, ...schemeItems];
+  }
+
+  return pool
+    .map((item) => {
+      const title = item.title.toLowerCase();
+      const hay = `${title} ${item.summary} ${item.keywords || ""} ${item.group}`.toLowerCase();
+      if (!words.every((w) => hay.includes(w))) return null;
+      const score =
+        words.reduce((acc, w) => acc + (title.startsWith(w) ? 4 : title.includes(w) ? 2 : 1), 0) +
+        (item.featured ? 1 : 0);
+      return { item, score };
+    })
+    .filter(Boolean)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, limit)
+    .map((x) => x.item);
+}

@@ -1,12 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Languages } from "lucide-react";
 import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import {
-  ORG, WHY_BAHUJAN, VISION_MISSION, WORK_AREAS, STAKEHOLDERS,
+  ORG, WHY_BAHUJAN, VISION_MISSION, OBJECTIVES, STAKEHOLDERS,
   AUDIENCES, SECTORS, WINGS, ROADMAP, MEMBERSHIP_NOTE, CONTACT,
-  ENGAGEMENT_PATHWAYS, HEADLINE_FACT_LINE, VERIFIED_STATS, SCHEMES,
+  ENGAGEMENT_PATHWAYS, HEADLINE_FACT_LINE, VERIFIED_STATS, SCHEME_DATASET_STATS,
 } from "@/data/becci";
+import { HOME_TE } from "@/data/teluguUi";
+import { useSchemeLanguage } from "@/lib/schemesStore";
 import Reveal from "@/components/Reveal";
 import { SectionHeading, Eyebrow, CTA } from "@/components/primitives";
 import { Symbol, InstitutionalSeal } from "@/components/Logo";
@@ -61,6 +63,8 @@ const HOME_CHAPTERS = [
 /* ------------------------------ Experience A & C: Cinematic Opening + Raymarched 3D Continuum Sculpture ------------------------------ */
 const Hero = () => {
   const [reelIndex, setReelIndex] = useState(0);
+  const [lang, setLang] = useSchemeLanguage();
+  const isTelugu = lang === "te";
   const heroRef = useRef(null);
   const reduce = useReducedMotion();
 
@@ -124,27 +128,90 @@ const Hero = () => {
       >
         <div className="grid items-center gap-6 lg:grid-cols-[1.15fr_0.85fr] lg:gap-10">
           <div>
-            <div className="inline-flex items-center gap-3 rounded-full glass-pill px-4 py-1.5">
-              <span className="h-2 w-2 rounded-full bg-teal" aria-hidden="true" />
-              <span className="font-heading text-[0.66rem] font-semibold uppercase tracking-[0.18em] text-ice sm:text-[0.7rem]">
-                {ORG.full}
-              </span>
+            <div className="flex flex-wrap items-center gap-2.5">
+              <div className="inline-flex items-center gap-3 rounded-full glass-pill px-4 py-1.5">
+                <span className="h-2 w-2 rounded-full bg-teal" aria-hidden="true" />
+                <span
+                  className={`text-xs font-semibold uppercase tracking-[0.16em] text-ice ${
+                    isTelugu ? "font-telugu" : "font-heading"
+                  }`}
+                >
+                  {isTelugu ? HOME_TE.orgFull : ORG.full}
+                </span>
+              </div>
+
+              {/* Hero Bilingual Toggle (English | తెలుగు) */}
+              <div
+                role="group"
+                aria-label="Home language toggle"
+                data-testid="home-hero-lang-toggle"
+                className="inline-flex items-center rounded-full border border-ice/20 bg-white/[0.06] p-1"
+              >
+                <button
+                  type="button"
+                  aria-pressed={!isTelugu}
+                  onClick={() => setLang("en")}
+                  data-testid="home-hero-lang-en"
+                  className={`min-h-[28px] rounded-full px-3 py-0.5 font-heading text-xs font-semibold transition-colors ${
+                    !isTelugu
+                      ? "bg-teal text-navy-950"
+                      : "text-ice/80 hover:text-white"
+                  }`}
+                >
+                  English
+                </button>
+                <button
+                  type="button"
+                  aria-pressed={isTelugu}
+                  onClick={() => setLang("te")}
+                  data-testid="home-hero-lang-te"
+                  className={`font-telugu inline-flex min-h-[28px] items-center gap-1 rounded-full px-3 py-0.5 text-xs font-semibold transition-colors ${
+                    isTelugu
+                      ? "bg-teal text-navy-950 shadow-teal-glow"
+                      : "text-teal-bright hover:text-white"
+                  }`}
+                >
+                  <Languages className="h-3.5 w-3.5" aria-hidden="true" />
+                  <span>తెలుగు</span>
+                </button>
+              </div>
             </div>
 
-            <SplitHeadline
-              lines={["Building Businesses.", "Building Bharat."]}
-              highlightWord="Bharat"
-              highlightClass="text-gradient-teal"
-              className="mt-5 display-head text-[3.35rem] leading-[0.88] text-white sm:mt-6 sm:text-[5.4rem] lg:text-[6.8rem] xl:text-[7.4rem]"
-            />
+            {isTelugu ? (
+              <div className="mt-5 sm:mt-6">
+                <h1 className="font-telugu text-[2.3rem] font-bold leading-[1.32] text-white sm:text-[3.25rem] lg:text-[3.85rem]">
+                  <span className="block">{HOME_TE.headlineLine1}</span>
+                  <span className="text-gradient-teal block">{HOME_TE.headlineLine2}</span>
+                </h1>
+                <p className="mt-2 font-display text-lg uppercase tracking-wider text-ice/75 sm:text-2xl">
+                  Building Businesses. Building Bharat.
+                </p>
+              </div>
+            ) : (
+              <div className="mt-5 max-w-[680px] sm:mt-6">
+                <h1 className="display-head text-4xl leading-[0.92] text-white sm:text-6xl lg:text-7xl">
+                  Connecting Bahujan founders with{" "}
+                  <span className="bg-gradient-to-r from-white via-teal-bright to-ice bg-clip-text text-transparent">
+                    tenders, capital &amp; verified schemes.
+                  </span>
+                </h1>
+                <p className="mt-3 font-heading text-sm font-semibold uppercase tracking-[0.16em] text-teal-bright sm:text-base">
+                  Building Businesses. Building Bharat.
+                </p>
+              </div>
+            )}
 
             <motion.p
               initial={reduce ? false : { opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.24, ease: EASE_OUT }}
-              className="mt-4 max-w-xl font-body text-[0.95rem] leading-relaxed text-frost/90 sm:mt-6 sm:text-lg"
+              className={`mt-4 max-w-[680px] text-base leading-relaxed text-frost/90 sm:mt-5 sm:text-lg ${
+                isTelugu ? "font-telugu" : "font-body"
+              }`}
             >
-              {ORG.hero}
+              {isTelugu
+                ? HOME_TE.heroBody
+                : "India's institutional Section 8 chamber connecting OBC and BC enterprises, artisans and manufacturers with GeM/CPPP tenders, SIDBI funding and 335 eligible public welfare programmes."}
             </motion.p>
 
             <motion.div
@@ -154,23 +221,47 @@ const Hero = () => {
               className="mt-6 flex flex-col gap-3 sm:mt-8 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4"
             >
               <Magnetic className="w-full sm:w-auto">
-                <CTA to="/about" variant="teal" testid="hero-explore-cta" className="w-full sm:w-auto">
-                  Explore BECCI
+                <CTA
+                  to="/opportunities"
+                  variant="teal"
+                  testid="hero-explore-cta"
+                  className={`w-full sm:w-auto ${isTelugu ? "font-telugu" : ""}`}
+                >
+                  <span>Discover Opportunities &amp; Tenders</span>
                 </CTA>
               </Magnetic>
               <Magnetic strength={0.12} className="w-full sm:w-auto">
-                <CTA to="/membership" variant="outlineWhite" testid="hero-membership-cta" className="w-full sm:w-auto">
-                  Membership information
+                <CTA
+                  to="/schemes"
+                  variant="outlineWhite"
+                  testid="hero-schemes-te-cta"
+                  className="w-full sm:w-auto"
+                >
+                  <span>Browse 335 BC/OBC Schemes</span>
+                </CTA>
+              </Magnetic>
+              <Magnetic strength={0.12} className="w-full sm:w-auto">
+                <CTA
+                  to="/member/register"
+                  variant="outlineWhite"
+                  testid="hero-membership-cta"
+                  className={`w-full sm:w-auto ${isTelugu ? "font-telugu" : ""}`}
+                >
+                  <span>Join Member Portal</span>
                 </CTA>
               </Magnetic>
             </motion.div>
           </div>
 
           {/* Signature 3D Visual: Raymarched Translucent Glass Continuum Sculpture */}
-          <div className="relative mx-auto flex h-[200px] w-full max-w-[360px] items-center justify-center sm:h-[310px] sm:max-w-[440px] lg:h-[460px] lg:max-w-none">
+          <div
+            data-cursor="explore"
+            data-cursor-hero="true"
+            className="relative mx-auto flex h-[200px] w-full max-w-[360px] items-center justify-center sm:h-[310px] sm:max-w-[440px] lg:h-[460px] lg:max-w-none"
+          >
             <BecciPrismSculpture3D mode="hero" />
-            <div className="glass-pill pointer-events-none absolute bottom-1 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full px-3.5 py-1 font-heading text-[0.6rem] font-semibold uppercase tracking-[0.16em] text-ice/90 sm:bottom-2 sm:text-[0.62rem]">
-              <span className="text-teal-bright">∞</span> Open Continuum · Community &amp; Commerce
+            <div className="glass-pill pointer-events-none absolute bottom-1 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full px-3.5 py-1 font-heading text-xs font-semibold uppercase tracking-[0.16em] text-ice/90 sm:bottom-2">
+              Chamber <span className="text-teal-bright">∞</span> Commerce · Open Continuum
             </div>
           </div>
         </div>
@@ -208,7 +299,7 @@ const Hero = () => {
                   key={item.tag}
                   type="button"
                   onClick={() => setReelIndex(i)}
-                  className={`relative min-h-[38px] flex-1 rounded-full px-3.5 py-2 font-heading text-[0.68rem] font-semibold uppercase tracking-wider transition-colors sm:flex-none ${
+                  className={`relative min-h-[38px] flex-1 rounded-full px-3.5 py-2 font-heading text-xs font-semibold uppercase tracking-wider transition-colors sm:flex-none ${
                     reelIndex === i
                       ? "text-navy-950"
                       : "text-ice/80 hover:text-white"
@@ -231,7 +322,7 @@ const Hero = () => {
               <InstitutionalSeal className="h-10 w-10 shrink-0" />
               <div className="text-right">
                 <p className="font-heading text-xs font-semibold text-white">Section 8 Not-for-Profit</p>
-                <p className="tabular font-body text-[0.7rem] text-ice/75">CIN {CONTACT.cin}</p>
+                <p className="tabular font-body text-xs text-ice/75">CIN {CONTACT.cin}</p>
               </div>
             </div>
           </div>
@@ -273,10 +364,25 @@ const WhyBahujan = () => (
           <h2 className="mt-4 font-heading text-h1 font-bold leading-[1.03] text-white">
             The skills of the many have always built this economy.
           </h2>
+          <div className="mt-5 flex flex-wrap items-center gap-2.5">
+            {WHY_BAHUJAN.etymology.map((e) => (
+              <span
+                key={e.part}
+                className="glass-pill inline-flex items-center gap-2 rounded-full px-4 py-1.5 font-heading text-xs font-semibold text-white"
+              >
+                <span className="text-teal-bright">{e.part}</span>
+                <span className="text-ice/70">=</span>
+                <span className="text-frost">{e.meaning}</span>
+              </span>
+            ))}
+          </div>
         </div>
         <div>
-          <p className="font-body text-lead text-frost/88">{WHY_BAHUJAN.intro}</p>
-          <p className="mt-4 font-body text-sm italic leading-relaxed text-ice/90">
+          <p className="font-heading text-sm font-semibold text-teal-bright">
+            {WHY_BAHUJAN.backboneHeading}
+          </p>
+          <p className="mt-2.5 font-body text-lead text-frost/88">{WHY_BAHUJAN.backboneBody}</p>
+          <p className="mt-4 font-body text-sm leading-relaxed text-ice/90">
             {WHY_BAHUJAN.thought}
           </p>
         </div>
@@ -305,12 +411,12 @@ const WhyBahujan = () => (
             <div key={stat.id} className="min-w-0 rounded-2xl bg-white/[0.04] p-5 ring-1 ring-ice/15">
               <p className="tabular font-display text-4xl leading-none text-teal-bright">{stat.figure}</p>
               <p className="mt-2 font-heading text-xs font-bold text-white">{stat.label}</p>
-              <p className="mt-1 font-body text-[0.72rem] leading-relaxed text-ice/80">{stat.year}</p>
+              <p className="mt-1 font-body text-xs leading-relaxed text-ice/80">{stat.year}</p>
               <a
                 href={stat.sourceUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="link-underline mt-2.5 inline-flex items-center gap-1 font-heading text-[0.68rem] font-semibold uppercase tracking-wider text-ice hover:text-teal-bright"
+                className="link-underline mt-2.5 inline-flex items-center gap-1 font-heading text-xs font-semibold uppercase tracking-wider text-ice hover:text-teal-bright"
               >
                 <span>{stat.sourceLabel}</span>
                 <ArrowUpRight className="h-3 w-3 shrink-0" aria-hidden="true" />
@@ -329,7 +435,10 @@ const WhyBahujan = () => (
         ].map((card) => (
           <ParallaxFrame key={card.label} offset={card.offset} className={card.span}>
             <CinemaAperture>
-              <div className="group relative overflow-hidden rounded-2xl bg-navy-950 shadow-lift ring-1 ring-ice/12">
+              <div
+                data-cursor="view"
+                className="group relative overflow-hidden rounded-2xl bg-navy-950 shadow-lift ring-1 ring-ice/12"
+              >
                 <Img
                   name={card.img}
                   sizes="(min-width: 768px) 440px, 100vw"
@@ -350,18 +459,37 @@ const WhyBahujan = () => (
       {/* Floating Glass Heritage Quotation Lens (Champagne Gold reserved for the timeless motto) */}
       <GlassSpotlight
         tone="dark"
+        data-cursor-surface="heritage"
         className="glass-iridescent mt-14 grid gap-8 rounded-3xl p-8 sm:p-12 lg:grid-cols-[1.15fr_0.85fr] lg:items-center"
       >
         <figure className="relative z-10">
           <Symbol variant="white" className="mb-5 h-6 w-auto opacity-80" />
-          <blockquote className="font-serif text-3xl italic leading-snug text-gold sm:text-4xl">
+          <blockquote className="font-serif text-3xl leading-snug text-gold sm:text-4xl">
             “{WHY_BAHUJAN.quote.text}”
           </blockquote>
           <figcaption className="mt-4">
             <p className="font-body text-base text-white/90">{WHY_BAHUJAN.quote.translation}</p>
-            <p className="mt-2 font-heading text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-ice/75">
-              {WHY_BAHUJAN.quote.attribution} · {WHY_BAHUJAN.quote.note}
-            </p>
+            <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 font-heading text-xs font-semibold uppercase tracking-[0.16em] text-ice/80">
+              <span>{WHY_BAHUJAN.quote.attribution}</span>
+              <span aria-hidden="true">·</span>
+              <a
+                href={WHY_BAHUJAN.quote.sourceUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="link-underline inline-flex items-center gap-1 text-gold hover:text-white"
+              >
+                <span>{WHY_BAHUJAN.quote.sourceLabel}</span>
+                <ArrowUpRight className="h-3 w-3 shrink-0" aria-hidden="true" />
+              </a>
+            </div>
+            <details className="mt-3 text-xs text-ice/75">
+              <summary className="cursor-pointer font-heading font-semibold uppercase tracking-[0.14em] text-teal-bright hover:text-white">
+                Historical context
+              </summary>
+              <p className="mt-2 font-body leading-relaxed text-ice/80">
+                {WHY_BAHUJAN.quote.context}
+              </p>
+            </details>
           </figcaption>
         </figure>
 
@@ -445,10 +573,10 @@ const WhatWeDo = () => (
       {/* Unboxed Editorial 6 Areas of Work & 4 Stakeholder Categories */}
       <div className="mt-20 grid gap-16 lg:grid-cols-[1fr_1fr]">
         <div>
-          <Eyebrow tone="teal">Core focus</Eyebrow>
-          <h3 className="mt-3 font-heading text-2xl font-bold text-navy-950">Six areas of work</h3>
+          <Eyebrow tone="teal">Institutional objectives</Eyebrow>
+          <h3 className="mt-3 font-heading text-2xl font-bold text-navy-950">Six core objectives</h3>
           <ul className="mt-6 divide-y divide-navy-800/10 border-y border-navy-800/10">
-            {WORK_AREAS.map((w, i) => (
+            {OBJECTIVES.map((w, i) => (
               <li key={i} className="flex items-baseline gap-5 py-4">
                 <span className="tabular font-display text-xl text-teal-deep">0{i + 1}</span>
                 <span className="font-body text-base font-medium text-navy-950">{w}</span>
@@ -461,15 +589,18 @@ const WhatWeDo = () => (
           <div>
             <Eyebrow tone="teal">Collaboration</Eyebrow>
             <h3 className="mt-3 font-heading text-2xl font-bold text-navy-950">
-              The ecosystem we seek to work alongside
+              The ecosystem BECCI looks to work alongside
             </h3>
             <p className="mt-2 font-body text-xs text-navy-800/65">
-              Shown as stakeholder categories — not existing or confirmed partners.
+              Shown as stakeholder categories — no partner logos or formal partnerships are claimed until signed.
             </p>
             <div className="mt-6 grid gap-6 sm:grid-cols-2">
               {STAKEHOLDERS.map((s) => (
                 <div key={s.name} className="border-t border-ice pt-4">
                   <p className="font-heading text-base font-bold text-navy-950">{s.name}</p>
+                  <p className="mt-0.5 font-heading text-xs font-semibold uppercase tracking-[0.14em] text-teal-deep">
+                    {s.brings}
+                  </p>
                   <p className="mt-1.5 font-body text-sm leading-relaxed text-navy-800/75">{s.desc}</p>
                 </div>
               ))}
@@ -511,7 +642,10 @@ const WhoWeServe = () => (
               delay={(i % 3) * 0.05}
               className={isFeatured ? "lg:col-span-6" : "lg:col-span-3"}
             >
-              <article className="hover-lift group relative h-full overflow-hidden rounded-2xl bg-navy-950 shadow-soft transition-[transform,box-shadow] duration-300 hover:shadow-lift">
+              <article
+                data-cursor="view"
+                className="hover-lift group relative h-full overflow-hidden rounded-2xl bg-navy-950 shadow-soft transition-[transform,box-shadow] duration-300 hover:shadow-lift"
+              >
                 <div className={`relative w-full overflow-hidden ${isFeatured ? "h-72 sm:h-80" : "h-64"}`}>
                   <Img
                     name={a.img}
@@ -545,17 +679,18 @@ const WhoWeServe = () => (
         </div>
         <div className="mt-6 flex flex-wrap gap-3">
           {SECTORS.map((s) => (
-            <div
-              key={s.name}
-              className="glass-light inline-flex items-center gap-3 rounded-full px-5 py-3 transition-colors hover:bg-navy-50"
+            <Link
+              key={s.id}
+              to={`/who-we-serve?sector=${s.id}#sectors`}
+              className="glass-light inline-flex min-h-[44px] items-center gap-3 rounded-full px-5 py-2.5 transition-colors hover:border-teal/40 hover:bg-navy-50"
             >
               <SectorSvgIcon name={s.icon} className="h-5 w-5 shrink-0" />
               <span className="font-heading text-sm font-semibold text-navy-950">{s.name}</span>
-            </div>
+            </Link>
           ))}
           <Link
-            to="/who-we-serve"
-            className="inline-flex items-center gap-2 rounded-full bg-navy-950 px-5 py-3 font-heading text-sm font-semibold text-white transition-colors hover:bg-teal-deep"
+            to="/who-we-serve#sectors"
+            className="inline-flex min-h-[44px] items-center gap-2 rounded-full bg-navy-950 px-5 py-2.5 font-heading text-sm font-semibold text-white transition-colors hover:bg-teal-deep"
           >
             <span>Explore all sectors</span>
             <ArrowUpRight className="h-4 w-4 text-teal-bright" aria-hidden="true" />
@@ -662,7 +797,7 @@ const MembershipRoad = () => (
             </p>
           </div>
           <CTA to="/schemes" variant="outline" testid="home-schemes-cta">
-            View {SCHEMES.length} government schemes
+            View {SCHEME_DATASET_STATS.totalShown} verified schemes
           </CTA>
         </div>
 
@@ -689,7 +824,7 @@ const MembershipRoad = () => (
           {ENGAGEMENT_PATHWAYS.map((p) => (
             <GlassSpotlight key={p.id} tone="light" className="glass-light flex h-full flex-col justify-between rounded-2xl p-6">
               <div className="relative z-10">
-                <p className="font-heading text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-teal-deep">
+                <p className="font-heading text-xs font-semibold uppercase tracking-[0.16em] text-teal-deep">
                   {p.audience}
                 </p>
                 <h4 className="mt-2 font-heading text-base font-bold leading-snug text-navy-950">
@@ -747,6 +882,7 @@ const InstitutionalBridge = () => (
       <div className="mt-14 text-left">
         <GlassSpotlight
           tone="dark"
+          data-cursor="discover"
           className="on-dark glass-iridescent flex flex-col justify-between gap-6 rounded-3xl bg-navy-950 p-7 text-white sm:p-9 lg:flex-row lg:items-center"
         >
           <div className="relative z-10 max-w-2xl">
@@ -758,9 +894,14 @@ const InstitutionalBridge = () => (
               Explore our 3D spatial territories, search every verified scheme and statutory portal on the Opportunity Wall, and inspect BECCI’s transparent institutional record in the Digital Observatory.
             </p>
           </div>
-          <div className="relative z-10 shrink-0">
+          <div className="relative z-10 flex shrink-0 flex-wrap items-center gap-3">
             <Magnetic>
-              <CTA to="/pulse" variant="teal" testid="home-enter-pulse-cta">
+              <CTA to="/navigator" variant="teal" testid="home-enter-navigator-cta">
+                Opportunity Navigator
+              </CTA>
+            </Magnetic>
+            <Magnetic strength={0.12}>
+              <CTA to="/pulse" variant="outlineWhite" testid="home-enter-pulse-cta">
                 Enter BECCI PULSE
               </CTA>
             </Magnetic>
@@ -791,11 +932,11 @@ const Closing = () => (
       <Reveal>
         <div className="inline-flex items-center gap-3 rounded-full glass-pill px-4 py-1.5">
           <Symbol variant="white" className="h-4 w-auto" />
-          <span className="font-heading text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-ice">
+          <span className="font-heading text-xs font-semibold uppercase tracking-[0.16em] text-ice">
             Section 8 Not-for-Profit · Begumpet, Hyderabad · Pan-India Mission
           </span>
         </div>
-        <h2 className="mx-auto mt-8 max-w-5xl display-head text-[2.8rem] leading-[0.96] text-white sm:text-6xl lg:text-[5.2rem]">
+        <h2 className="mx-auto mt-8 max-w-5xl display-head text-4xl leading-[0.96] text-white sm:text-6xl lg:text-7xl">
           From skill to enterprise.
           <br />
           From enterprise to prosperity.

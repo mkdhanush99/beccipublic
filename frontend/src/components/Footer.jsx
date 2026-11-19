@@ -1,13 +1,22 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { ArrowUpRight, Phone, Mail, MapPin, Clock } from "lucide-react";
+import { ArrowUpRight, Phone, MapPin, Clock } from "lucide-react";
 import { NAV, ORG, CONTACT, SCHEME_NOTE } from "@/data/becci";
 import { Logo, Symbol, InstitutionalSeal } from "@/components/Logo";
 
 const slug = (s) => s.toLowerCase().replace(/[^a-z]+/g, "-").replace(/^-|-$/g, "");
 
 const footerGroups = [
-  { title: "Explore", links: [...NAV.slice(0, 5), { label: "BECCI Pulse", to: "/pulse" }] },
+  {
+    title: "Explore",
+    links: [
+      ...NAV.slice(0, 5),
+      { label: "Live Opportunities", to: "/opportunities" },
+      { label: "Member Portal", to: "/member/dashboard" },
+      { label: "Opportunity Navigator", to: "/navigator" },
+      { label: "BECCI Pulse", to: "/pulse" },
+    ],
+  },
   {
     title: "Information",
     links: [
@@ -37,7 +46,7 @@ export const Footer = () => {
                 <p className="font-display text-xl uppercase leading-[1.05] tracking-wide text-gold">
                   {ORG.tagline}
                 </p>
-                <p className="mt-1 font-body text-[0.7rem] text-ice/60">
+                <p className="mt-1 font-body text-xs text-ice/60">
                   Est. 2026 · CIN {CONTACT.cin}
                 </p>
               </div>
@@ -54,7 +63,7 @@ export const Footer = () => {
                     <li key={l.to}>
                       <Link
                         to={l.to}
-                        className="link-underline inline-flex min-h-[40px] items-center font-body text-[0.9rem] text-ice/85 transition-colors hover:text-teal-bright lg:min-h-0"
+                        className="link-underline inline-flex min-h-[40px] items-center font-body text-sm text-ice/85 transition-colors hover:text-teal-bright lg:min-h-0"
                         data-testid={`footer-link-${slug(l.label)}`}
                       >
                         {l.label}
@@ -78,18 +87,9 @@ export const Footer = () => {
                 <Phone className="h-4 w-4 shrink-0 text-teal" aria-hidden="true" />
                 <a
                   href={`tel:${CONTACT.phone.replace(/\s/g, "")}`}
-                  className="link-underline inline-flex min-h-[40px] items-center hover:text-teal-bright lg:min-h-0"
+                  className="link-underline inline-flex min-h-[44px] items-center hover:text-teal-bright lg:min-h-0"
                 >
                   {CONTACT.phone}
-                </a>
-              </p>
-              <p className="flex items-center gap-2.5">
-                <Mail className="h-4 w-4 shrink-0 text-teal" aria-hidden="true" />
-                <a
-                  href={`mailto:${CONTACT.email}`}
-                  className="link-underline inline-flex min-h-[40px] items-center break-all hover:text-teal-bright lg:min-h-0"
-                >
-                  {CONTACT.email}
                 </a>
               </p>
               <p className="flex items-center gap-2.5 text-xs text-ice/65">

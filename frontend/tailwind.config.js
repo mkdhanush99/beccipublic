@@ -13,6 +13,7 @@ module.exports = {
         heading: ["var(--font-heading)"],
         body: ["var(--font-body)"],
         serif: ["var(--font-serif)"],
+        telugu: ["var(--font-telugu)", "Mandali", "Noto Sans Telugu", "sans-serif"],
       },
       fontSize: {
         hero: ["var(--fs-hero)", { lineHeight: "0.88" }],

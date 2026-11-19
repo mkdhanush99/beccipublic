@@ -36,6 +36,9 @@ export default function WingsChapters() {
                     <span className="eyebrow text-teal-deep">Dedicated Wing</span>
                     <h3 className="mt-1.5 font-heading text-xl font-bold text-navy-950">{w.name}</h3>
                     <p className="mt-2.5 font-body text-base leading-relaxed text-navy-800/80">{w.desc}</p>
+                    <p className="mt-4 font-heading text-xs font-semibold uppercase tracking-[0.14em] text-navy-800/55">
+                      Wing lead: To be announced by BECCI
+                    </p>
                   </div>
                 </div>
               </Reveal>
@@ -87,8 +90,7 @@ export default function WingsChapters() {
                   <StatusChip label="Planned" />
                 </div>
                 <p className="mt-4 font-body text-sm leading-relaxed text-navy-800/80">
-                  Specific chapter locations, offices and leadership are not published here. Chapter information will be
-                  added as locations become operational. No active chapters, offices or leadership names have been invented.
+                  Chapters will be listed here as they open. Registered office: Begumpet, Hyderabad (Telangana). No chapter locations, offices or office-holder names are published until formally confirmed.
                 </p>
                 <div className="mt-6 border-t border-navy-800/10 pt-4 font-body text-xs text-navy-800/65">
                   Phase 01 rollout begins with Telangana and Andhra Pradesh, focusing on district outreach and state membership desks, with other states following in phases.

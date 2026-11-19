@@ -29,6 +29,7 @@ import {
   PILLARS,
   ROADMAP,
   SCHEMES,
+  SCHEME_DATASET_STATS,
   SCHEME_NOTE,
   SECTORS,
   WINGS,
@@ -44,9 +45,9 @@ const TERRITORIES = [
     summary:
       "Structured orientation across enterprise registration, statutory compliance, taxation and skilling — guiding founders directly to primary government sources.",
     verifiedItems: [
-      "11 direct statutory & institutional portals indexed",
-      "Udyam, GST, MCA, Skill India Digital & NCBC orientation",
-      "Phase 01 Public Information Desk active today",
+      `${KNOWLEDGE_PORTALS.length} direct statutory & institutional portals indexed`,
+      "5 practical entrepreneur guides + Udyam, GST, MCA, Skill India & NCBC orientation",
+      "Phase 01 Public Information Desk available now",
     ],
     primary: { label: "Open BECCI Intelligence", to: "/intelligence" },
     secondary: { label: "Knowledge Centre", to: "/knowledge" },
@@ -102,13 +103,13 @@ const TERRITORIES = [
     name: "Public Programmes & Schemes",
     axis: "Institutional Territory",
     summary:
-      "Transparent, scam-free access to twelve verified Central and State enterprise programmes — always linking straight to official government domains.",
+      `Transparent, scam-free access to ${SCHEME_DATASET_STATS.totalShown} verified Central, Telangana and Andhra Pradesh enterprise programmes — sourced from myScheme (Government of India) and official implementing portals.`,
     verifiedItems: [
-      `${SCHEMES.length} verified Central & State Government enterprise schemes`,
-      "Covers backward classes, artisans, women, startups & TG/AP state schemes",
-      "Explicit non-affiliation, last-verified dates & independent verification notice",
+      `${SCHEME_DATASET_STATS.totalShown} verified Central, Telangana & AP Government schemes`,
+      `${SCHEME_DATASET_STATS.obcCount} OBC / Backward Classes priority & ${SCHEME_DATASET_STATS.entrepreneurCount} entrepreneur schemes`,
+      `Verified ${SCHEME_DATASET_STATS.verifiedDate} · Source: myScheme, Government of India`,
     ],
-    primary: { label: `Browse All ${SCHEMES.length} Schemes`, to: "/schemes" },
+    primary: { label: `Browse All ${SCHEME_DATASET_STATS.totalShown} Schemes`, to: "/schemes" },
     secondary: { label: "Membership Guide", to: "/membership" },
   },
 ];
@@ -136,7 +137,7 @@ const OBSERVATORY_TIMELINE = [
     title: "Public Information Platform & District Outreach",
     status: "Active · Phase 01",
     detail:
-      `Public website, ${SCHEMES.length} Central & State scheme pathways, 5 practical entrepreneur guides and 11 statutory portals published. Phase 01 rollout initiated in Telangana and Andhra Pradesh with district outreach and state membership desks.`,
+      `Public website, ${SCHEME_DATASET_STATS.totalShown} verified Central, Telangana & AP schemes (myScheme, GoI), 5 practical entrepreneur guides and ${KNOWLEDGE_PORTALS.length} statutory portals published. Phase 01 rollout initiated in Telangana and Andhra Pradesh with district outreach and state membership desks.`,
   },
   {
     period: "Upcoming · Disclosures",
@@ -187,14 +188,15 @@ export default function Pulse() {
         to: init.to,
         cta: init.cta,
       })),
-      ...SCHEMES.map((s, idx) => ({
-        id: `scheme-${idx}`,
+      ...SCHEMES.map((s) => ({
+        id: `scheme-${s.slug || s.id}`,
         category: "programmes",
         badge: s.ministry,
         title: s.name,
         desc: s.desc,
-        meta: s.source.replace("https://", ""),
-        href: s.source,
+        meta: s.sourceCredit || "Source: myScheme, Government of India",
+        to: `/schemes/${s.slug || s.id}`,
+        cta: "View scheme details",
       })),
       ...KNOWLEDGE_PORTALS.map((p, idx) => ({
         id: `portal-${idx}`,
@@ -299,6 +301,7 @@ export default function Pulse() {
          ===================================================================== */}
       <section
         className="on-dark relative flex min-h-[100svh] flex-col justify-between overflow-hidden bg-navy-950 pt-24 text-white sm:pt-28"
+        data-cursor-hero="true"
         data-testid="pulse-universe"
       >
         <PulseUniverseCanvas activeIndex={territoryIdx} />
@@ -591,7 +594,7 @@ export default function Pulse() {
                 </h3>
                 <p className="mt-3 font-body text-base leading-relaxed text-navy-800/80">
                   Original BECCI formalisation guides, sector briefs and governance publications will be released
-                  here once cleared by the chamber. Meanwhile, you can access eleven official government portals directly.
+                  here once cleared by the chamber. Meanwhile, you can access {KNOWLEDGE_PORTALS.length} official government portals directly.
                 </p>
               </div>
               <button
@@ -599,7 +602,7 @@ export default function Pulse() {
                 onClick={() => setWallCat("resources")}
                 className="inline-flex min-h-[44px] shrink-0 items-center gap-2 rounded-full bg-navy-950 px-6 py-3 font-heading text-xs font-semibold uppercase tracking-wider text-white transition-colors hover:bg-teal-deep"
               >
-                <span>View 11 Official Portals</span>
+                <span>View {KNOWLEDGE_PORTALS.length} Official Portals</span>
                 <ArrowUpRight className="h-4 w-4 text-teal-bright" aria-hidden="true" />
               </button>
             </div>
@@ -833,9 +836,9 @@ export default function Pulse() {
                     </div>
                     <div className="rounded-xl bg-white/[0.03] p-4 ring-1 ring-ice/10">
                       <p className="tabular font-display text-3xl leading-none text-teal-bright">
-                        {String(SCHEMES.length).padStart(2, "0")}
+                        {SCHEME_DATASET_STATS.totalShown}
                       </p>
-                      <p className="mt-1.5 font-body text-xs text-ice/80">Official government schemes linked</p>
+                      <p className="mt-1.5 font-body text-xs text-ice/80">Verified Government schemes indexed</p>
                     </div>
                   </div>
 

@@ -10,9 +10,15 @@ export default function NotFound() {
         <p className="mx-auto mt-3 max-w-md font-body text-sm text-ice/80">
           The page you requested may be planned for a later phase of the BECCI website.
         </p>
-        <div className="mt-8">
+        <div className="mt-8 flex flex-wrap justify-center gap-3">
           <CTA to="/" variant="teal">
             Back to home
+          </CTA>
+          <CTA to="/schemes" variant="outlineWhite">
+            Search government schemes
+          </CTA>
+          <CTA to="/knowledge" variant="outlineWhite">
+            Knowledge Centre
           </CTA>
         </div>
       </div>

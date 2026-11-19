@@ -84,7 +84,7 @@ export default function LegalPage({ kind = "privacy" }) {
       <NextPageBand
         eyebrow={isPrivacy ? "Terms of Use" : "Privacy Policy"}
         title={isPrivacy ? "Review BECCI’s Terms of Use draft." : "Review BECCI’s Privacy Policy draft."}
-        desc="Questions on data handling or legal governance? Write to becciglobal@gmail.com or reach our Begumpet, Hyderabad office."
+        desc="Questions on data handling or legal governance? Call +91 94943 03234 or reach our Begumpet, Hyderabad secretariat."
         to={isPrivacy ? "/terms" : "/privacy"}
         ctaLabel={isPrivacy ? "Read Terms of Use" : "Read Privacy Policy"}
         testid="legal-cross-link"

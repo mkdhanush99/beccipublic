@@ -8,7 +8,7 @@ import Reveal from "@/components/Reveal";
 import StatusChip from "@/components/StatusChip";
 import { Symbol } from "@/components/Logo";
 import { GlassSpotlight } from "@/components/visuals/MotionPrimitives";
-import { NEWS, KNOWLEDGE_PORTALS, SCHEME_CARD_NOTE } from "@/data/becci";
+import { NEWS, KNOWLEDGE_PORTALS, SCHEME_CARD_NOTE, SCHEME_DATASET_STATS } from "@/data/becci";
 import { INSIGHT_ARTICLES, LOAN_DECISION_GUIDE } from "@/data/intelligence";
 import { EASE_OUT } from "@/lib/motion";
 
@@ -21,11 +21,7 @@ const PORTAL_TABS = [
   { id: "growth", label: "Markets & Skilling" },
 ];
 
-const getPortalGroup = (name) => {
-  if (/Udyam|GST|MCA|NCBC/i.test(name)) return "compliance";
-  if (/SIDBI|MSME|Samadhaan/i.test(name)) return "finance";
-  return "growth";
-};
+const getPortalGroup = (portal) => portal.topic || "growth";
 
 export default function Knowledge() {
   const [tab, setTab] = useState("all");
@@ -38,7 +34,7 @@ export default function Knowledge() {
   );
 
   const visiblePortals = useMemo(
-    () => (tab === "all" ? KNOWLEDGE_PORTALS : KNOWLEDGE_PORTALS.filter((p) => getPortalGroup(p.name) === tab)),
+    () => (tab === "all" ? KNOWLEDGE_PORTALS : KNOWLEDGE_PORTALS.filter((p) => getPortalGroup(p) === tab)),
     [tab]
   );
 
@@ -62,9 +58,9 @@ export default function Knowledge() {
     <>
       <PageHero
         eyebrow="Newsroom & Knowledge"
-        meta="5 Practical Guides · 11 Statutory Portals"
+        meta={`5 Practical Guides · ${KNOWLEDGE_PORTALS.length} Official Portals`}
         title="What’s happening, and where to go next."
-        intro="Verified BECCI announcements, five step-by-step entrepreneur guides, a loan decision guide, and direct links to official government portals."
+        intro="Verified BECCI announcements, five step-by-step entrepreneur guides, a loan decision guide, and direct links to fourteen official government portals."
       >
         <Link
           to="/intelligence"
@@ -156,14 +152,14 @@ export default function Knowledge() {
           </div>
 
           {/* Transparent Events & Publications Shelf (zero invented events/briefings) */}
-          <div className="mt-8 grid gap-4 md:grid-cols-2">
+          <div id="events" className="mt-8 grid gap-4 md:grid-cols-2">
             <div className="flex items-center justify-between gap-4 rounded-2xl border border-ice/70 bg-frost p-6">
               <div>
                 <p className="font-heading text-xs font-semibold uppercase tracking-[0.16em] text-teal-deep">
                   Events &amp; Convenings
                 </p>
                 <p className="mt-1 font-body text-sm text-navy-800/80">
-                  Confirmed district outreach sessions and public chamber events will be listed here once dates are finalised.
+                  No public events are scheduled yet. Confirmed district outreach sessions, dates and venues will appear here once finalised.
                 </p>
               </div>
               <StatusChip label="Planned" />
@@ -242,7 +238,7 @@ export default function Knowledge() {
                 to="/schemes"
                 className="link-underline inline-flex items-center gap-1 font-heading text-xs font-semibold uppercase tracking-wider text-teal-ink"
               >
-                <span>Compare all 12 schemes</span>
+                <span>Explore all {SCHEME_DATASET_STATS.totalShown} verified schemes</span>
                 <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
               </Link>
             </div>
@@ -359,17 +355,25 @@ export default function Knowledge() {
                   target="_blank"
                   rel="noreferrer"
                   data-testid={`portal-${slug(p.name)}`}
-                  className="glass-light hover-lift group flex h-full items-center justify-between gap-3 rounded-2xl p-5 transition-[transform,border-color,box-shadow] hover:border-teal/35"
+                  className="glass-light hover-lift group flex h-full min-w-0 flex-col justify-between gap-3 rounded-2xl p-5 transition-[transform,border-color,box-shadow] hover:border-teal/35"
                 >
-                  <div className="min-w-0">
-                    <p className="font-heading text-sm font-bold text-navy-950 transition-colors group-hover:text-teal-ink">
-                      {p.name}
-                    </p>
-                    <p className="mt-0.5 truncate font-body text-xs text-navy-800/60">{p.url.replace("https://", "")}</p>
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <p className="font-heading text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-teal-deep">
+                        {p.source}
+                      </p>
+                      <p className="mt-1 font-heading text-sm font-bold text-navy-950 transition-colors group-hover:text-teal-ink">
+                        {p.name}
+                      </p>
+                    </div>
+                    <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-navy-800/10 bg-frost text-teal-deep transition-colors group-hover:bg-navy-950 group-hover:text-teal-bright">
+                      <ArrowUpRight className="h-4 w-4 transition-transform duration-150 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" aria-hidden="true" />
+                    </span>
                   </div>
-                  <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-navy-800/10 bg-frost text-teal-deep transition-colors group-hover:bg-navy-950 group-hover:text-teal-bright">
-                    <ArrowUpRight className="h-4 w-4 transition-transform duration-150 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" aria-hidden="true" />
-                  </span>
+                  <p className="font-body text-xs leading-relaxed text-navy-800/75">{p.summary}</p>
+                  <p className="truncate font-body text-[0.72rem] font-medium text-teal-ink">
+                    {p.url.replace("https://", "")}
+                  </p>
                 </a>
               </motion.div>
             ))}
